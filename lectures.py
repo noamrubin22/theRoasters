@@ -19,6 +19,23 @@ class Room:
 
 	__repr__ = __str__
 
+class Course:
+	""" Add features to course """
+	def __init__(self, name, lectures, seminar, practical):
+		self.name = name
+		self.lectures = lectures
+		self.seminar = seminar
+		self.practical = practical
+		#self.maxstudents = maxstudents
+		self.students = []
+
+	def addStudent(self, student):
+		""" Add student to course """
+		self.students.append(student)
+
+	def __str__(self):
+		return "Name: %s \nNumber of lectures: %s\nNumber of seminars: %s \nNumber of practicals: %s \n" % (self.name, self.lectures, self.seminar, self.practical)
+
 # create empty list
 
 if __name__=='__main__':
@@ -51,6 +68,23 @@ if __name__=='__main__':
 				chambers.append(room)
 
 	print(chambers)
+
+
+# create course-classes
+allcourses = []
+
+with open('vakken.csv', 'rt') as coursefile:
+	courses = csv.reader(coursefile)
+	for row in courses:
+		for text in row:
+			courseInfo = text.split(";")
+			courseName = courseInfo[0]
+			courseLectures = courseInfo[1]
+			courseSeminars = courseInfo[2]
+			coursePracticals = courseInfo[4]
+			allcourses.append(Course(courseName, courseLectures, courseSeminars, coursePracticals))
+
+print(allcourses[1])
 
 # # iterate over booking list 
 # for timelock in booking:
