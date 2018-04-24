@@ -19,6 +19,25 @@ class Room:
 
 	__repr__ = __str__
 
+    
+    class Student:
+	""" Adds students """
+
+	def __init__(self, name, student_id, courses): 
+		self.name = name
+		self.student_id = capacity
+		self.courses = []
+
+	def add_booking(self, timelock):
+		""" Blocks time lock """
+
+		self.booking.append(timelock)
+
+	def __str__(self):
+		return str(self.name)
+
+	__repr__ = __str__
+
 # create empty list
 
 if __name__=='__main__':
