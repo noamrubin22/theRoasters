@@ -20,6 +20,7 @@ class Room:
 
 	__repr__ = __str__
 
+
 class Course:
 	""" Add features to course """
 	def __init__(self, name, lectures, seminar, practical):
