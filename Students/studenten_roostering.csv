@@ -1,4 +1,4 @@
-lastName;firstName;studentID;courses;courses;courses;courses;courses
+lastName;firstName;studentID;course_1;course_2;course_3;course_4;course_5;
 Abbing;Yanick;52311353;Analysemethoden en -technieken;Data Mining;Lineaire Algebra;Software engineering;
 Adam;Roelof;76903244;Webprogrammeren en databases;;;;
 Agema;Willibrordus;6709529;Calculus 2;;;;
