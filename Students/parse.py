@@ -2,7 +2,6 @@ import csv
 from students_class import Students
 
 MY_FILE = "studenten_roostering.csv"
-
 def parse(raw_file, delimiter):
 
     # Open CSV file, and safely close it when we're done
@@ -29,24 +28,17 @@ def parse(raw_file, delimiter):
 
     return parsed_data
 
+def gimme_students():
+    return student_list;
 
 def main():
     # Call our parse function and give it the needed parameters
     new_data = parse(MY_FILE, ";")
 
-    # Let's see what the data looks like!
-    # print(new_data[15])
-
-    student_range = range(0, len(new_data))
-    num = 0
-    student_list = []
-    # if new_data[0]['course_5'] is None:
-    #     print("yes")
-    # print("no")
-
     for i in range(len(new_data)):
         student_info = {}
 
+        # extract all information
         last_name = new_data[i]['lastName']
         first_name = new_data[i]['firstName']
         student_id = new_data[i]['studentID']
@@ -54,7 +46,7 @@ def main():
 
 
         # dict1_values = {k*2:v for (k,v) in dict1.items()}
-
+        # Add extract all courses from all students
         if new_data[i]['course_1'] is not '':
             courses.append(new_data[i]['course_1'])
         if new_data[i]['course_2'] is not '':
@@ -66,19 +58,19 @@ def main():
         if new_data[i]['course_5'] is not '':
             courses.append(new_data[i]['course_5'])
 
-        # dict_values = {k:v   'sdf' for (k,v) in new_data[i].items()}
-        # print(dict_values)
-
 
         student_info[student_id] = Students(last_name, first_name, student_id, courses)
-        num+=1
-        print(student_info)
+
+        student_list.append(student_info)
         # new_data
         # student_info.update(name=new_data)
 
+        # Console print of all students
+        {k:print(v) for (k,v) in new_data[i].items()}
 
 
-
+        print(student_list)
 
 if __name__ == "__main__":
     main()
+    
