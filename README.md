@@ -2,8 +2,10 @@
 The most efficient timetable needs to be created for the students of UvA Science park.
 
 ## Getting Started
+These scripts are written in Python3.6.3. The requirements.txt consists of the needed packages to run the code successfully. 
+
 ### Prerequisites
-These scripts are written in Python3.6.3. The requirements.txt consists of the needed packages to run the code successfully. Those are easy to install throuw pip with the following instruction: 
+The required packages are easliy installed through:
 
 ```
 pip install -r requirements.txt
