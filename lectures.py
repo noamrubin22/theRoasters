@@ -1,6 +1,8 @@
 
 import csv
 import random
+from parse import *
+from students_class import Students
 
 class Room:
 	""" Adds features to room """
@@ -23,24 +25,39 @@ class Room:
 
 class Course:
 	""" Add features to course """
-	def __init__(self, name, lectures, seminar, practical):
+	def __init__(self, name, lectures, seminar, maxstudentssem, practical, maxstudentsprac):
 		self.name = name
 		self.lectures = int(lectures)
 		self.seminars = int(seminar)
 		self.practicals = int(practical)
 		self.activities = []
-		#self.maxstudents = maxstudents
-		self.students = []
+		self.maxstudentssem = int(maxstudentssem)
+		self.maxstudentsprac = int(maxstudentsprac)
+		self.students = 0
+		self.studentnames = []
+		self.seminargroups = {0 : []}
+		
 
-	def addStudent(self, student):
+	def addStudent(self, name):
 		""" Add student to course """
-		self.students.append(student)
+		self.students += 1
+		self.studentnames.append(name)
+
+	def addSeminar(self):
+		self.seminars += 1
+
+	def addPractical(self):
+		self.practicals += 1
+
+	def createSeminarGroup(self, sem, studentlist):
+
+		self.seminargroups[sem] = studentlist
 
 	def updateSchedule(self, roomlock, activity):
 		self.activities.append([roomlock, activity]) 
 
 	def __str__(self):
-		return "Name: %s \nNumber of lectures: %s\nNumber of seminars: %s \nNumber of practicals: %s \n" % (self.name, self.lectures, self.seminar, self.practical)
+		return "Name: %s \nNumber of lectures: %s\nNumber of seminars: %s \nNumber of practicals: %s \n" % (self.name, self.lectures, self.seminars, self.practicals)
 
 # create empty list
 
@@ -88,12 +105,22 @@ with open('vakken.csv', 'rt') as coursefile:
 			courseName = courseInfo[0]
 			courseLectures = courseInfo[1]
 			courseSeminars = courseInfo[2]
+			courseMaxSem = courseInfo[3]
+			if courseMaxSem == "nvt":
+				courseMaxSem = 0 
 			coursePracticals = courseInfo[4]
-			allcourses.append(Course(courseName, courseLectures, courseSeminars, coursePracticals))
+			courseMaxPrac = courseInfo[5]
+			if courseMaxPrac == "nvt":
+				courseMaxPrac = 0
+			allcourses.append(Course(courseName, courseLectures, courseSeminars, courseMaxSem, coursePracticals, courseMaxPrac))
+
+# import student classes
+student_list = createStudentClass()
 
 # create empty dictionary with all room-timelock combinations (roomlocks) as keys
 roomlocks = list(range(0, 140))
 schedule = dict.fromkeys(roomlocks)
+
 
 def translateRoomlock(roomlock):
 	""" Translates roomlock number to roomnumber and timelock """
@@ -101,57 +128,117 @@ def translateRoomlock(roomlock):
 	timelock = int(roomlock/7)
 	return room, timelock
 
-# loop through courses to schedule classes of course one-by-one
-for course in allcourses:
-	# schedule lectures while course has still lectures left to schedule
-	while course.lectures > 0:
+def scheduleClass(course, typeClass, schedule):
+	if typeClass == "lecture":
+		activity = course.lectures
+	elif typeClass == "seminar":
+		activity = course.seminargroups
+	elif typeClass == "practical":
+		activity = course.practicals
+
+	while activity > 0:
 		# choose random roomlock
 		pickroomlock = random.randint(0, 139)
 		# pick new random roomlock if room is not empty at that time
 		# dit errort trouwens soms, meestal niet (nog naar kijken!)
 		while schedule[pickroomlock] is not None:
-			pickroomlock = random.randint(0, 140)
+			pickroomlock = random.randint(0, 139)
 		# schedule lecture in roomlock
-		schedule[pickroomlock] = course.name + " lecture"
-		course.lectures -= 1
+		schedule[pickroomlock] = course.name + " " + typeClass
+		activity -= 1
 		# put scheduled lecture in course class
-		course.updateSchedule(pickroomlock, course.name + " lecture")
+		course.updateSchedule(pickroomlock, course.name)
 		# add scheduled lecture to room class
 		room, timelock = translateRoomlock(pickroomlock)
 		chambers[room].add_booking(timelock)
-	# same for seminars
-	while course.seminars > 0:
-		pickroomlock = random.randint(0, 139)
-		while schedule[pickroomlock] is not None:
-			pickroomlock = random.randint(0, 140)
-		schedule[pickroomlock] = course.name + " seminar"
-		course.seminars -= 1
-		course.updateSchedule(pickroomlock, course.name + " seminar")
-		room, timelock = translateRoomlock(pickroomlock)
-		chambers[room].add_booking(timelock)	
-	# same for practicals
-	while course.practicals > 0:
-		pickroomlock = random.randint(0, 139)
-		while schedule[pickroomlock] is not None:
-			pickroomlock = random.randint(0, 140)
-		schedule[pickroomlock] = course.name + " practical"
-		course.practicals -= 1	
-		course.updateSchedule(pickroomlock, course.name + " practical")
-		room, timelock = translateRoomlock(pickroomlock)
-		chambers[room].add_booking(timelock)
 
+
+		# if typeClass == 
+		for student in student_list:
+			if course.name in student.courses:
+				student.updateStudentSchedule(timelock, course.name)
+
+
+		
+
+
+# loop through courses to schedule classes of course one-by-one
+for course in allcourses:
+
+	for student in student_list:
+		if course.name in student.courses:
+			course.addStudent(student.last_name)
+
+	if  course.seminars > 0:
+		numofseminars = int(course.students/course.maxstudentssem)
+		for i in range(numofseminars):
+			course.addSeminar()
+
+
+
+	if  course.practicals > 0:
+		numofpracticals = int(course.students/course.maxstudentsprac)
+		for i in range(numofpracticals):
+			course.addPractical()
+
+	# for student in course.studentnames:
+	# 	sem = random.randint(0, course.seminars)
+	# 	print(sem)
+		# while len(course.seminargroups[sem]) >= course.maxstudentssem:
+		# 	sem = random.randint(0, course.seminars)
+		# createSeminarGroup(sem, student.last_name)
+	# print(course.studentnames)
+	# if len(course.studentnames) != 0:
+	# 	pickstudent = random.choice(course.studentnames)
+	# 	print(pickstudent)
+	sem = 0
+	print(course.maxstudentssem)
+	if course.seminars > 0:
+		for i in range(0, len(course.studentnames), course.maxstudentssem):
+			studentlist = course.studentnames[i: i + course.maxstudentssem]
+			course.createSeminarGroup(sem, studentlist)
+			sem += 1
+
+	# groupcounter = 0
+	# sem = 0
+	# studentlist = []
+	# if course.seminars > 0:
+	# 	for student in course.studentnames:
+	# 		groupcounter += 1
+	# 		studentlist.append(student)
+
+	# 		if len(studentlist) >= course.maxstudentssem:
+	# 			# print(course.maxstudentssem)
+	# 			course.createSeminarGroup(sem, studentlist)
+	# 			sem += 1
+	# 			print(sem)
+	# 			studentlist = []
+
+	# print(course.seminargroups)
+
+
+	# schedule lectures while course has still lectures left to schedule
+	scheduleClass(course, "lecture", schedule)
+	scheduleClass(course, "seminar", schedule)
+	scheduleClass(course, "practical", schedule)
+
+print(allcourses[1].studentnames)
+print(allcourses[1].seminargroups)
 # even voor visualisatie
-print(schedule) # heel schedule
-print(allcourses[5].activities) # activiteiten van vak
-print(chambers[1].booking) # bookings van een zaal
 
+print(schedule) # heel schedule
+print(student_list[0].schedule)
+# print(allcourses[5].activities) # activiteiten van vak
+# # print(chambers[1].booking) # bookings van een zaal
+# print(int(0.5))
+# print(allcourses[5].studentnames)
 # valid schedule has been made: 1000 points
 points = 1000;
 
 # subtract or add points based on schedule
 # loop through courses
 for course in allcourses:
-	print(course.name)
+	# print(course.name)
 	dayActivity = []
 	# loop trough activities of a course
 	for activity in range(0, len(course.activities)):
@@ -179,22 +266,27 @@ for course in allcourses:
 			points += 20
 	
 	# laat even zien welke dagen er activiteiten zijn voor dit vak
-	print("dag(en): ", dayActivity)
+	# print("dag(en): ", dayActivity)
+
+
+	
+# print(student_list[0].schedule)
+
+# for student in student_list:
+# 	timelocksStudent = []
+# 	for activity in student.schedule:
+# 		if activity[0] in timelocksStudent:
+# 			points -= 1
+# 		timelocksStudent.append(activity[0])
+
+# for course in allcourses:
+# 	for activity in course.activities:
+# 		room, timelock = translateRoomlock(activity[0])
+# 		if int(chambers[room].capacity) < course.students:
+# 			print(chambers[room].capacity)
+			# print(course.students)
+			# print("te veel studenten: past niet in de zaal!")
+
 
 # laat eindscore zien (so far)
 print("Points: ", points)
-	
-
-
-# # iterate over booking list 
-# for timelock in booking:
-
-# 	# move to next timelock if occupied
-# 	if timelock == new_timelock:
-# 		timelock += 1
-
-# 	# add timelock if free
-# 	else:
-# 		add_booking(new_timelock)
-
-
