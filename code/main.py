@@ -91,12 +91,6 @@ def scheduleClass(course, typeClass, schedule):
 			pickroomlock = random.randint(0, 139)
 
 		room, timelock = translateRoomlock(pickroomlock)
-<<<<<<< HEAD
-=======
-		# if typeClass == "lecture" and course.students > int(chambers[room].capacity):
-		# 	while int(chambers[room].capacity) < 117:
-		# 		pickroomlock = random.randint(0, 139)
->>>>>>> 75ec50f9931c23ab1bdb278a2f88a5e448ef0596
 
 		if typeClass == "lecture":
 			while (course.students > int(chambers[room].capacity)) or schedule[pickroomlock] is not None:
