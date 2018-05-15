@@ -156,25 +156,14 @@ def scorefunction(allcourses, student_list, chambers):
 
 				# if practical
 				else: 
-
+					
 					# and too many students fro room, substract points
 					if int(chambers[room].capacity) < course.maxstudentsprac:
-					print(chambers[room].capacity)
-					print(course.maxstudentsprac)
-					maluspoints = course.maxstudentsprac - int(chambers[room].capacity)
-					print(maluspoints)
-					points -= maluspoints
-
-
-
-			# if practical
-			else:
-				# # if seminar
-				# if course.seminars > 0:
-
-
-			#
-
+						print(chambers[room].capacity)
+						print(course.maxstudentsprac)
+						maluspoints = course.maxstudentsprac - int(chambers[room].capacity)
+						print(maluspoints)
+						points -= maluspoints
 
 	# show points
 	print("Points: ", points)

@@ -119,6 +119,9 @@ def scheduleClass(course, typeClass, schedule):
 	elif typeClass == "practical":
 		activity = course.practicals
 
+	# intiliaze counter to keep track of tempts to schedule lecture
+	counter = 0
+
 	# untill no activities are left
 	while activity > 0:
 
@@ -133,28 +136,43 @@ def scheduleClass(course, typeClass, schedule):
 
 		# if room is free, substract the room and timelock
 		room, timelock = translateRoomlock(pickroomlock)
-
+		print("free roomlock chosen")
+		print(room, timelock)
 		# for lectures 
 		if typeClass == "lecture":
 
-			# until an unoccupied roomlock is found with enough capacity
-			while (course.students > int(chambers[room].capacity)) or schedule[pickroomlock] is not None:
+			# until an unoccupied roomlock is found with enough capacity (with a max of 20 times)
+			while (course.students > int(chambers[room].capacity)) or (schedule[pickroomlock] is not None):
 
 				# pick new random roomlock
 				pickroomlock = random.randint(0, 139)
 
+				# increase counter with every tempt 
+				counter += 1
+
 				# substract room and timelock 
 				room, timelock = translateRoomlock(pickroomlock)
+
+				# print(room,  timelock)
+				print(counter)
+				print("lectures stuck")
+
+				# start over if too many temps are being done
+				if counter > 50:
+					return 1 
 
 		# same for seminars and practicals
 		elif typeClass == "seminar":
 			while course.maxstudentssem > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
 				pickroomlock = random.randint(0, 139)
 				room, timelock = translateRoomlock(pickroomlock)
+				print("stuck with seminars")
+
 		elif typeClass == "practical":
 			while course.maxstudentsprac > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
 				pickroomlock = random.randint(0, 139)
 				room, timelock = translateRoomlock(pickroomlock)
+				print("stuck with practica")
 
 		# add activity to schedule at roomlock
 		schedule[pickroomlock] = course.name + " " + typeClass
@@ -203,6 +221,9 @@ def scheduleClass(course, typeClass, schedule):
 def complementCourse():
 	#* add studentnames, amount of seminars and practicals to course class *#
 
+	# another counter for check
+	amount_of_tries = 0
+
 	# for each course
 	for course in allcourses:
 
@@ -216,14 +237,14 @@ def complementCourse():
 				course.addStudent(student.last_name)
 
 		# if course has seminars
-		if  course.seminars > 0:
+		if course.seminars > 0:
 
 			# count and add amount to course class
 			numofseminars = math.ceil(course.students/course.maxstudentssem)
 			course.addSeminar(numofseminars)
 
 		# if course has practicals
-		if  course.practicals > 0:
+		if course.practicals > 0:
 
 			# count and add to course class
 			numofpracticals = math.ceil(course.students/course.maxstudentsprac)
@@ -258,17 +279,23 @@ def complementCourse():
 				course.createPracticalGroup(prac, studentlist)
 				prac += 1
 
+
 		# schedule lectures while course has still lectures left to schedule
 		scheduleClass(course, "lecture", schedule)
 		scheduleClass(course, "seminar", schedule)
 		scheduleClass(course, "practical", schedule)
-
+		
+		# increase counter
+		amount_of_tries += 1
+		print(amount_of_tries)
 		# print(allcourses[1].studentnames)
 
 		print(schedule) # heel schedule
 		# print(student_list[0].schedule)
-		print(allcourses[4].activities)
-		print(chambers)
+		# print(allcourses[4].activities)
+		# print(chambers)
+
+	return 
 		# print(allcourses[4].practicalgroups[3])
 		# print(allcourses[4].practicals)
 		# print(student_list[511].schedule)
@@ -277,6 +304,6 @@ def complementCourse():
 		# # print(chambers[1].booking) # bookings van een zaal
 		# print(allcourses[5].studentnames)
 
-
 chambers, allcourses, student_list, schedule = prepareData()
 complementCourse()
+
