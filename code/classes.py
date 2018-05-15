@@ -42,6 +42,7 @@ class Room:
 
 class Course:
 	""" Add features to course """
+
 	def __init__(self, name, lectures, seminar, maxstudentssem, practical, maxstudentsprac):
 		self.name = name
 		self.lectures = int(lectures)
@@ -54,7 +55,6 @@ class Course:
 		self.studentnames = []
 		self.seminargroups = {1 : []}
 		self.practicalgroups = {1 : []}
-
 
 	def addStudent(self, name):
 		""" Add student to course """

@@ -1,18 +1,20 @@
 import csv
 from classes import Students
 
+# load csv file with students + their information
 MY_FILE = "../data/studenten_roostering.csv"
 
 # create empty list for students
 student_list = []
 
 def parse(raw_file, delimiter):
+    """ Parses data """
 
     # open CSV file
     opened_file = open(raw_file)
 
     # read and clean CSV data
-    csv_data = csv.reader((x.replace('\0', '') for x in opened_file), delimiter=delimiter)
+    csv_data = csv.reader((x.replace('\0', '') for x in opened_file), delimiter = delimiter)
 
     # Read the CSV data
 #    csv_data = csv.reader(opened_file, delimiter=delimiter)
@@ -33,24 +35,30 @@ def parse(raw_file, delimiter):
     return parsed_data
 
 def gimme_students():
+    """ Returns a list with students """
+
     return student_list;
 
 def createStudentClass():
+    """ Adds features of student class per student """
 
-    # call our parse function and give it the needed parameters
+    # parse csv file with students + information
     new_data = parse(MY_FILE, ";")
 
     # iterate over new data
     for i in range(len(new_data)):
 
-        # extract all information
+        # extract all information 
         last_name = new_data[i]['lastName']
         first_name = new_data[i]['firstName']
         student_id = new_data[i]['studentID']
+
+        # create list for courses
         courses = []
 
         # dict1_values = {k*2:v for (k,v) in dict1.items()}
-        # extract all courses from all students and add to list
+
+        # extract courses from students and add to list
         if new_data[i]['course_1'] is not '':
             courses.append(new_data[i]['course_1'])
         if new_data[i]['course_2'] is not '':
@@ -62,11 +70,10 @@ def createStudentClass():
         if new_data[i]['course_5'] is not '':
             courses.append(new_data[i]['course_5'])
 
-        # append students to list with extracted info
+        # append students to list with extracted info addressed to class
         student_list.append(Students(last_name, first_name, student_id, courses))
 
     return student_list
-
 
 if __name__ == "__main__":
     student_list = createStudentClass()

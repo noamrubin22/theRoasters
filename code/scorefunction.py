@@ -140,32 +140,39 @@ def scorefunction(allcourses, student_list, chambers):
 					print(maluspoints)
 					points -= maluspoints
 
-			# for seminars
-			elif activity[2] == 1:
+			# for practical/seminars
+			else: 
 
-				# # if seminar
-				# if course.seminars > 0:
+				# if seminar
+				if course.seminars > 0:
 
-				# and too many students fro room, substract points
-				if int(chambers[room].capacity) < course.maxstudentssem:
+					# and too many students fro room, substract points
+					if int(chambers[room].capacity) < course.maxstudentssem:
+						print(chambers[room].capacity)
+						print(course.maxstudentssem)
+						maluspoints = course.maxstudentssem - int(chambers[room].capacity)
+						print(maluspoints)
+						points -= maluspoints
+
+				# if practical
+				else: 
+
+					# and too many students fro room, substract points
+					if int(chambers[room].capacity) < course.maxstudentsprac:
 					print(chambers[room].capacity)
-					print(course.maxstudentssem)
-					maluspoints = course.maxstudentssem - int(chambers[room].capacity)
+					print(course.maxstudentsprac)
+					maluspoints = course.maxstudentsprac - int(chambers[room].capacity)
 					print(maluspoints)
 					points -= maluspoints
+
+
 
 			# if practical
 			else:
 				# # if seminar
 				# if course.seminars > 0:
 
-				# and too many students fro room, substract points
-				if int(chambers[room].capacity) < course.maxstudentsprac:
-					print(chambers[room].capacity)
-					print(course.maxstudentsprac)
-					maluspoints = course.maxstudentsprac - int(chambers[room].capacity)
-					print(maluspoints)
-					points -= maluspoints
+
 			#
 
 
