@@ -5,6 +5,7 @@ class Students:
         self.first_name = first_name
         self.student_ID = student_ID
         self.courses = courses
+        self.schedule = []
 
     def add_course(self, course):
         self.courses.append(self.course)

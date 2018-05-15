@@ -2,6 +2,8 @@ import csv
 from students_class import Students
 
 MY_FILE = "studenten_roostering.csv"
+
+student_list = []
 def parse(raw_file, delimiter):
 
     # Open CSV file, and safely close it when we're done
@@ -35,10 +37,8 @@ def createStudentClass():
     # Call our parse function and give it the needed parameters
     new_data = parse(MY_FILE, ";")
 
-    student_list = []
 
     for i in range(len(new_data)):
-        student_info = {}
 
         # extract all information
         last_name = new_data[i]['lastName']
@@ -60,21 +60,11 @@ def createStudentClass():
         if new_data[i]['course_5'] is not '':
             courses.append(new_data[i]['course_5'])
 
+        student_list.append(Students(last_name, first_name, student_id, courses))
 
-        student_info[student_id] = Students(last_name, first_name, student_id, courses)
+    return student_list
 
-        student_list.append(student_info)
-        # new_data
-        # student_info.update(name=new_data)
-
-        # Console print of all students
-        {k:print(v) for (k,v) in new_data[i].items()}
-
-        print(student_info[student_id].last_name)
-
-        return student_list
-        # print(student_list)
 
 if __name__ == "__main__":
-    createStudentClass()
+    student_list = createStudentClass()
     
