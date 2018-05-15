@@ -14,11 +14,7 @@ if __name__=='__main__':
 
 	# reads csv file
 	with open('../data/zalen.csv', 'rt') as csvfile:
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> 75ec50f9931c23ab1bdb278a2f88a5e448ef0596
 		# creates csvfile
 		rooms = csv.reader(csvfile)
 
