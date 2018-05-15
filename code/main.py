@@ -72,7 +72,7 @@ if __name__=='__main__':
 	chambers = []
 
 	# reads csv file
-	with open('data/zalen.csv', 'rt') as csvfile:
+	with open('../data/zalen.csv', 'rt') as csvfile:
 		
 		# creates csvfile
 		rooms = csv.reader(csvfile)
@@ -103,7 +103,7 @@ if __name__=='__main__':
 allcourses = []
 
 # load courses as classes in allcourses-list
-with open('data/vakken.csv', 'rt') as coursefile:
+with open('../data/vakken.csv', 'rt') as coursefile:
 	courses = csv.reader(coursefile)
 	for row in courses:
 		for text in row:
@@ -150,9 +150,6 @@ def scheduleClass(course, typeClass, schedule):
 			pickroomlock = random.randint(0, 139)
 
 		room, timelock = translateRoomlock(pickroomlock)
-		# if typeClass == "lecture" and course.students > int(chambers[room].capacity):
-		# 	while int(chambers[room].capacity) < 117:
-		# 		pickroomlock = random.randint(0, 139) 
 
 		if typeClass == "lecture":
 			while (course.students > int(chambers[room].capacity)) or schedule[pickroomlock] is not None:
