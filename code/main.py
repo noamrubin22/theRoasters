@@ -5,39 +5,38 @@ import math
 from parse import *
 from classes import Students, Room, Course
 
-
 # create empty list
 
-if __name__=='__main__':
 
-	chambers = []
 
-	# reads csv file
-	with open('../data/zalen.csv', 'rt') as csvfile:
+chambers = []
 
-		# creates csvfile
-		rooms = csv.reader(csvfile)
+# reads csv file
+with open('../data/zalen.csv', 'rt') as csvfile:
 
-		# iterate over rows
-		for row in rooms:
+	# creates csvfile
+	rooms = csv.reader(csvfile)
 
-			# extract text out of list
-			for text in row:
+	# iterate over rows
+	for row in rooms:
 
-				# split features
-				features = text.split(";")
+		# extract text out of list
+		for text in row:
 
-				# initilize features for class
-				name = features[0]
-				capacity = features[1]
+			# split features
+			features = text.split(";")
 
-				# initilaze room using the class
-				room = Room(name, capacity)
+			# initilize features for class
+			name = features[0]
+			capacity = features[1]
 
-				# add room to list
-				chambers.append(room)
+			# initilaze room using the class
+			room = Room(name, capacity)
 
-	# print(chambers)
+			# add room to list
+			chambers.append(room)
+
+# print(chambers)
 
 
 # create list for courses
@@ -183,6 +182,7 @@ for course in allcourses:
 print(schedule) # heel schedule
 # print(student_list[0].schedule)
 print(allcourses[4].activities)
+print(chambers)
 # print(allcourses[4].practicalgroups[3])
 # print(allcourses[4].practicals)
 # print(student_list[511].schedule)
@@ -190,81 +190,3 @@ print(allcourses[4].activities)
 # print(allcourses[5].seminargroups[0]) # activiteiten van vak
 # # print(chambers[1].booking) # bookings van een zaal
 # print(allcourses[5].studentnames)
-
-# valid schedule has been made: 1000 points
-points = 1000;
-
-# subtract or add points based on schedule
-# loop through courses
-for course in allcourses:
-	# print(course.name)
-	if course.seminars > 0:
-		groups = list(range(1, course.seminars + 1))
-	elif course.practicals > 0:
-		groups = list(range(1, course.practicals + 1))
-		# print(groups)
-	else:
-		groups = [1]
-
-	dayActivity = {k: [] for k in groups}
-
-	# loop trough activities of a course
-	for activity in course.activities:
-		day = int(activity[0]/28)
-		if activity[2] == 0:
-			if day in dayActivity[1]:
-				points -= 10
-			for group in groups:
-				dayActivity[group].append(day)
-		else:
-			if day in dayActivity[activity[2]]:
-				points -= 10
-			dayActivity[activity[2]].append(day)
-	# print(course.name, dayActivity)
-
-	for group in groups:
-		if (len(dayActivity[group]) == 2):
-			if (abs(dayActivity[group][0] - dayActivity[group][1]) >= 3):
-				points += 20
-		# if three activities in the week: mo-we-fr?
-		if (len(dayActivity[group]) == 3):
-			if 0 in dayActivity[group] and 2 in dayActivity[group] and 4 in dayActivity[group]:
-				points += 20
-		# if four activities in the week: mo-tu-th-fr?
-		if (len(dayActivity[group]) == 4):
-			if 0 in dayActivity[group] and 1 in dayActivity[group] and 3 in dayActivity[group] and 4 in dayActivity[group]:
-				points += 20
-
-
-
-print(student_list[0].schedule)
-
-for student in student_list:
-	timelocksStudent = []
-	for activity in student.schedule:
-		if activity[0] in timelocksStudent:
-			points -= 1
-		timelocksStudent.append(activity[0])
-
-for course in allcourses:
-	for activity in course.activities:
-		room, timelock = translateRoomlock(activity[0])
-		if activity[2] == 0:
-			if int(chambers[room].capacity) < course.students:
-				print(chambers[room].capacity)
-				print(course.students)
-				print("te veel studenten: past niet in de zaal!")
-				maluspoints = course.students - int(chambers[room].capacity)
-				print(maluspoints)
-				points -= maluspoints
-		else:
-			if course.seminars > 0:
-				if int(chambers[room].capacity) < course.maxstudentssem:
-					print(chambers[room].capacity)
-					print(course.maxstudentssem)
-					maluspoints = course.maxstudentssem - int(chambers[room].capacity)
-					print(maluspoints)
-					points -= maluspoints
-
-# laat eindscore zien (so far)
-print("Points: ", points)

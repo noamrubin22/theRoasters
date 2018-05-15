@@ -1,11 +1,5 @@
-# from main import allcourses
-# from main import student_list
-# from main import chambers
-import os, sys
-directory = os.path.dirname(os.path.realpath(_file_))
-sys.path.append(os.path.join(directory, "code"))
-
-scorefunction(allcourses, student_list, chambers)
+import main
+from main import translateRoomlock
 
 def scorefunction(allcourses, student_list, chambers):
 
@@ -15,12 +9,10 @@ def scorefunction(allcourses, student_list, chambers):
 	# subtract or add points based on schedule
 	# loop through courses
 	for course in allcourses:
-		# print(course.name)
 		if course.seminars > 0:
 			groups = list(range(1, course.seminars + 1))
 		elif course.practicals > 0:
 			groups = list(range(1, course.practicals + 1))
-			# print(groups)
 		else:
 			groups = [1]
 
@@ -87,3 +79,5 @@ def scorefunction(allcourses, student_list, chambers):
 	# laat eindscore zien (so far)
 	print("Points: ", points)
 	return points
+
+scorefunction(main.allcourses, main.student_list, main.chambers)
