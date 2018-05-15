@@ -1,7 +1,7 @@
 import csv
 from students_class import Students
 
-MY_FILE = "studenten_roostering.csv"
+MY_FILE = "../data/studenten_roostering.csv"
 
 student_list = []
 def parse(raw_file, delimiter):
