@@ -1,5 +1,5 @@
 import csv
-from students_class import Students
+from classes import Students
 
 MY_FILE = "../data/studenten_roostering.csv"
 
