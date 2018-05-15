@@ -1,7 +1,8 @@
 import csv
 from students_class import Students
 
-MY_FILE = 'data/studenten_roostering.csv'
+MY_FILE = "../data/studenten_roostering.csv"
+>>>>>>> dac7a4b8b78b40181cac05b8d290edfa3839927e
 
 student_list = []
 def parse(raw_file, delimiter):
@@ -67,4 +68,3 @@ def createStudentClass():
 
 if __name__ == "__main__":
     student_list = createStudentClass()
-    
