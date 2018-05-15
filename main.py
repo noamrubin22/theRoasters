@@ -3,8 +3,67 @@ import csv
 import random
 import math
 from parse import *
-from classes import Students, Room, Course
+from students_class import Students
 
+class Room:
+	""" Adds features to room """
+
+	def __init__(self, name, capacity): 
+		self.name = name
+		self.capacity = capacity
+		self.booking = []
+
+	def add_booking(self, timelock):
+		""" Blocks time lock """
+
+		self.booking.append(timelock)
+
+	def __str__(self):
+		return str(self.name)
+
+	__repr__ = __str__
+
+
+class Course:
+	""" Add features to course """
+	def __init__(self, name, lectures, seminar, maxstudentssem, practical, maxstudentsprac):
+		self.name = name
+		self.lectures = int(lectures)
+		self.seminars = int(seminar)
+		self.practicals = int(practical)
+		self.activities = []
+		self.maxstudentssem = int(maxstudentssem)
+		self.maxstudentsprac = int(maxstudentsprac)
+		self.students = 0
+		self.studentnames = []
+		self.seminargroups = {1 : []}
+		self.practicalgroups = {1 : []}
+		
+
+	def addStudent(self, name):
+		""" Add student to course """
+		self.students += 1
+		self.studentnames.append(name)
+
+	def addSeminar(self, num):
+		self.seminars = num
+
+	def addPractical(self, num):
+		self.practicals = num
+
+	def createSeminarGroup(self, sem, studentlist):
+
+		self.seminargroups[sem] = studentlist
+
+	def createPracticalGroup(self, prac, studentlist):
+
+		self.practicalgroups[prac] = studentlist
+
+	def updateSchedule(self, roomlock, activity, group):
+		self.activities.append([roomlock, activity, group]) 
+
+	def __str__(self):
+		return "Name: %s \nNumber of lectures: %s\nNumber of seminars: %s \nNumber of practicals: %s \n" % (self.name, self.lectures, self.seminars, self.practicals)
 
 # create empty list
 
@@ -14,25 +73,21 @@ if __name__=='__main__':
 
 	# reads csv file
 	with open('../data/zalen.csv', 'rt') as csvfile:
-<<<<<<< HEAD
 		
-=======
-
->>>>>>> 75ec50f9931c23ab1bdb278a2f88a5e448ef0596
 		# creates csvfile
 		rooms = csv.reader(csvfile)
 
-		# iterate over rows
+		# iterate over rows 
 		for row in rooms:
 
 			# extract text out of list
-			for text in row:
+			for text in row: 
 
 				# split features
 				features = text.split(";")
 
-				# initilize features for class
-				name = features[0]
+				# initilize features for class 
+				name = features[0] 
 				capacity = features[1]
 
 				# initilaze room using the class
@@ -48,7 +103,7 @@ if __name__=='__main__':
 allcourses = []
 
 # load courses as classes in allcourses-list
-with open('../data/vakken.csv', 'rt') as coursefile:
+with open('data/vakken.csv', 'rt') as coursefile:
 	courses = csv.reader(coursefile)
 	for row in courses:
 		for text in row:
@@ -58,7 +113,7 @@ with open('../data/vakken.csv', 'rt') as coursefile:
 			courseSeminars = courseInfo[2]
 			courseMaxSem = courseInfo[3]
 			if courseMaxSem == "nvt":
-				courseMaxSem = 0
+				courseMaxSem = 0 
 			coursePracticals = courseInfo[4]
 			courseMaxPrac = courseInfo[5]
 			if courseMaxPrac == "nvt":
@@ -95,22 +150,19 @@ def scheduleClass(course, typeClass, schedule):
 			pickroomlock = random.randint(0, 139)
 
 		room, timelock = translateRoomlock(pickroomlock)
-<<<<<<< HEAD
-=======
 		# if typeClass == "lecture" and course.students > int(chambers[room].capacity):
 		# 	while int(chambers[room].capacity) < 117:
-		# 		pickroomlock = random.randint(0, 139)
->>>>>>> 75ec50f9931c23ab1bdb278a2f88a5e448ef0596
+		# 		pickroomlock = random.randint(0, 139) 
 
 		if typeClass == "lecture":
 			while (course.students > int(chambers[room].capacity)) or schedule[pickroomlock] is not None:
 				pickroomlock = random.randint(0, 139)
 				room, timelock = translateRoomlock(pickroomlock)
-		elif typeClass == "seminar":
+		elif typeClass == "seminar": 
 			while course.maxstudentssem > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
 				pickroomlock = random.randint(0, 139)
 				room, timelock = translateRoomlock(pickroomlock)
-		elif typeClass == "practical":
+		elif typeClass == "practical": 
 			while course.maxstudentsprac > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
 				pickroomlock = random.randint(0, 139)
 				room, timelock = translateRoomlock(pickroomlock)
@@ -150,7 +202,7 @@ def scheduleClass(course, typeClass, schedule):
 		activity -= 1
 
 
-
+		
 
 
 # loop through courses to schedule classes of course one-by-one
@@ -223,13 +275,13 @@ for course in allcourses:
 		day = int(activity[0]/28)
 		if activity[2] == 0:
 			if day in dayActivity[1]:
-				points -= 10
-			for group in groups:
+				points -= 10	
+			for group in groups:	
 				dayActivity[group].append(day)
 		else:
 			if day in dayActivity[activity[2]]:
 				points -= 10
-			dayActivity[activity[2]].append(day)
+			dayActivity[activity[2]].append(day) 
 	# print(course.name, dayActivity)
 
 	for group in groups:
@@ -246,7 +298,7 @@ for course in allcourses:
 				points += 20
 
 
-
+	
 print(student_list[0].schedule)
 
 for student in student_list:
