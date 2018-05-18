@@ -60,6 +60,8 @@ with open('../data/vakken.csv', 'rt') as coursefile:
 				courseMaxPrac = 0
 			allcourses.append(Course(courseName, courseLectures, courseSeminars, courseMaxSem, coursePracticals, courseMaxPrac))
 
+
+print(allcourses[9].practicals)
 # import student classes
 student_list = createStudentClass()
 
@@ -91,18 +93,18 @@ def scheduleClass(course, typeClass, schedule):
 
 		room, timelock = translateRoomlock(pickroomlock)
 
-		if typeClass == "lecture":
-			while (course.students > int(chambers[room].capacity)) or schedule[pickroomlock] is not None:
-				pickroomlock = random.randint(0, 139)
-				room, timelock = translateRoomlock(pickroomlock)
-		elif typeClass == "seminar":
-			while course.maxstudentssem > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
-				pickroomlock = random.randint(0, 139)
-				room, timelock = translateRoomlock(pickroomlock)
-		elif typeClass == "practical":
-			while course.maxstudentsprac > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
-				pickroomlock = random.randint(0, 139)
-				room, timelock = translateRoomlock(pickroomlock)
+		# if typeClass == "lecture":
+		# 	while (course.students > int(chambers[room].capacity)) or schedule[pickroomlock] is not None:
+		# 		pickroomlock = random.randint(0, 139)
+		# 		room, timelock = translateRoomlock(pickroomlock)
+		# elif typeClass == "seminar":
+		# 	while course.maxstudentssem > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
+		# 		pickroomlock = random.randint(0, 139)
+		# 		room, timelock = translateRoomlock(pickroomlock)
+		# elif typeClass == "practical":
+		# 	while course.maxstudentsprac > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
+		# 		pickroomlock = random.randint(0, 139)
+		# 		room, timelock = translateRoomlock(pickroomlock)
 
 		# schedule lecture in roomlock
 		schedule[pickroomlock] = course.name + " " + typeClass
@@ -149,13 +151,21 @@ for course in allcourses:
 		if course.name in student.courses:
 			course.addStudent(student.last_name)
 
+	
 	if  course.seminars > 0:
 		numofseminars = math.ceil(course.students/course.maxstudentssem)
 		course.addSeminar(numofseminars)
 
+	print(allcourses[9].practicals)
 	if  course.practicals > 0:
 		numofpracticals = math.ceil(course.students/course.maxstudentsprac)
+		print("students: ", allcourses[9].students)
+		print("maxstud: ", allcourses[9].maxstudentsprac)
+		print("num of prac ", numofpracticals)
 		course.addPractical(numofpracticals)
+	print(allcourses[9].practicals)
+	print(student_list[170].courses)
+	
 
 	sem = 1
 	if course.seminars > 0:
@@ -179,10 +189,10 @@ for course in allcourses:
 
 # print(allcourses[1].studentnames)
 
-print(schedule) # heel schedule
-# print(student_list[0].schedule)
-print(allcourses[4].activities)
-print(chambers)
+# print(schedule) # heel schedule
+# # print(student_list[0].schedule)
+# print(allcourses[4].activities)
+# print(chambers)
 # print(allcourses[4].practicalgroups[3])
 # print(allcourses[4].practicals)
 # print(student_list[511].schedule)
