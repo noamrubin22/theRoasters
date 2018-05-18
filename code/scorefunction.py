@@ -1,12 +1,8 @@
 import main
 from main import translateRoomlock
 
-<<<<<<< HEAD
 def calcScore(allcourses, student_list, chambers):
-=======
-def scorefunction(allcourses, student_list, chambers):
-	""" this function calculates the score for the created schedule"""
->>>>>>> 7ae751a87ec9a2c9b46c43e59432b61b3016fefa
+
 
 	# start-score of a valid schedule
 	points = 1000;
@@ -105,13 +101,6 @@ def scorefunction(allcourses, student_list, chambers):
 					points += 20
 
 
-<<<<<<< HEAD
-		
-	# print(student_list[0].schedule)
-=======
-	print(student_list[0].schedule)
->>>>>>> 7ae751a87ec9a2c9b46c43e59432b61b3016fefa
-
 	# for all students
 	for student in student_list:
 
@@ -163,9 +152,6 @@ def scorefunction(allcourses, student_list, chambers):
 						# print(maluspoints)
 						points -= maluspoints
 
-<<<<<<< HEAD
-	# laat eindscore zien (so far)
-=======
 				# if practical
 				else: 
 					
@@ -178,8 +164,9 @@ def scorefunction(allcourses, student_list, chambers):
 						points -= maluspoints
 
 	# show points
-	print("Points: ", points)
->>>>>>> 7ae751a87ec9a2c9b46c43e59432b61b3016fefa
+	# print("Points: ", points)
 	return points
 
 points = calcScore(main.allcourses, main.student_list, main.chambers)
+
+print(points)

@@ -1,3 +1,5 @@
+import copy
+
 class Students:
 
     def __init__(self, last_name, first_name, student_ID, courses):
@@ -18,9 +20,15 @@ class Students:
         self.schedule.append([timelock, course])
 
     def changeStudentSchedule(self, oldtimelock, newtimelock, course):
+    	check = copy.copy(self.schedule)
+    	counter = 0
     	for activity in self.schedule:
     		if activity[0] == oldtimelock and activity[1] == course:
     			activity[0] = newtimelock
+    			# counter += 1
+    			# print(counter) # , check, self.schedule)
+    			break
+
 
 
     def __str__(self):

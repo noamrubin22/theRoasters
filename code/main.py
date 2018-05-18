@@ -5,6 +5,7 @@ import math
 from parse import *
 from classes import Students, Room, Course
 
+
 allcourses = []
 chambers = []
 schedule = {}
@@ -84,42 +85,13 @@ def prepareData():
 	# import student classes
 	student_list = createStudentClass()
 
-<<<<<<< HEAD
-# load courses as classes in allcourses-list
-with open('../data/vakken.csv', 'rt') as coursefile:
-	courses = csv.reader(coursefile)
-	for row in courses:
-		for text in row:
-			courseInfo = text.split(";")
-			courseName = courseInfo[0]
-			courseLectures = courseInfo[1]
-			courseSeminars = courseInfo[2]
-			courseMaxSem = courseInfo[3]
-			if courseMaxSem == "nvt":
-				courseMaxSem = 0
-			coursePracticals = courseInfo[4]
-			courseMaxPrac = courseInfo[5]
-			if courseMaxPrac == "nvt":
-				courseMaxPrac = 0
-			allcourses.append(Course(courseName, courseLectures, courseSeminars, courseMaxSem, coursePracticals, courseMaxPrac))
 
-
-print(allcourses[9].practicals)
-# import student classes
-student_list = createStudentClass()
-
-# create empty dictionary with all room-timelock combinations (roomlocks) as keys
-roomlocks = list(range(0, 140))
-schedule = dict.fromkeys(roomlocks)
-=======
-	#* prepare dict that represents schedule *#
-
-	# create empty dict with all room-timelock combinations (roomlocks) as keys
+	# create empty dictionary with all room-timelock combinations (roomlocks) as keys
 	roomlocks = list(range(0, 140))
 	schedule = dict.fromkeys(roomlocks)
+		#* prepare dict that represents schedule *#
 
 	return chambers, allcourses, student_list, schedule
->>>>>>> 7ae751a87ec9a2c9b46c43e59432b61b3016fefa
 
 
 def translateRoomlock(roomlock):
@@ -165,59 +137,44 @@ def scheduleClass(course, typeClass, schedule):
 
 		# if room is free, substract the room and timelock
 		room, timelock = translateRoomlock(pickroomlock)
-<<<<<<< HEAD
 
+		# print("free roomlock chosen")
+		# print(room, timelock)
+		# for lectures 
 		# if typeClass == "lecture":
-		# 	while (course.students > int(chambers[room].capacity)) or schedule[pickroomlock] is not None:
+
+		# 	# until an unoccupied roomlock is found with enough capacity (with a max of 20 times)
+		# 	while (course.students > int(chambers[room].capacity)) or (schedule[pickroomlock] is not None):
+
+		# 		# pick new random roomlock
 		# 		pickroomlock = random.randint(0, 139)
+
+		# 		# increase counter with every tempt 
+		# 		counter += 1
+
+		# 		# substract room and timelock 
 		# 		room, timelock = translateRoomlock(pickroomlock)
+
+		# 		# print(room,  timelock)
+		# 		print(counter)
+		# 		print("lectures stuck")
+
+		# 		# start over if too many temps are being done
+		# 		if counter > 50:
+		# 			return 1 
+
+		# # same for seminars and practicals
 		# elif typeClass == "seminar":
 		# 	while course.maxstudentssem > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
 		# 		pickroomlock = random.randint(0, 139)
 		# 		room, timelock = translateRoomlock(pickroomlock)
+		# 		print("stuck with seminars")
+
 		# elif typeClass == "practical":
 		# 	while course.maxstudentsprac > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
 		# 		pickroomlock = random.randint(0, 139)
 		# 		room, timelock = translateRoomlock(pickroomlock)
-=======
-		print("free roomlock chosen")
-		print(room, timelock)
-		# for lectures 
-		if typeClass == "lecture":
-
-			# until an unoccupied roomlock is found with enough capacity (with a max of 20 times)
-			while (course.students > int(chambers[room].capacity)) or (schedule[pickroomlock] is not None):
-
-				# pick new random roomlock
-				pickroomlock = random.randint(0, 139)
-
-				# increase counter with every tempt 
-				counter += 1
-
-				# substract room and timelock 
-				room, timelock = translateRoomlock(pickroomlock)
-
-				# print(room,  timelock)
-				print(counter)
-				print("lectures stuck")
-
-				# start over if too many temps are being done
-				if counter > 50:
-					return 1 
-
-		# same for seminars and practicals
-		elif typeClass == "seminar":
-			while course.maxstudentssem > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
-				pickroomlock = random.randint(0, 139)
-				room, timelock = translateRoomlock(pickroomlock)
-				print("stuck with seminars")
-
-		elif typeClass == "practical":
-			while course.maxstudentsprac > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
-				pickroomlock = random.randint(0, 139)
-				room, timelock = translateRoomlock(pickroomlock)
-				print("stuck with practica")
->>>>>>> 7ae751a87ec9a2c9b46c43e59432b61b3016fefa
+		# 		print("stuck with practica")
 
 		# add activity to schedule at roomlock
 		schedule[pickroomlock] = course.name + " " + typeClass
@@ -312,24 +269,7 @@ def complementCourse():
 
 				# add studentlist to course class
 				course.createSeminarGroup(sem, studentlist)
-
-<<<<<<< HEAD
 	
-	if  course.seminars > 0:
-		numofseminars = math.ceil(course.students/course.maxstudentssem)
-		course.addSeminar(numofseminars)
-
-	print(allcourses[9].practicals)
-	if  course.practicals > 0:
-		numofpracticals = math.ceil(course.students/course.maxstudentsprac)
-		print("students: ", allcourses[9].students)
-		print("maxstud: ", allcourses[9].maxstudentsprac)
-		print("num of prac ", numofpracticals)
-		course.addPractical(numofpracticals)
-	print(allcourses[9].practicals)
-	print(student_list[170].courses)
-	
-=======
 				# go on to the next group
 				sem += 1
 
@@ -340,7 +280,6 @@ def complementCourse():
 				studentlist = course.studentnames[i: i + course.maxstudentsprac]
 				course.createPracticalGroup(prac, studentlist)
 				prac += 1
->>>>>>> 7ae751a87ec9a2c9b46c43e59432b61b3016fefa
 
 
 		# schedule lectures while course has still lectures left to schedule
@@ -350,15 +289,15 @@ def complementCourse():
 		
 		# increase counter
 		amount_of_tries += 1
-		print(amount_of_tries)
+		# print(amount_of_tries)
 		# print(allcourses[1].studentnames)
 
-		print(schedule) # heel schedule
+		# print(schedule) # heel schedule
 		# print(student_list[0].schedule)
 		# print(allcourses[4].activities)
 		# print(chambers)
 
-	return 
+	return
 		# print(allcourses[4].practicalgroups[3])
 		# print(allcourses[4].practicals)
 		# print(student_list[511].schedule)
@@ -367,16 +306,8 @@ def complementCourse():
 		# # print(chambers[1].booking) # bookings van een zaal
 		# print(allcourses[5].studentnames)
 
-<<<<<<< HEAD
-# print(schedule) # heel schedule
-# # print(student_list[0].schedule)
-# print(allcourses[4].activities)
-# print(chambers)
-# print(allcourses[4].practicalgroups[3])
-# print(allcourses[4].practicals)
-# print(student_list[511].schedule)
-=======
 chambers, allcourses, student_list, schedule = prepareData()
 complementCourse()
->>>>>>> 7ae751a87ec9a2c9b46c43e59432b61b3016fefa
+
+
 

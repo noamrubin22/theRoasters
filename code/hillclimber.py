@@ -23,9 +23,6 @@ def swapcourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 		while len(allcourses[course2].activities) == 0 or not allcourses[course2].activities:
 			course2 = random.randint(0, len(allcourses))
 
-	# points = calcScore(allcourses, student_list, chambers)
-	# print("Voor swap: ", points)
-
 	if activity1 == None:
 		activity1 = random.randint(0, len(allcourses[course1].activities) - 1)
 	
@@ -73,6 +70,7 @@ def swapcourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 			if allcourses[course2].name in student.courses:
 				studentcounter += 1
 				student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
+
 
 	else:
 		for student in student_list:
