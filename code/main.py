@@ -1,9 +1,11 @@
-
 import csv
 import random
 import math
 from parse import *
 from classes import Students, Room, Course
+import cProfile, pstats, io
+import time
+
 
 
 allcourses = []
@@ -105,6 +107,7 @@ def translateRoomlock(roomlock):
 
 	# determine timelock
 	timelock = int(roomlock / total_amount_rooms)
+
 
 	return room, timelock
 
@@ -220,8 +223,11 @@ def scheduleClass(course, typeClass, schedule):
 		activity -= 1
 
 
+	return 
+
 def complementCourse():
 	#* add studentnames, amount of seminars and practicals to course class *#
+
 
 	# another counter for check
 	amount_of_tries = 0
@@ -296,6 +302,7 @@ def complementCourse():
 		# print(student_list[0].schedule)
 		# print(allcourses[4].activities)
 		# print(chambers)
+	
 
 	return
 		# print(allcourses[4].practicalgroups[3])
@@ -306,8 +313,34 @@ def complementCourse():
 		# # print(chambers[1].booking) # bookings van een zaal
 		# print(allcourses[5].studentnames)
 
-chambers, allcourses, student_list, schedule = prepareData()
-complementCourse()
+## calculate profiler time
+# pr = cProfile.Profile()
+# pr.enable()
+
+# chambers, allcourses, student_list, schedule = prepareData()
+# complementCourse()
+
+# pr.disable()
+# pr.print_stats(sort='time')
+
+def profile(fnc):
+
+	""" A decorator that uses cProfile to profile a function """
+
+	def inner(*args, **kwargs):
+
+		pr = cProfile.Profile()
+		pr.enable()
+		retval = fnc(*args, **kwargs)
+		pr.disable()
+		s = io.StringI0()
+		sortby = "cumulative"
+		ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+		ps.print_stats()
+		print(s.getvalue())
+		return retval
+
+	return inner
 
 
 
