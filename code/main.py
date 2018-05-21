@@ -3,8 +3,8 @@ import random
 import math
 from parse import *
 from classes import Students, Room, Course
-import cProfile, pstats, io
-import time
+# import cProfile, pstats, io
+# import time
 
 
 
@@ -317,8 +317,8 @@ def complementCourse():
 # pr = cProfile.Profile()
 # pr.enable()
 
-# chambers, allcourses, student_list, schedule = prepareData()
-# complementCourse()
+chambers, allcourses, student_list, schedule = prepareData()
+complementCourse()
 
 # pr.disable()
 # pr.print_stats(sort='time')

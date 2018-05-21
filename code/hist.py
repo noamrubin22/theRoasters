@@ -10,10 +10,9 @@ from main import prepareData
 scores = []
 
 for i in range(0, 10):
-	# chambers, allcourses, student_list, schedule = prepareData()
-	subprocess.check_call(['python', 'main.py'])
-	# complementCourse()
-	score = calcScore(main.allcourses, main.student_list, main.chambers)
+	chambers, allcourses, student_list, schedule = prepareData()
+	complementCourse()
+	score = calcScore(allcourses, student_list, chambers)
 	scores.append(score)
 
 print(scores)
