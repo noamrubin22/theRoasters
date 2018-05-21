@@ -1,8 +1,8 @@
 import main
 from main import translateRoomlock
 
-def scorefunction(allcourses, student_list, chambers):
-	""" this function calculates the score for the created schedule"""
+def calcScore(allcourses, student_list, chambers):
+
 
 	# start-score of a valid schedule
 	points = 1000;
@@ -101,8 +101,6 @@ def scorefunction(allcourses, student_list, chambers):
 					points += 20
 
 
-	print(student_list[0].schedule)
-
 	# for all students
 	for student in student_list:
 
@@ -133,11 +131,11 @@ def scorefunction(allcourses, student_list, chambers):
 
 				# and too many students for room, substract points
 				if int(chambers[room].capacity) < course.students:
-					print(chambers[room].capacity)
-					print(course.students)
-					print("te veel studenten: past niet in de zaal!")
+					# print(chambers[room].capacity)
+					# print(course.students)
+					# print("te veel studenten: past niet in de zaal!")
 					maluspoints = course.students - int(chambers[room].capacity)
-					print(maluspoints)
+					# print(maluspoints)
 					points -= maluspoints
 
 			# for practical/seminars
@@ -148,10 +146,10 @@ def scorefunction(allcourses, student_list, chambers):
 
 					# and too many students fro room, substract points
 					if int(chambers[room].capacity) < course.maxstudentssem:
-						print(chambers[room].capacity)
-						print(course.maxstudentssem)
+						# print(chambers[room].capacity)
+						# print(course.maxstudentssem)
 						maluspoints = course.maxstudentssem - int(chambers[room].capacity)
-						print(maluspoints)
+						# print(maluspoints)
 						points -= maluspoints
 
 				# if practical
@@ -166,7 +164,9 @@ def scorefunction(allcourses, student_list, chambers):
 						points -= maluspoints
 
 	# show points
-	print("Points: ", points)
+	# print("Points: ", points)
 	return points
 
-scorefunction(main.allcourses, main.student_list, main.chambers)
+points = calcScore(main.allcourses, main.student_list, main.chambers)
+
+print(points)

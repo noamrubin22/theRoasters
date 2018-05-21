@@ -7,6 +7,7 @@ import cProfile, pstats, io
 import time
 
 
+
 allcourses = []
 chambers = []
 schedule = {}
@@ -86,11 +87,11 @@ def prepareData():
 	# import student classes
 	student_list = createStudentClass()
 
-	#* prepare dict that represents schedule *#
 
-	# create empty dict with all room-timelock combinations (roomlocks) as keys
+	# create empty dictionary with all room-timelock combinations (roomlocks) as keys
 	roomlocks = list(range(0, 140))
 	schedule = dict.fromkeys(roomlocks)
+		#* prepare dict that represents schedule *#
 
 	return chambers, allcourses, student_list, schedule
 
@@ -139,43 +140,44 @@ def scheduleClass(course, typeClass, schedule):
 
 		# if room is free, substract the room and timelock
 		room, timelock = translateRoomlock(pickroomlock)
-		print("free roomlock chosen")
-		print(room, timelock)
+
+		# print("free roomlock chosen")
+		# print(room, timelock)
 		# for lectures 
-		if typeClass == "lecture":
+		# if typeClass == "lecture":
 
-			# until an unoccupied roomlock is found with enough capacity (with a max of 20 times)
-			while (course.students > int(chambers[room].capacity)) or (schedule[pickroomlock] is not None):
+		# 	# until an unoccupied roomlock is found with enough capacity (with a max of 20 times)
+		# 	while (course.students > int(chambers[room].capacity)) or (schedule[pickroomlock] is not None):
 
-				# pick new random roomlock
-				pickroomlock = random.randint(0, 139)
+		# 		# pick new random roomlock
+		# 		pickroomlock = random.randint(0, 139)
 
-				# increase counter with every tempt 
-				counter += 1
+		# 		# increase counter with every tempt 
+		# 		counter += 1
 
-				# substract room and timelock 
-				room, timelock = translateRoomlock(pickroomlock)
+		# 		# substract room and timelock 
+		# 		room, timelock = translateRoomlock(pickroomlock)
 
-				# print(room,  timelock)
-				print(counter)
-				print("lectures stuck")
+		# 		# print(room,  timelock)
+		# 		print(counter)
+		# 		print("lectures stuck")
 
-				# start over if too many temps are being done
-				if counter > 50:
-					return 1 
+		# 		# start over if too many temps are being done
+		# 		if counter > 50:
+		# 			return 1 
 
-		# same for seminars and practicals
-		elif typeClass == "seminar":
-			while course.maxstudentssem > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
-				pickroomlock = random.randint(0, 139)
-				room, timelock = translateRoomlock(pickroomlock)
-				print("stuck with seminars")
+		# # same for seminars and practicals
+		# elif typeClass == "seminar":
+		# 	while course.maxstudentssem > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
+		# 		pickroomlock = random.randint(0, 139)
+		# 		room, timelock = translateRoomlock(pickroomlock)
+		# 		print("stuck with seminars")
 
-		elif typeClass == "practical":
-			while course.maxstudentsprac > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
-				pickroomlock = random.randint(0, 139)
-				room, timelock = translateRoomlock(pickroomlock)
-				print("stuck with practica")
+		# elif typeClass == "practical":
+		# 	while course.maxstudentsprac > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
+		# 		pickroomlock = random.randint(0, 139)
+		# 		room, timelock = translateRoomlock(pickroomlock)
+		# 		print("stuck with practica")
 
 		# add activity to schedule at roomlock
 		schedule[pickroomlock] = course.name + " " + typeClass
@@ -273,7 +275,7 @@ def complementCourse():
 
 				# add studentlist to course class
 				course.createSeminarGroup(sem, studentlist)
-
+	
 				# go on to the next group
 				sem += 1
 
@@ -293,16 +295,16 @@ def complementCourse():
 		
 		# increase counter
 		amount_of_tries += 1
-		print(amount_of_tries)
+		# print(amount_of_tries)
 		# print(allcourses[1].studentnames)
 
-		print(schedule) # heel schedule
+		# print(schedule) # heel schedule
 		# print(student_list[0].schedule)
 		# print(allcourses[4].activities)
 		# print(chambers)
 	
 
-	return 
+	return
 		# print(allcourses[4].practicalgroups[3])
 		# print(allcourses[4].practicals)
 		# print(student_list[511].schedule)
@@ -339,4 +341,6 @@ def profile(fnc):
 		return retval
 
 	return inner
+
+
 

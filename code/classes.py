@@ -1,3 +1,5 @@
+import copy
+
 class Students:
 
     def __init__(self, last_name, first_name, student_ID, courses):
@@ -17,6 +19,17 @@ class Students:
     def updateStudentSchedule(self, timelock, course):
         self.schedule.append([timelock, course])
 
+    def changeStudentSchedule(self, oldtimelock, newtimelock, course):
+    	check = copy.copy(self.schedule)
+    	counter = 0
+    	for activity in self.schedule:
+    		if activity[0] == oldtimelock and activity[1] == course:
+    			activity[0] = newtimelock
+    			# lelijke fix: dit is voor dubbel resetten om een of andere reden
+    			break
+
+
+
     def __str__(self):
         return "Name: %s %s, ID: %s" % (self.first_name, self.last_name, self.student_ID)
 
@@ -33,6 +46,13 @@ class Room:
 		""" Blocks time lock """
 
 		self.booking.append(timelock)
+
+	def changeBooking(self, oldtimelock, newtimelock):
+		for booking in self.booking:
+			if booking == oldtimelock:
+				# print("EERST ZAAL", self.name, booking)
+				booking = newtimelock
+				# print("DAARNA: ", self.name, booking)
 
 	def __str__(self):
 		return str(self.name)
@@ -77,6 +97,9 @@ class Course:
 
 	def updateSchedule(self, roomlock, activity, group):
 		self.activities.append([roomlock, activity, group])
+
+	def changeSchedule(self, newroomlock, schedulespot):
+		self.activities[schedulespot][0] = newroomlock 
 
 	def __str__(self):
 		return "Name: %s \nNumber of lectures: %s\nNumber of seminars: %s \nNumber of practicals: %s \n" % (self.name, self.lectures, self.seminars, self.practicals)
