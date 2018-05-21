@@ -1,20 +1,23 @@
-####################################################
-#  Heuristieken: Lectures & Lesroosters			   #
-#												   #
-#  Names: Tessa Ridderikhof, Najib el Moussaoui    #
-# 		 & Noam Rubin							   #
-#												   #
-#  This code searchs for the optimal schedulescore #
-#  using simulated annealing algorithm where 	   #
-#  the only swaps being accepted are the ones	   #
-#  that increase the score 						   #
-#												   #
-####################################################
+###################################################
+# Heuristieken: Lectures & Lesroosters			  #
+#												  #
+# Names: Tessa Ridderikhof, Najib el Moussaoui 	  #
+# 		 & Noam Rubin							  #
+#												  #
+# This code searchs for the optimal schedulescore #
+# using a hillclimber algorithm where the only    #
+# swaps being accepted are the ones that increase #
+# the score 									  #
+#												  #
+###################################################
+
 import main
 import scorefunction
 import random
+import hillclimberstudents
 from main import translateRoomlock
 from scorefunction import calcScore
+from hillclimberstudents import hillclimbStudent
 import math
 
 # complement variables
@@ -22,16 +25,13 @@ allcourses = main.allcourses
 student_list = main.student_list
 chambers = main.chambers
 schedule = main.schedule
-firstpoints = calcScore(allcourses, student_list, chambers)
 
-# initialize temperature and coolingRate
-temperature = 100000
-coolingRate = 0.002
-print("hoi")
-
+# # initialize temperature and coolingRate
+# temperature = 100000
+# coolingRate = 0.002
 
 def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = None):
-	""" Swaps 2 activities in schedule """
+	""" Swaps two activities in schedule """
 
 	#* swap roomlock 2 (random) courses *#
 
@@ -40,20 +40,15 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 
 		# choose random course from courselist
 		course1 = random.randint(0, len(allcourses) - 1)
-		
-		# while len(allcourses[course1].activities) == 0 or not allcourses[course1].activities:
-		# 	course1 = random.randint(0, len(allcourses))
+
 
 	# same
 	if course2 == None:
 		course2 = random.randint(0, len(allcourses) - 1)
 
-		# while len(allcourses[course2].activities) == 0 or not allcourses[course2].activities:
-		# 	course2 = random.randint(0, len(allcourses))
-
 	# if specific activity is not chosen
 	if activity1 == None:
-	
+
 		# chose random activity from course
 		activity1 = random.randint(0, len(allcourses[course1].activities) - 1)
 	
@@ -80,7 +75,6 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 	# store activity-groups 
 	coursegroup1 = allcourses[course1].activities[activity1][2]
 	coursegroup2 = allcourses[course2].activities[activity2][2]
-
 	
 	#* change schedule of individual students*# 
 
@@ -116,6 +110,7 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 
 					# if student is in seminargroup
 					if student.last_name in allcourses[course1].seminargroups[coursegroup1]:
+
 						
 						# increase counter
 						originalcounter += 1
@@ -129,20 +124,17 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 					# if student is in practical-group
 					if student.last_name in allcourses[course1].practicalgroups[coursegroup1]:
 
+
 						# increase counter
 						originalcounter += 1
 
 						# change individual schedule
 						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
 
-	# new counter for students
-	studentcounter = 0
-
 	# same for the second coursegroup
 	if coursegroup2 == 0:
 		for student in student_list:
 			if allcourses[course2].name in student.courses:
-				studentcounter += 1
 				student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
 
 	else:
@@ -150,11 +142,9 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 			if allcourses[course2].name in student.courses:
 				if allcourses[course2].seminars > 0:
 					if student.last_name in allcourses[course2].seminargroups[coursegroup2]:
-						studentcounter += 1
 						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
 				elif allcourses[course2].practicals > 0:
 					if student.last_name in allcourses[course2].practicalgroups[coursegroup2]:
-						studentcounter += 1
 						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
 
 	#* update roomschedules *#
@@ -162,55 +152,136 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 	chambers[room1].changeBooking(timelock1, timelock2)
 	chambers[room2].changeBooking(timelock2, timelock1)
 
+	
+	# save content of schedule at swapped roomlocks
+	schedulecontent1 = schedule[roomlock1]
+	schedulecontent2 = schedule[roomlock2]
+
+	# switch courses in schedule
+	schedule[roomlock1] = schedulecontent2
+	schedule[roomlock2] = schedulecontent1
+
 	return course1, activity1, course2, activity2
 
-# loop until system has cooled
-while temperature > 1:
 
-	# calculate score before swap
-	points = calcScore(allcourses, student_list, chambers)
-	print("Before swap: ", points)
+def hillclimbRoomlocks(times):
+	""" Searches for the optimal score by swapping roomlocks """
 
-	# perform swap
-	course1, activity1, course2, activity2 = swapCourse()
+	# amount of steps hillclimber
+	for i in range(0, times):
 
-	# calculate new score
-	newpoints = calcScore(allcourses, student_list, chambers)
-	print("   New score: ", newpoints)
+		# calculate score before swap
+		points = calcScore(allcourses, student_list, chambers)
 
-	# if new score is worst 
-	if newpoints < points:
+		# perform swap
+		course1, activity1, course2, activity2 = swapCourse()
 
-		# calculate acceptance probability
-		acceptance_probability = math.exp((newpoints - points)/ temperature)
+		# calculate new scores
+		newpoints = calcScore(allcourses, student_list, chambers)
 
-		# if acceptance chance higher than random number
-		if (acceptance_probability > random.random()):
-			print(random.random())
-		
-			# accept the worst solution
-			print("Accepted worst solution, score:", newpoints)
-
-			# cool system
-			temperature *= 1 - coolingRate
-
-		# if acceptance chance lower than random number
-		else:
-
+		# if new score lower than old score
+		if newpoints < points:
+			
 			# swap back
 			swapCourse(course1, activity1, course2, activity2)
 
-			# calculate new score and print
+			# calculate new score
 			newpoints = calcScore(allcourses, student_list, chambers)
-			print("      Back to normal?: ", newpoints)
 
-			# if back-swap didn't go well 
+			# if back-swap didn't go well
 			if points != newpoints:
 
-				# print coursenames and break loop
+				# print courses and break loop
 				print(course2, course1)
 				print("ERROR")
 				break
 
-print("Final score: ", newpoints)
-print("firstpoints:", firstpoints)
+	return course1, activity1, course2, activity2
+
+def simmulatedAnnealing(temperature, coolingRate, best_score):
+	
+	# loop until system has cooled
+	while temperature > 1:
+
+		# calculate score before swap
+		points = calcScore(allcourses, student_list, chambers)
+		print("Before swap: ", points)
+
+		# perform swap
+		course1, activity1, course2, activity2 = swapCourse()
+
+		# calculate new score
+		newpoints = calcScore(allcourses, student_list, chambers)
+		print("   New score: ", newpoints)
+
+		# keep track of best score
+		if (newpoints > best_score):
+			best_score = newpoints
+			
+
+		# if new score is worst 
+		if newpoints < points:
+
+			# calculate acceptance probability
+			acceptance_probability = math.exp((newpoints - points) / temperature)
+
+			# if acceptance chance higher than random number
+			if (acceptance_probability > random.random()):
+			
+				# accept the worst solution
+				print("Accepted worst solution, score:", newpoints)
+
+				# cool system
+				temperature *= 1 - coolingRate
+
+				# keep track of best score
+				if (newpoints > best_score):
+					best_score = newpoints
+
+			# if acceptance chance lower than random number
+			else:
+
+				# swap back
+				swapCourse(course1, activity1, course2, activity2)
+
+				# calculate new score and print
+				newpoints = calcScore(allcourses, student_list, chambers)
+				print("      Back to normal?: ", newpoints)
+
+				# if back-swap didn't go well 
+				if points != newpoints:
+
+					# print coursenames and break loop
+					print(course2, course1)
+					print("ERROR")
+					break
+	
+	return course1, course2, activity1, activity2
+
+
+# print original score
+original_score = calcScore(allcourses, student_list, chambers)
+print("Started with: ", original_score)
+
+# set as current best score
+best_score = original_score
+print(best_score)
+
+
+# # perform hillclimber for roomlocks
+# hillclimbRoomlocks(1000)
+
+# # show intermediate score
+# intermediate_score = calcScore(allcourses, student_list, chambers)
+# print("After roomlock hillclimber:", intermediate_score)
+
+# # perform hillclimber for students
+# hillclimbStudent(1000)
+
+# perform simulated annealing
+simmulatedAnnealing(100000, 0.002, best_score)
+
+# calculate and show final score 
+endscore = calcScore(allcourses, student_list, chambers)
+print("Final score:", endscore)
+print("Best_score:", best_score)
