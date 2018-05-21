@@ -1,31 +1,37 @@
-###################################################
-# Heuristieken: Lectures & Lesroosters			  #
-#												  #
-# Names: Tessa Ridderikhof, Najib el Moussaoui 	  #
-# 		 & Noam Rubin							  #
-#												  #
-# This code searchs for the optimal schedulescore #
-# using a hillclimber algorithm where the only    #
-# swaps being accepted are the ones that increase #
-# the score 									  #
-#												  #
-###################################################
-
+####################################################
+#  Heuristieken: Lectures & Lesroosters			   #
+#												   #
+#  Names: Tessa Ridderikhof, Najib el Moussaoui    #
+# 		 & Noam Rubin							   #
+#												   #
+#  This code searchs for the optimal schedulescore #
+#  using simulated annealing algorithm where 	   #
+#  the only swaps being accepted are the ones	   #
+#  that increase the score 						   #
+#												   #
+####################################################
 import main
 import scorefunction
 import random
 from main import translateRoomlock
 from scorefunction import calcScore
+import math
 
 # complement variables
 allcourses = main.allcourses
 student_list = main.student_list
 chambers = main.chambers
 schedule = main.schedule
+firstpoints = calcScore(allcourses, student_list, chambers)
+
+# initialize temperature and coolingRate
+temperature = 100000
+coolingRate = 0.002
+print("hoi")
 
 
 def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = None):
-	""" """
+	""" Swaps 2 activities in schedule """
 
 	#* swap roomlock 2 (random) courses *#
 
@@ -47,7 +53,7 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 
 	# if specific activity is not chosen
 	if activity1 == None:
-
+	
 		# chose random activity from course
 		activity1 = random.randint(0, len(allcourses[course1].activities) - 1)
 	
@@ -158,8 +164,8 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 
 	return course1, activity1, course2, activity2
 
-# decide amount of steps hillclimber
-for i in range(0, 10):
+# loop until system has cooled
+while temperature > 1:
 
 	# calculate score before swap
 	points = calcScore(allcourses, student_list, chambers)
@@ -172,20 +178,39 @@ for i in range(0, 10):
 	newpoints = calcScore(allcourses, student_list, chambers)
 	print("   New score: ", newpoints)
 
-	# if new score < old score
+	# if new score is worst 
 	if newpoints < points:
 
-		# swap back
-		swapCourse(course1, activity1, course2, activity2)
-		newpoints = calcScore(allcourses, student_list, chambers)
-		print("      Back to normal?: ", newpoints)
+		# calculate acceptance probability
+		acceptance_probability = math.exp((newpoints - points)/ temperature)
 
-		# if back-swap didn't go well 
-		if points != newpoints:
+		# if acceptance chance higher than random number
+		if (acceptance_probability > random.random()):
+			print(random.random())
+		
+			# accept the worst solution
+			print("Accepted worst solution, score:", newpoints)
 
-			# print coursenames and break loop
-			print(course2, course1)
-			print("ERROR")
-			break
+			# cool system
+			temperature *= 1 - coolingRate
 
-print("Eindscore: ", newpoints)
+		# if acceptance chance lower than random number
+		else:
+
+			# swap back
+			swapCourse(course1, activity1, course2, activity2)
+
+			# calculate new score and print
+			newpoints = calcScore(allcourses, student_list, chambers)
+			print("      Back to normal?: ", newpoints)
+
+			# if back-swap didn't go well 
+			if points != newpoints:
+
+				# print coursenames and break loop
+				print(course2, course1)
+				print("ERROR")
+				break
+
+print("Final score: ", newpoints)
+print("firstpoints:", firstpoints)
