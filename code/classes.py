@@ -91,6 +91,14 @@ class Course:
 
 		self.seminargroups[sem] = studentlist
 
+	def switchSeminarStudent(self, sem, oldstudent, newstudent):
+		for student in self.seminargroups[sem]:
+			if student == oldstudent:
+				print("hallo")
+				print(newstudent)
+				student = "nieuwe student"
+				break
+
 	def createPracticalGroup(self, prac, studentlist):
 
 		self.practicalgroups[prac] = studentlist
