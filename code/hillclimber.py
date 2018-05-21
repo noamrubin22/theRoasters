@@ -168,63 +168,57 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 	schedule[roomlock2] = schedulecontent1
 
 
-
-# decide amount of steps hillclimber
-for i in range(0, 10):
-
-	# calculate score before swap
-	points = calcScore(allcourses, student_list, chambers)
-	print("Before swap: ", points)
-
-	# perform swap
-	course1, activity1, course2, activity2 = swapCourse()
-
-	# calculate new score
-	newpoints = calcScore(allcourses, student_list, chambers)
-	print("   New score: ", newpoints)
-
-	# if new score < old score
-	if newpoints < points:
-
-		# swap back
-		swapCourse(course1, activity1, course2, activity2)
-		newpoints = calcScore(allcourses, student_list, chambers)
-		print("      Back to normal?: ", newpoints)
-
-		# if back-swap didn't go well 
-		if points != newpoints:
-
-			# print coursenames and break loop
-			print(course2, course1)
-			print("ERROR")
-			break
-	return course1, activity1, course2, activity2
-
 def hillclimbRoomlocks(times):
+	""" """
+
+	# amount of steps hillclimber
 	for i in range(0, times):
+
+		# calculate score before swap
 		points = calcScore(allcourses, student_list, chambers)
 		# print("Voor swap: ", points)
+
+		# perform swap
 		course1, activity1, course2, activity2 = swapcourse()
+
+		# calculate new scores
 		newpoints = calcScore(allcourses, student_list, chambers)
 		# print("   Nieuwe score: ", newpoints)
+
+		# if new score lower than old score
 		if newpoints < points:
+			
+			# swap back
 			swapcourse(course1, activity1, course2, activity2)
+
+			# calculate new score
 			newpoints = calcScore(allcourses, student_list, chambers)
 			# print("      Back to normal?: ", newpoints)
+
+			# if back-swap didn't go well
 			if points != newpoints:
+
+				# print courses and break loop
 				print(course2, course1)
 				print("ERROR")
 				break
 
+	return course1, activity1, course2, activity2
+
+# print original score
 originalscore = calcScore(allcourses, student_list, chambers)
 print("Begonnen met: ", originalscore)
 
+# perform hillclimber for roomlocks
 hillclimbRoomlocks(1000)
 
-tussenscore = calcScore(allcourses, student_list, chambers)
-print("Na roomlock hillclimber", tussenscore)
+# show intermediate score
+intermediate_score = calcScore(allcourses, student_list, chambers)
+print("After roomlock hillclimber", intermediate_score)
 
+# perform hillclimber for students
 hillclimbStudent(1000)
 
+# calculate and show final score 
 endscore = calcScore(allcourses, student_list, chambers)
 print("Echte eindscore", endscore)
