@@ -7,9 +7,9 @@ from classes import Students, Room, Course
 # import time
 
 # global storage variables
-allcourses = []
-chambers = []
-schedule = {}
+# allcourses = []
+# chambers = []
+# schedule = {}
 
 def prepareData():
 	""" Creates lists for rooms, students and courses and schedule dict """
@@ -101,7 +101,7 @@ def translateRoomlock(roomlock):
 	# amount of rooms per timelock
 	total_amount_rooms = 7
 
-	# determine the room 
+	# determine the room
 	room = roomlock % total_amount_rooms
 
 	# determine timelock
@@ -111,7 +111,7 @@ def translateRoomlock(roomlock):
 	return room, timelock
 
 
-def scheduleClass(course, typeClass, schedule):
+def scheduleClass(course, typeClass, schedule, chambers):
 	"""" Schedules """
 
 	# group activities by type
@@ -130,11 +130,9 @@ def scheduleClass(course, typeClass, schedule):
 
 		# choose random roomlock
 		pickroomlock = random.randint(0, 139)
-
 		# until an unoccupied roomlock is found
 		while schedule[pickroomlock] is not None:
-
-			# pick new random roomlock 
+			# pick new random roomlock
 			pickroomlock = random.randint(0, 139)
 
 		# if room is free, substract the room and timelock
@@ -142,7 +140,7 @@ def scheduleClass(course, typeClass, schedule):
 
 		# print("free roomlock chosen")
 		# print(room, timelock)
-		# for lectures 
+		# for lectures
 		# if typeClass == "lecture":
 
 		# 	# until an unoccupied roomlock is found with enough capacity (with a max of 20 times)
@@ -151,10 +149,10 @@ def scheduleClass(course, typeClass, schedule):
 		# 		# pick new random roomlock
 		# 		pickroomlock = random.randint(0, 139)
 
-		# 		# increase counter with every tempt 
+		# 		# increase counter with every tempt
 		# 		counter += 1
 
-		# 		# substract room and timelock 
+		# 		# substract room and timelock
 		# 		room, timelock = translateRoomlock(pickroomlock)
 
 		# 		# print(room,  timelock)
@@ -163,7 +161,7 @@ def scheduleClass(course, typeClass, schedule):
 
 		# 		# start over if too many temps are being done
 		# 		if counter > 50:
-		# 			return 1 
+		# 			return 1
 
 		# # same for seminars and practicals
 		# elif typeClass == "seminar":
@@ -187,10 +185,10 @@ def scheduleClass(course, typeClass, schedule):
 		if typeClass == "lecture":
 			group = 0
 
-		# seminars and practicals > 1 group, 
+		# seminars and practicals > 1 group,
 		else:
 
-			# activity number decreases as we schedule it, which gives different group number 
+			# activity number decreases as we schedule it, which gives different group number
 			group = activity
 
 		# update course class with new activity
@@ -222,30 +220,23 @@ def scheduleClass(course, typeClass, schedule):
 		activity -= 1
 
 
-	return 
+	return
 
-def complementCourse():
+def complementCourse(allcourses, schedule, chambers, student_list):
 	#* add studentnames, amount of seminars and practicals to course class *#
-
-
 	# another counter for check
 	amount_of_tries = 0
-
 	# for each course
 	for course in allcourses:
-
 		# check all students
 		for student in student_list:
-
 			# if student is attenting course
 			if course.name in student.courses:
-
 				# add student to course class
 				course.addStudent(student.last_name)
 
 		# if course has seminars
 		if course.seminars > 0:
-
 			# count and add amount to course class
 			numofseminars = math.ceil(course.students/course.maxstudentssem)
 			course.addSeminar(numofseminars)
@@ -269,12 +260,12 @@ def complementCourse():
 			# iterate over students in course with steps of max amount of students
 			for i in range(0, len(course.studentnames), course.maxstudentssem):
 
-				# create list with names of students 
+				# create list with names of students
 				studentlist = course.studentnames[i: i + course.maxstudentssem]
 
 				# add studentlist to course class
 				course.createSeminarGroup(sem, studentlist)
-	
+
 				# go on to the next group
 				sem += 1
 
@@ -288,10 +279,10 @@ def complementCourse():
 
 
 		# schedule lectures while course has still lectures left to schedule
-		scheduleClass(course, "lecture", schedule)
-		scheduleClass(course, "seminar", schedule)
-		scheduleClass(course, "practical", schedule)
-	
+		scheduleClass(course, "lecture", schedule, chambers)
+		scheduleClass(course, "seminar", schedule, chambers)
+		scheduleClass(course, "practical", schedule, chambers)
+
 		# increase counter
 		amount_of_tries += 1
 		# print(amount_of_tries)
@@ -301,7 +292,7 @@ def complementCourse():
 		# print(student_list[0].schedule)
 		# print(allcourses[4].activities)
 		# print(chambers)
-	
+
 
 	return
 		# print(allcourses[4].practicalgroups[3])
@@ -316,10 +307,8 @@ def complementCourse():
 # pr = cProfile.Profile()
 # pr.enable()
 
-chambers, allcourses, student_list, schedule = prepareData()
-complementCourse()
+# chambers, allcourses, student_list, schedule = prepareData()
+# complementCourse()
 
 # pr.disable()
 # pr.print_stats(sort='time')
-
-

@@ -1,14 +1,25 @@
 import main
 import csv
-from main import schedule
+from main import prepareData, complementCourse
 from scorefunction import calcScore
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 
 
-def print_schedule():
 
-    schedule_location = "visualisation/schedule.csv"
+def print_schedule(amount):
+
+    # allcourses = []
+    # chambers = []
+    # schedule = {}
+
+    chambers, allcourses, student_list, schedule = prepareData()
+
+    complementCourse(allcourses, schedule, chambers, student_list)
+
+    print(amount, schedule)
+
+    schedule_location = "visualisation/schedule{}.csv".format(amount)
     schedule_file = open(schedule_location, 'w')
 
     writer = csv.writer(schedule_file)
@@ -36,7 +47,8 @@ def print_schedule():
         timetable.append(timelock)
         j += 1
 
-    score = calcScore(main.allcourses, main.student_list, main.chambers)
+    score = calcScore(allcourses, student_list, chambers)
+
     fields = ['Score = {}'.format(score), 'A1.04', 'A1.06', 'A1.08', 'A1.10', 'B0.201', 'C0.110', 'C1.112']
 
     writer.writerow(fields)
@@ -46,5 +58,5 @@ def print_schedule():
 
     print("Printed a schedule at {} with a score of {}.".format(schedule_location, score))
 
-for i in range(4):
-    print_schedule()
+print_schedule(0)
+print_schedule(1)
