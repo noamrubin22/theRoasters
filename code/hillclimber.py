@@ -37,15 +37,9 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 		# choose random course from courselist
 		course1 = random.randint(0, len(allcourses) - 1)
 		
-		# while len(allcourses[course1].activities) == 0 or not allcourses[course1].activities:
-		# 	course1 = random.randint(0, len(allcourses))
-
 	# same
 	if course2 == None:
 		course2 = random.randint(0, len(allcourses) - 1)
-
-		# while len(allcourses[course2].activities) == 0 or not allcourses[course2].activities:
-		# 	course2 = random.randint(0, len(allcourses))
 
 	# if specific activity is not chosen
 	if activity1 == None:
@@ -132,11 +126,6 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 						# change individual schedule
 						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
 
-	# new counter for students
-	studentcounter = 0
-
-						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
-
 	# same for the second coursegroup
 	if coursegroup2 == 0:
 		for student in student_list:
@@ -167,33 +156,32 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 	schedule[roomlock1] = schedulecontent2
 	schedule[roomlock2] = schedulecontent1
 
+	return course1, activity1, course2, activity2
+
 
 def hillclimbRoomlocks(times):
-	""" """
+	""" Searches for the optimal score by swapping roomlocks """
 
 	# amount of steps hillclimber
 	for i in range(0, times):
 
 		# calculate score before swap
 		points = calcScore(allcourses, student_list, chambers)
-		# print("Voor swap: ", points)
 
 		# perform swap
-		course1, activity1, course2, activity2 = swapcourse()
+		course1, activity1, course2, activity2 = swapCourse()
 
 		# calculate new scores
 		newpoints = calcScore(allcourses, student_list, chambers)
-		# print("   Nieuwe score: ", newpoints)
 
 		# if new score lower than old score
 		if newpoints < points:
 			
 			# swap back
-			swapcourse(course1, activity1, course2, activity2)
+			swapCourse(course1, activity1, course2, activity2)
 
 			# calculate new score
 			newpoints = calcScore(allcourses, student_list, chambers)
-			# print("      Back to normal?: ", newpoints)
 
 			# if back-swap didn't go well
 			if points != newpoints:
@@ -207,18 +195,18 @@ def hillclimbRoomlocks(times):
 
 # print original score
 originalscore = calcScore(allcourses, student_list, chambers)
-print("Begonnen met: ", originalscore)
+print("Started with: ", originalscore)
 
 # perform hillclimber for roomlocks
 hillclimbRoomlocks(1000)
 
 # show intermediate score
 intermediate_score = calcScore(allcourses, student_list, chambers)
-print("After roomlock hillclimber", intermediate_score)
+print("After roomlock hillclimber:", intermediate_score)
 
 # perform hillclimber for students
 hillclimbStudent(1000)
 
 # calculate and show final score 
 endscore = calcScore(allcourses, student_list, chambers)
-print("Echte eindscore", endscore)
+print("Final score:", endscore)
