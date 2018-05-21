@@ -16,14 +16,10 @@ def swapcourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 	if course1 == None:
 		course1 = random.randint(0, len(allcourses) - 1)
 		
-		while len(allcourses[course1].activities) == 0 or not allcourses[course1].activities:
-			course1 = random.randint(0, len(allcourses))
 
 	if course2 == None:
 		course2 = random.randint(0, len(allcourses) - 1)
 
-		while len(allcourses[course2].activities) == 0 or not allcourses[course2].activities:
-			course2 = random.randint(0, len(allcourses))
 
 	if activity1 == None:
 		activity1 = random.randint(0, len(allcourses[course1].activities) - 1)

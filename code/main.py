@@ -319,6 +319,7 @@ def complementCourse():
 
 chambers, allcourses, student_list, schedule = prepareData()
 complementCourse()
+print(allcourses[5].activities)
 
 # pr.disable()
 # pr.print_stats(sort='time')
