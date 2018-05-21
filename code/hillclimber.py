@@ -84,18 +84,13 @@ def swapcourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 						studentcounter += 1
 						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
 
-
-
-
 	chambers[room1].changeBooking(timelock1, timelock2)
 	chambers[room2].changeBooking(timelock2, timelock1)
-	print(allcourses[course1].students, allcourses[course2].students)
-	print(originalcounter, studentcounter)
 
 	return course1, activity1, course2, activity2
 
 
-for i in range(0, 1000):
+for i in range(0, 5000):
 	points = calcScore(allcourses, student_list, chambers)
 	print("Voor swap: ", points)
 	course1, activity1, course2, activity2 = swapcourse()
@@ -111,15 +106,3 @@ for i in range(0, 1000):
 			break
 
 print("Eindscore: ", newpoints)
-
-print(student_list[3].schedule)
-
-for activity in student_list[3].schedule:
-	swap1 = activity[0]
-
-swap1 = student_list[3].schedule[0][0]
-print(swap1)
-
-student_list[3].changeStudentSchedule(swap1, 16, "Architectuur en computerorganisatie")
-
-print(student_list[3].schedule)

@@ -25,8 +25,7 @@ class Students:
     	for activity in self.schedule:
     		if activity[0] == oldtimelock and activity[1] == course:
     			activity[0] = newtimelock
-    			# counter += 1
-    			# print(counter) # , check, self.schedule)
+    			# lelijke fix: dit is voor dubbel resetten om een of andere reden
     			break
 
 
