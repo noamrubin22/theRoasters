@@ -37,15 +37,9 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 		# choose random course from courselist
 		course1 = random.randint(0, len(allcourses) - 1)
 		
-		while len(allcourses[course1].activities) == 0 or not allcourses[course1].activities:
-			course1 = random.randint(0, len(allcourses))
-
 	# same
 	if course2 == None:
 		course2 = random.randint(0, len(allcourses) - 1)
-
-		while len(allcourses[course2].activities) == 0 or not allcourses[course2].activities:
-			course2 = random.randint(0, len(allcourses))
 
 	# if specific activity is not chosen
 	if activity1 == None:

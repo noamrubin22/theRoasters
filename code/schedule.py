@@ -6,4 +6,3 @@ schedule = dict.fromkeys(roomlocks)
 print(allcourses[1])
 schedule[0] = allcourses[1].courseName
 print(schedule)
-
