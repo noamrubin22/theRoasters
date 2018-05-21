@@ -14,8 +14,10 @@
 import main
 import scorefunction
 import random
+import hillclimberstudents
 from main import translateRoomlock
 from scorefunction import calcScore
+from hillclimberstudents import hillclimbStudent
 
 # complement variables
 allcourses = main.allcourses
@@ -74,7 +76,6 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 	# store activity-groups 
 	coursegroup1 = allcourses[course1].activities[activity1][2]
 	coursegroup2 = allcourses[course2].activities[activity2][2]
-
 	
 	#* change schedule of individual students*# 
 
@@ -110,6 +111,7 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 
 					# if student is in seminargroup
 					if student.last_name in allcourses[course1].seminargroups[coursegroup1]:
+
 						
 						# increase counter
 						originalcounter += 1
@@ -123,6 +125,7 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 					# if student is in practical-group
 					if student.last_name in allcourses[course1].practicalgroups[coursegroup1]:
 
+
 						# increase counter
 						originalcounter += 1
 
@@ -132,11 +135,12 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 	# new counter for students
 	studentcounter = 0
 
+						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
+
 	# same for the second coursegroup
 	if coursegroup2 == 0:
 		for student in student_list:
 			if allcourses[course2].name in student.courses:
-				studentcounter += 1
 				student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
 
 	else:
@@ -144,11 +148,9 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 			if allcourses[course2].name in student.courses:
 				if allcourses[course2].seminars > 0:
 					if student.last_name in allcourses[course2].seminargroups[coursegroup2]:
-						studentcounter += 1
 						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
 				elif allcourses[course2].practicals > 0:
 					if student.last_name in allcourses[course2].practicalgroups[coursegroup2]:
-						studentcounter += 1
 						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
 
 	#* update roomschedules *#
@@ -156,7 +158,16 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 	chambers[room1].changeBooking(timelock1, timelock2)
 	chambers[room2].changeBooking(timelock2, timelock1)
 
-	return course1, activity1, course2, activity2
+	
+	# save content of schedule at swapped roomlocks
+	schedulecontent1 = schedule[roomlock1]
+	schedulecontent2 = schedule[roomlock2]
+
+	# switch courses in schedule
+	schedule[roomlock1] = schedulecontent2
+	schedule[roomlock2] = schedulecontent1
+
+
 
 # decide amount of steps hillclimber
 for i in range(0, 10):
@@ -187,5 +198,33 @@ for i in range(0, 10):
 			print(course2, course1)
 			print("ERROR")
 			break
+	return course1, activity1, course2, activity2
 
-print("Eindscore: ", newpoints)
+def hillclimbRoomlocks(times):
+	for i in range(0, times):
+		points = calcScore(allcourses, student_list, chambers)
+		# print("Voor swap: ", points)
+		course1, activity1, course2, activity2 = swapcourse()
+		newpoints = calcScore(allcourses, student_list, chambers)
+		# print("   Nieuwe score: ", newpoints)
+		if newpoints < points:
+			swapcourse(course1, activity1, course2, activity2)
+			newpoints = calcScore(allcourses, student_list, chambers)
+			# print("      Back to normal?: ", newpoints)
+			if points != newpoints:
+				print(course2, course1)
+				print("ERROR")
+				break
+
+originalscore = calcScore(allcourses, student_list, chambers)
+print("Begonnen met: ", originalscore)
+
+hillclimbRoomlocks(1000)
+
+tussenscore = calcScore(allcourses, student_list, chambers)
+print("Na roomlock hillclimber", tussenscore)
+
+hillclimbStudent(1000)
+
+endscore = calcScore(allcourses, student_list, chambers)
+print("Echte eindscore", endscore)

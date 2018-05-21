@@ -168,5 +168,3 @@ def calcScore(allcourses, student_list, chambers):
 	return points
 
 points = calcScore(main.allcourses, main.student_list, main.chambers)
-
-print(points)

@@ -20,8 +20,6 @@ class Students:
         self.schedule.append([timelock, course])
 
     def changeStudentSchedule(self, oldtimelock, newtimelock, course):
-    	check = copy.copy(self.schedule)
-    	counter = 0
     	for activity in self.schedule:
     		if activity[0] == oldtimelock and activity[1] == course:
     			activity[0] = newtimelock
@@ -91,9 +89,25 @@ class Course:
 
 		self.seminargroups[sem] = studentlist
 
+	def switchSeminarStudent(self, sem1, sem2, student1, student2):
+
+		student1name = self.seminargroups[sem1][student1]
+		student2name = self.seminargroups[sem2][student2]
+
+		self.seminargroups[sem1][student1] = student2name
+		self.seminargroups[sem2][student2] = student1name
+
 	def createPracticalGroup(self, prac, studentlist):
 
 		self.practicalgroups[prac] = studentlist
+
+	def switchPracticalStudent(self, prac1, prac2, student1, student2):
+
+		student1name = self.practicalgroups[prac1][student1]
+		student2name = self.practicalgroups[prac2][student2]
+
+		self.practicalgroups[prac1][student1] = student2name
+		self.practicalgroups[prac2][student2] = student1name
 
 	def updateSchedule(self, roomlock, activity, group):
 		self.activities.append([roomlock, activity, group])

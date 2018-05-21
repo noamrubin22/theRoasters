@@ -3,8 +3,8 @@ import random
 import math
 from parse import *
 from classes import Students, Room, Course
-import cProfile, pstats, io
-import time
+# import cProfile, pstats, io
+# import time
 
 # global storage variables
 allcourses = []
