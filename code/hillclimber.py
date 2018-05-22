@@ -11,23 +11,14 @@
 #												  #
 ###################################################
 
-# import main
+
 import scorefunction
 import random
-# import hillclimberstudents
 import csv
 import generateschedule
 from generateschedule import translateRoomlock
 from scorefunction import calcScore
-# from main import createSchedule
 
-
-# chambers = main.chambers
-# allcourses = main.allcourses
-# student_list = main.student_list
-# schedule = main.schedule
-
-# chambers, allcourses, student_list, schedule = createSchedule()
 
 def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, activity1 = None, course2 = None, activity2 = None):
 	""" """
@@ -112,7 +103,6 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 
 					# if student is in seminargroup
 					if student.last_name in allcourses[course1].seminargroups[coursegroup1]:
-
 
 						# change individual schedule with swapped course
 						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)

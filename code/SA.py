@@ -6,7 +6,7 @@
 #												  #
 # This code searchs for the optimal schedulescore #
 # using the simulated annealing algorithm whereby #
-# a coolingscheme is used to accept swaps 		  #						  
+# a coolingscheme is used to accept swaps 		  #
 #												  #
 ###################################################
 

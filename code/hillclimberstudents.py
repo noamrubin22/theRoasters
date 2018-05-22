@@ -1,19 +1,30 @@
-# import main
+###################################################
+# Heuristieken: Lectures & Lesroosters			  #
+#												  #
+# Names: Tessa Ridderikhof, Najib el Moussaoui 	  #
+# 		 & Noam Rubin							  #
+#												  #
+# This code performs a hillclimber algorithm,	  #
+# by swapping the students in seminar- or 		  #
+# practicalgroups of a course, and checks if this #
+# leads to a better schedule-score.				  # 
+#												  #
+###################################################
+
+
 import scorefunction
 import random
 import csv
 from generateschedule import translateRoomlock
 from scorefunction import calcScore
-# from main import createSchedule
-
-# chambers = main.chambers
-# allcourses = main.allcourses
-# student_list = main.student_list
-# schedule = main.schedule
 
 
 def swapStudents(chambers, allcourses, student_list, schedule, swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac2 = None, student1 = None, student2 = None):
+	
+	#* swap 2 students of the seminar- or practicalgroups of a random course *#
+
 	if swapcourse == None:
+
 		# pick course to swap students in
 		swapcourse = random.randint(0, len(allcourses) - 1)
 
@@ -106,18 +117,31 @@ def swapStudents(chambers, allcourses, student_list, schedule, swapcourse = None
 
 		return swapcourse, sem1, sem2, prac1, prac2, student1, student2
 
-# studentswapscores = []
-# points = calcScore(allcourses, student_list, chambers)
-# studentswapscores.append(points)
 
 def hillclimbStudent(times, chambers, allcourses, student_list, schedule):
+	#* perform student swap and change back if it does not lead to a better score *#
+	
+	# perform swap a given number of times
 	for i in range(0, times):
+		
+		# calculate score before swap
 		points = calcScore(allcourses, student_list, chambers)
+
+		# perform swap (and save what has been swapped)
 		swapcourse, sem1, sem2, prac1, prac2, student1, student2 = swapStudents(chambers, allcourses, student_list, schedule)
+		
+		# calculate score after swap
 		newpoints = calcScore(allcourses, student_list, chambers)
+		
+		# swap back if new score is not better
 		if newpoints < points:
+			
 			swapStudents(chambers, allcourses, student_list, schedule, swapcourse, sem2, sem1, prac2, prac1, student2, student1)
+			
+			# calculate score after swap back
 			newpoints = calcScore(allcourses, student_list, chambers)
+			
+			# stop algorithm if swapping back does not lead to original score
 			if newpoints != points:
 				break
 
