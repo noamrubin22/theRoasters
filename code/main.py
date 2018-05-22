@@ -84,7 +84,10 @@ def prepareData():
 				allcourses.append(Course(courseName, courseLectures, courseSeminars, courseMaxSem, coursePracticals, courseMaxPrac))
 
 	# import student classes
+	student_list = []
+
 	student_list = createStudentClass()
+
 
 
 	# create empty dictionary with all room-timelock combinations (roomlocks) as keys
@@ -111,7 +114,7 @@ def translateRoomlock(roomlock):
 	return room, timelock
 
 
-def scheduleClass(course, typeClass, schedule, chambers):
+def scheduleClass(course, typeClass, schedule, chambers, student_list):
 	"""" Schedules """
 
 	# group activities by type
@@ -124,6 +127,7 @@ def scheduleClass(course, typeClass, schedule, chambers):
 
 	# intiliaze counter to keep track of tempts to schedule lecture
 	counter = 0
+
 
 	# untill no activities are left
 	while activity > 0:
@@ -223,6 +227,7 @@ def scheduleClass(course, typeClass, schedule, chambers):
 	return
 
 def complementCourse(allcourses, schedule, chambers, student_list):
+	print("1", len(student_list))
 	#* add studentnames, amount of seminars and practicals to course class *#
 	# another counter for check
 	amount_of_tries = 0
@@ -250,7 +255,6 @@ def complementCourse(allcourses, schedule, chambers, student_list):
 
 
 		#* divide students over groups *#
-
 		# start with group '1'
 		sem = 1
 
@@ -279,9 +283,9 @@ def complementCourse(allcourses, schedule, chambers, student_list):
 
 
 		# schedule lectures while course has still lectures left to schedule
-		scheduleClass(course, "lecture", schedule, chambers)
-		scheduleClass(course, "seminar", schedule, chambers)
-		scheduleClass(course, "practical", schedule, chambers)
+		scheduleClass(course, "lecture", schedule, chambers, student_list)
+		scheduleClass(course, "seminar", schedule, chambers, student_list)
+		scheduleClass(course, "practical", schedule, chambers, student_list)
 
 		# increase counter
 		amount_of_tries += 1
@@ -294,7 +298,7 @@ def complementCourse(allcourses, schedule, chambers, student_list):
 		# print(chambers)
 
 
-	return
+	return allcourses, schedule, chambers, student_list
 		# print(allcourses[4].practicalgroups[3])
 		# print(allcourses[4].practicals)
 		# print(student_list[511].schedule)
