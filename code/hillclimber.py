@@ -11,23 +11,18 @@
 #												  #
 ###################################################
 
-import main
 import scorefunction
 import random
-import hillclimberstudents
+# import hillclimberstudents
 import csv
-from main import translateRoomlock
+import generateschedule
+from generateschedule import translateRoomlock
 from scorefunction import calcScore
 from hillclimberstudents import hillclimbStudent
-from main import prepareData, complementCourse
 
-# complement variables
-chambers, allcourses, student_list, schedule = prepareData()
 
-allcourses, schedule, chambers, student_list = complementCourse(allcourses, schedule, chambers, student_list)
-
-def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = None):
-	""" """
+def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, activity1 = None, course2 = None, activity2 = None):
+	""" Swaps roomlocks of 2 (random) courses """
 
 	#* swap roomlock 2 (random) courses *#
 
@@ -156,7 +151,7 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 	return course1, activity1, course2, activity2
 
 
-def hillclimbRoomlocks(times):
+def hillclimbRoomlocks(times, chambers, allcourses, student_list, schedule):
 	""" Searches for the optimal score by swapping roomlocks """
 
 	# amount of steps hillclimber
@@ -166,7 +161,7 @@ def hillclimbRoomlocks(times):
 		points = calcScore(allcourses, student_list, chambers)
 
 		# perform swap
-		course1, activity1, course2, activity2 = swapCourse()
+		course1, activity1, course2, activity2 = swapCourse(chambers, allcourses, student_list, schedule)
 
 		# calculate new scores
 		newpoints = calcScore(allcourses, student_list, chambers)
@@ -175,7 +170,7 @@ def hillclimbRoomlocks(times):
 		if newpoints < points:
 			
 			# swap back
-			swapCourse(course1, activity1, course2, activity2)
+			swapCourse(chambers, allcourses, student_list, schedule, course1, activity1, course2, activity2)
 
 			# calculate new score
 			newpoints = calcScore(allcourses, student_list, chambers)
@@ -188,24 +183,4 @@ def hillclimbRoomlocks(times):
 				print("ERROR")
 				break
 
-	# return course1, activity1, course2, activity2
-
-# print original score
-originalscore = calcScore(allcourses, student_list, chambers)
-print("Started with: ", originalscore)
-
-# perform hillclimber for roomlocks
-hillclimbRoomlocks(1000)
-
-# show intermediate score
-intermediate_score = calcScore(allcourses, student_list, chambers)
-print("After roomlock hillclimber:", intermediate_score)
-
-# perform hillclimber for students
-hillclimbStudent(1000)
-
-# calculate and show final score 
-endscore = calcScore(allcourses, student_list, chambers)
-
-print("Final score:", endscore)
-
+	return newpoints

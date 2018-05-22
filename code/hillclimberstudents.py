@@ -1,27 +1,28 @@
-import main
 import scorefunction
 import random
 import csv
-import hillclimber
-from main import translateRoomlock
+from generateschedule import translateRoomlock
 from scorefunction import calcScore
 
-allcourses = hillclimber.allcourses
-student_list = hillclimber.student_list
-chambers = hillclimber.chambers
-schedule = hillclimber.schedule
+def swapStudents(chambers, allcourses, student_list, schedule, swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac2 = None, student1 = None, student2 = None):
+	""" Swaps students """
 
-def swapStudents(swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac2 = None, student1 = None, student2 = None):
+	# if specific course to swap students is not chosen
 	if swapcourse == None:
-		# pick course to swap students in
+
+		# pick random course
 		swapcourse = random.randint(0, len(allcourses) - 1)
 
-		# pick new course if the course has not enough seminargroups or practicalgroups
+		# if the course has not enough seminargroups or practicalgroups
 		while allcourses[swapcourse].seminars < 2 and allcourses[swapcourse].practicals < 2:
+
+			# pick new random course 
 			swapcourse = random.randint(0, len(allcourses) - 1)
 
-	# swap students if course has seminars
+	# if course has seminars
 	if allcourses[swapcourse].seminars > 1:
+
+		# and specific seminars are not chosen
 		if sem1 == None and sem2 == None:
 
 			# pick two seminarsgroups to swap students in
@@ -37,7 +38,9 @@ def swapStudents(swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac
 		seminargroup1 = allcourses[swapcourse].seminargroups[sem1]
 		seminargroup2 = allcourses[swapcourse].seminargroups[sem2]
 
+		# if no specific student has been chosen
 		if student1 == None or student2 == None:
+			
 			# pick random student from seminargroup
 			student1 = random.randint(0, len(seminargroup1) - 1)
 			student2 = random.randint(0, len(seminargroup2) - 1)
@@ -105,27 +108,15 @@ def swapStudents(swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac
 
 		return swapcourse, sem1, sem2, prac1, prac2, student1, student2
 
-# studentswapscores = []
-# points = calcScore(allcourses, student_list, chambers)
-# studentswapscores.append(points)
-
-def hillclimbStudent(times):
+def hillclimbStudent(times, chambers, allcourses, student_list, schedule):
 	for i in range(0, times):
 		points = calcScore(allcourses, student_list, chambers)
-		swapcourse, sem1, sem2, prac1, prac2, student1, student2 = swapStudents()
+		swapcourse, sem1, sem2, prac1, prac2, student1, student2 = swapStudents(chambers, allcourses, student_list, schedule)
 		newpoints = calcScore(allcourses, student_list, chambers)
 		if newpoints < points:
-			swapStudents(swapcourse, sem2, sem1, prac2, prac1, student2, student1)
+			swapStudents(chambers, allcourses, student_list, schedule, swapcourse, sem2, sem1, prac2, prac1, student2, student1)
 			newpoints = calcScore(allcourses, student_list, chambers)
 			if newpoints != points:
 				break
-		# studentswapscores.append(newpoints)
-	return allcourses, student_list, chambers
 
-# hillclimbStudent(5000)
 
-# print(studentswapscores)
-
-# with open("hillclimberstudent.csv", "w") as resultFile:
-# 	wr = csv.writer(resultFile, dialect = 'excel')
-# 	wr.writerow(studentswapscores)
