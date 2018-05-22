@@ -1,12 +1,22 @@
+##################################################### 
+# Heuristieken: Lectures & Lesroosters			  	#
+#												  	#
+# Names: Tessa Ridderikhof, Najib el Moussaoui 	  	#
+# 		 & Noam Rubin							  	#
+#												  	#
+# This code consists of function that are needed to	#
+# generate an empty schedule and complement it   	#
+# with courses, students and rooms.   				#
+# 												  	#
+#####################################################
+
 import random
 import math
 from classes import Students, Room, Course
 from parse import *
 
 def createRooms():
-	""" Creates lists for rooms, students and courses and schedule dict """
-
-	#* substract room information *#
+	""" Creates lists for rooms """
 
 	# create empty list
 	chambers = []
@@ -39,7 +49,7 @@ def createRooms():
 	return chambers
 
 def createCourses():
-	#* substract course information *#
+	""" Substracts course information and put into list """
 
 	# create list for courses
 	allcourses = []
@@ -79,34 +89,43 @@ def createCourses():
 	return allcourses
 
 def createStudents():
-	# import student classes
+	""" Creates a list with students """
+
+	# create empty list
 	student_list = []
 
+	# import student classes
 	student_list = createStudentClass()
 
 	return student_list
 
 def createEmptySchedule():
+	""" Prepare dictionary that represents schedule """
+
 	# create empty dictionary with all room-timelock combinations (roomlocks) as keys
 	roomlocks = list(range(0, 140))
 	schedule = dict.fromkeys(roomlocks)
-		#* prepare dict that represents schedule *#
 
 	return schedule
 
-
 def createStudentGroups(allcourses, student_list):
+	"""" Divides students into practical and seminar groups """
+
 	# for each course
 	for course in allcourses:
+
 		# check all students
 		for student in student_list:
+
 			# if student is attenting course
 			if course.name in student.courses:
+
 				# add student to course class
 				course.addStudent(student.last_name)
 
 		# if course has seminars
 		if course.seminars > 0:
+
 			# count and add amount to course class
 			numofseminars = math.ceil(course.students/course.maxstudentssem)
 			course.addSeminar(numofseminars)
@@ -176,17 +195,15 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 	elif typeClass == "practical":
 		activity = course.practicals
 
-	# intiliaze counter to keep track of tempts to schedule lecture
-	counter = 0
-
-
 	# untill no activities are left
 	while activity > 0:
 
 		# choose random roomlock
 		pickroomlock = random.randint(0, 139)
+
 		# until an unoccupied roomlock is found
 		while schedule[pickroomlock] is not None:
+
 			# pick new random roomlock
 			pickroomlock = random.randint(0, 139)
 
@@ -236,16 +253,15 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 		# decrease activity counter
 		activity -= 1
 
-
 	return
 
 def complementCourse(allcourses, schedule, chambers, student_list):
+	""" Schedules activities for each course into schedule """
 
-	#* add studentnames, amount of seminars and practicals to course class *#
-	# another counter for check
+	# for each course
 	for course in allcourses:
 
-		# schedule lectures while course has still lectures left to schedule
+		# schedule activities 
 		scheduleClass(course, "lecture", schedule, chambers, student_list)
 		scheduleClass(course, "seminar", schedule, chambers, student_list)
 		scheduleClass(course, "practical", schedule, chambers, student_list)

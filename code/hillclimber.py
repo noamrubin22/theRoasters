@@ -1,16 +1,15 @@
-###################################################
-# Heuristieken: Lectures & Lesroosters			  #
-#												  #
-# Names: Tessa Ridderikhof, Najib el Moussaoui 	  #
-# 		 & Noam Rubin							  #
-#												  #
-# This code searchs for the optimal schedulescore #
-# using a hillclimber algorithm where the only    #
-# swaps being accepted are the ones that increase #
-# the score 									  #
-#												  #
-###################################################
-
+##################################################### 
+# Heuristieken: Lectures & Lesroosters			  	#
+#												  	#
+# Names: Tessa Ridderikhof, Najib el Moussaoui 	  	#
+# 		 & Noam Rubin							  	#
+#												  	#
+# This code searchs for the optimal schedulescore 	#
+# using a hillclimber algorithm where the only    	#
+# swaps being accepted are the ones that increase 	#
+# the score. The swaps are being made between	  	#
+# two random courses							  	#
+#####################################################
 
 import scorefunction
 import random
@@ -21,7 +20,7 @@ from scorefunction import calcScore
 
 
 def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, activity1 = None, course2 = None, activity2 = None):
-	""" """
+	""" Swaps roomlocks of 2 (random) courses """
 
 	#* swap roomlock 2 (random) courses *#
 
@@ -35,38 +34,31 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 	if course2 == None:
 		course2 = random.randint(0, len(allcourses) - 1)
 
-
 	# if specific activity is not chosen
 	if activity1 == None:
 
 		# chose random activity from course
 		activity1 = random.randint(0, len(allcourses[course1].activities) - 1)
 
-	
 	# same
 	if activity2 == None:
 		activity2 = random.randint(0, len(allcourses[course2].activities) - 1)
-
 
 	# store random activities
 	randact1 = allcourses[course1].activities[activity1]
 	randact2 = allcourses[course2].activities[activity2]
 
-	
 	# store roomlocks
 	roomlock1 = randact1[0]
 	roomlock2 = randact2[0]
-
 
 	# swap the chosen activities from roomlock in schedule
 	allcourses[course1].changeSchedule(roomlock2, activity1)
 	allcourses[course2].changeSchedule(roomlock1, activity2)
 
-
 	# translate to room and timelock for both roomlocks
 	room1, timelock1 = translateRoomlock(roomlock1)
 	room2, timelock2 = translateRoomlock(roomlock2)
-
 
 	# store activity-groups 
 	coursegroup1 = allcourses[course1].activities[activity1][2]
@@ -75,7 +67,6 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 	
 	#* change schedule of individual students*# 
 
-	
 	# if first coursegroup has only one group (lecture)
 	if coursegroup1 == 0:
 
@@ -84,7 +75,6 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 
 			# that follows the course
 			if allcourses[course1].name in student.courses:
-
 
 				# change individual schedule
 				student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
@@ -141,7 +131,6 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 	schedulecontent1 = schedule[roomlock1]
 	schedulecontent2 = schedule[roomlock2]
 
-
 	# switch courses in schedule
 	schedule[roomlock1] = schedulecontent2
 	schedule[roomlock2] = schedulecontent1
@@ -182,6 +171,3 @@ def hillclimbRoomlocks(times, chambers, allcourses, student_list, schedule):
 				break
 
 	return newpoints
-
-
-

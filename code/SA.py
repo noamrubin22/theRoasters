@@ -7,24 +7,16 @@
 # This code searchs for the optimal schedulescore #
 # using the simulated annealing algorithm whereby #
 # a coolingscheme is used to accept swaps 		  #
-#												  #
 ###################################################
 
-# import main
 import scorefunction
 import random
 import hillclimberstudents
 import csv
 import math
-# import generateschedule
-# from generateschedule import translateRoomlock
 from scorefunction import calcScore
 from hillclimber import swapCourse
 
-# # chambers = main.chambers
-# allcourses = main.allcourses
-# student_list = main.student_list
-# schedule = main.schedule
 
 def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_list, schedule):
 	""" Searches for the optimal score by using a coolingscheme """
@@ -82,3 +74,4 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 					print("ERROR")
 					break
 	return
+
