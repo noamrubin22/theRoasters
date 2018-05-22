@@ -33,25 +33,25 @@ def calcScore(allcourses, student_list, chambers):
 
 
 		#* subtract points based on activities per day *#
-		
+
 		# iterate over activities per course
 		for activity in course.activities:
 
 			# determine day
 			day = int(activity[0] / roomlocks_per_day)
 
-			# if activity = lecture 
+			# if activity = lecture
 			if activity[2] == 0:
 
 				# substract points when on the same day
 				if day in dayActivity[1]:
-					points -= 10	
+					points -= 10
 
 				# add day to list linked to lecture
-				for group in groups:	
+				for group in groups:
 					dayActivity[group].append(day)
 
-			# for seminars 
+			# for seminars
 			elif activity[2] == 1:
 
 				# substract points when on the same day
@@ -59,9 +59,9 @@ def calcScore(allcourses, student_list, chambers):
 					points -= 10
 
 				# add day to list linked to group
-				dayActivity[activity[2]].append(day) 
+				dayActivity[activity[2]].append(day)
 
-			# for practicals 
+			# for practicals
 			else:
 
 				# substract points when on the same day
@@ -69,7 +69,7 @@ def calcScore(allcourses, student_list, chambers):
 					points -= 10
 
 				# add day to list linked to group
-				dayActivity[activity[2]].append(day) 
+				dayActivity[activity[2]].append(day)
 		# print(course.name, dayActivity)
 
 
@@ -138,7 +138,7 @@ def calcScore(allcourses, student_list, chambers):
 					points -= maluspoints
 
 			# for practical/seminars
-			else: 
+			else:
 
 				# if seminar
 				if course.seminars > 0:
@@ -152,8 +152,8 @@ def calcScore(allcourses, student_list, chambers):
 						points -= maluspoints
 
 				# if practical
-				else: 
-					
+				else:
+
 					# and too many students fro room, substract points
 					if int(chambers[room].capacity) < course.maxstudentsprac:
 						print(chambers[room].capacity)
@@ -166,4 +166,4 @@ def calcScore(allcourses, student_list, chambers):
 	# print("Points: ", points)
 	return points
 
-points = calcScore(main.allcourses, main.student_list, main.chambers)
+# points = calcScore(main.allcourses, main.student_list, main.chambers)

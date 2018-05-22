@@ -7,9 +7,9 @@ from classes import Students, Room, Course
 # import time
 
 # global storage variables
-allcourses = []
-chambers = []
-schedule = {}
+# allcourses = []
+# chambers = []
+# schedule = {}
 
 def prepareData():
 	""" Creates lists for rooms, students and courses and schedule dict """
@@ -84,7 +84,10 @@ def prepareData():
 				allcourses.append(Course(courseName, courseLectures, courseSeminars, courseMaxSem, coursePracticals, courseMaxPrac))
 
 	# import student classes
+	student_list = []
+
 	student_list = createStudentClass()
+
 
 
 	# create empty dictionary with all room-timelock combinations (roomlocks) as keys
@@ -101,7 +104,7 @@ def translateRoomlock(roomlock):
 	# amount of rooms per timelock
 	total_amount_rooms = 7
 
-	# determine the room 
+	# determine the room
 	room = roomlock % total_amount_rooms
 
 	# determine timelock
@@ -111,7 +114,7 @@ def translateRoomlock(roomlock):
 	return room, timelock
 
 
-def scheduleClass(course, typeClass, schedule):
+def scheduleClass(course, typeClass, schedule, chambers, student_list):
 	"""" Schedules """
 
 	# group activities by type
@@ -125,16 +128,15 @@ def scheduleClass(course, typeClass, schedule):
 	# intiliaze counter to keep track of tempts to schedule lecture
 	counter = 0
 
+
 	# untill no activities are left
 	while activity > 0:
 
 		# choose random roomlock
 		pickroomlock = random.randint(0, 139)
-
 		# until an unoccupied roomlock is found
 		while schedule[pickroomlock] is not None:
-
-			# pick new random roomlock 
+			# pick new random roomlock
 			pickroomlock = random.randint(0, 139)
 
 		# if room is free, substract the room and timelock
@@ -142,7 +144,7 @@ def scheduleClass(course, typeClass, schedule):
 
 		# print("free roomlock chosen")
 		# print(room, timelock)
-		# for lectures 
+		# for lectures
 		# if typeClass == "lecture":
 
 		# 	# until an unoccupied roomlock is found with enough capacity (with a max of 20 times)
@@ -151,10 +153,10 @@ def scheduleClass(course, typeClass, schedule):
 		# 		# pick new random roomlock
 		# 		pickroomlock = random.randint(0, 139)
 
-		# 		# increase counter with every tempt 
+		# 		# increase counter with every tempt
 		# 		counter += 1
 
-		# 		# substract room and timelock 
+		# 		# substract room and timelock
 		# 		room, timelock = translateRoomlock(pickroomlock)
 
 		# 		# print(room,  timelock)
@@ -163,7 +165,7 @@ def scheduleClass(course, typeClass, schedule):
 
 		# 		# start over if too many temps are being done
 		# 		if counter > 50:
-		# 			return 1 
+		# 			return 1
 
 		# # same for seminars and practicals
 		# elif typeClass == "seminar":
@@ -187,10 +189,10 @@ def scheduleClass(course, typeClass, schedule):
 		if typeClass == "lecture":
 			group = 0
 
-		# seminars and practicals > 1 group, 
+		# seminars and practicals > 1 group,
 		else:
 
-			# activity number decreases as we schedule it, which gives different group number 
+			# activity number decreases as we schedule it, which gives different group number
 			group = activity
 
 		# update course class with new activity
@@ -222,30 +224,24 @@ def scheduleClass(course, typeClass, schedule):
 		activity -= 1
 
 
-	return 
+	return
 
-def complementCourse():
+def complementCourse(allcourses, schedule, chambers, student_list):
+	print("1", len(student_list))
 	#* add studentnames, amount of seminars and practicals to course class *#
-
-
 	# another counter for check
 	amount_of_tries = 0
-
 	# for each course
 	for course in allcourses:
-
 		# check all students
 		for student in student_list:
-
 			# if student is attenting course
 			if course.name in student.courses:
-
 				# add student to course class
 				course.addStudent(student.last_name)
 
 		# if course has seminars
 		if course.seminars > 0:
-
 			# count and add amount to course class
 			numofseminars = math.ceil(course.students/course.maxstudentssem)
 			course.addSeminar(numofseminars)
@@ -259,7 +255,6 @@ def complementCourse():
 
 
 		#* divide students over groups *#
-
 		# start with group '1'
 		sem = 1
 
@@ -269,12 +264,12 @@ def complementCourse():
 			# iterate over students in course with steps of max amount of students
 			for i in range(0, len(course.studentnames), course.maxstudentssem):
 
-				# create list with names of students 
+				# create list with names of students
 				studentlist = course.studentnames[i: i + course.maxstudentssem]
 
 				# add studentlist to course class
 				course.createSeminarGroup(sem, studentlist)
-	
+
 				# go on to the next group
 				sem += 1
 
@@ -288,10 +283,10 @@ def complementCourse():
 
 
 		# schedule lectures while course has still lectures left to schedule
-		scheduleClass(course, "lecture", schedule)
-		scheduleClass(course, "seminar", schedule)
-		scheduleClass(course, "practical", schedule)
-	
+		scheduleClass(course, "lecture", schedule, chambers, student_list)
+		scheduleClass(course, "seminar", schedule, chambers, student_list)
+		scheduleClass(course, "practical", schedule, chambers, student_list)
+
 		# increase counter
 		amount_of_tries += 1
 		# print(amount_of_tries)
@@ -301,9 +296,9 @@ def complementCourse():
 		# print(student_list[0].schedule)
 		# print(allcourses[4].activities)
 		# print(chambers)
-	
 
-	return
+
+	return allcourses, schedule, chambers, student_list
 		# print(allcourses[4].practicalgroups[3])
 		# print(allcourses[4].practicals)
 		# print(student_list[511].schedule)
@@ -315,11 +310,15 @@ def complementCourse():
 ## calculate profiler time
 # pr = cProfile.Profile()
 # pr.enable()
+<<<<<<< HEAD
 chambers, allcourses, student_list, schedule = prepareData()
 complementCourse()
 # print(allcourses[5].activities)
+=======
+
+# chambers, allcourses, student_list, schedule = prepareData()
+# complementCourse()
+>>>>>>> ac6efa74c597e1299f9eb7fecb190dcfe566244d
 
 # pr.disable()
 # pr.print_stats(sort='time')
-
-
