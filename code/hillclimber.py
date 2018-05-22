@@ -11,6 +11,7 @@
 #												  #
 ###################################################
 
+# import main
 import scorefunction
 import random
 # import hillclimberstudents
@@ -18,11 +19,18 @@ import csv
 import generateschedule
 from generateschedule import translateRoomlock
 from scorefunction import calcScore
-from hillclimberstudents import hillclimbStudent
+# from main import createSchedule
 
+
+# chambers = main.chambers
+# allcourses = main.allcourses
+# student_list = main.student_list
+# schedule = main.schedule
+
+# chambers, allcourses, student_list, schedule = createSchedule()
 
 def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, activity1 = None, course2 = None, activity2 = None):
-	""" Swaps roomlocks of 2 (random) courses """
+	""" """
 
 	#* swap roomlock 2 (random) courses *#
 

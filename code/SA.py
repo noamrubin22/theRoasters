@@ -21,6 +21,11 @@ import math
 from scorefunction import calcScore
 from hillclimber import swapCourse
 
+# # chambers = main.chambers
+# allcourses = main.allcourses
+# student_list = main.student_list
+# schedule = main.schedule
+
 def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_list, schedule):
 	""" Searches for the optimal score by using a coolingscheme """
 
