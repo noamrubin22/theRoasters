@@ -14,7 +14,6 @@ def print_schedule(amount):
     # schedule = {}
 
     chambers, allcourses, student_list, schedule = prepareData()
-
     complementCourse(allcourses, schedule, chambers, student_list)
 
     print(amount, schedule)
