@@ -3,7 +3,8 @@ import random
 import math
 import generateschedule
 import scorefunction
-import hillclimber
+# import hillclimber
+# import creategraphs
 from parse import *
 from classes import Students, Room, Course
 from generateschedule import complementCourse, createRooms, createCourses, createStudents, createEmptySchedule, createStudentGroups
@@ -18,5 +19,5 @@ def createSchedule():
 	complementCourse(allcourses, schedule, chambers, student_list)
 	return chambers, allcourses, student_list, schedule
 
-chambers, allcourses, student_list, schedule = createSchedule()
+# chambers, allcourses, student_list, schedule = createSchedule()
 

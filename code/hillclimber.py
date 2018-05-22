@@ -14,17 +14,20 @@
 import main
 import scorefunction
 import random
-import hillclimberstudents
+# import hillclimberstudents
 import csv
 import generateschedule
 from generateschedule import translateRoomlock
 from scorefunction import calcScore
+from main import createSchedule
 from hillclimberstudents import hillclimbStudent
 
-chambers = main.chambers
-allcourses = main.allcourses
-student_list = main.student_list
-schedule = main.schedule
+# chambers = main.chambers
+# allcourses = main.allcourses
+# student_list = main.student_list
+# schedule = main.schedule
+
+chambers, allcourses, student_list, schedule = createSchedule()
 
 def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = None):
 	""" """
@@ -188,7 +191,7 @@ def hillclimbRoomlocks(times):
 				print("ERROR")
 				break
 
-	return chambers, allcourses, student_list, schedule
+	return newpoints
 
 # print original score
 originalscore = calcScore(allcourses, student_list, chambers)
@@ -202,7 +205,7 @@ intermediate_score = calcScore(allcourses, student_list, chambers)
 print("After roomlock hillclimber:", intermediate_score)
 
 # perform hillclimber for students
-hillclimbStudent(1000)
+hillclimbStudent(1000, chambers, allcourses, student_list, schedule)
 
 # calculate and show final score 
 endscore = calcScore(allcourses, student_list, chambers)

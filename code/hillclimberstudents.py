@@ -4,14 +4,15 @@ import random
 import csv
 from generateschedule import translateRoomlock
 from scorefunction import calcScore
+from main import createSchedule
 
-chambers = main.chambers
-allcourses = main.allcourses
-student_list = main.student_list
-schedule = main.schedule
+# chambers = main.chambers
+# allcourses = main.allcourses
+# student_list = main.student_list
+# schedule = main.schedule
 
 
-def swapStudents(swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac2 = None, student1 = None, student2 = None):
+def swapStudents(chambers, allcourses, student_list, schedule, swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac2 = None, student1 = None, student2 = None):
 	if swapcourse == None:
 		# pick course to swap students in
 		swapcourse = random.randint(0, len(allcourses) - 1)
@@ -109,17 +110,17 @@ def swapStudents(swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac
 # points = calcScore(allcourses, student_list, chambers)
 # studentswapscores.append(points)
 
-def hillclimbStudent(times):
+def hillclimbStudent(times, chambers, allcourses, student_list, schedule):
 	for i in range(0, times):
 		points = calcScore(allcourses, student_list, chambers)
-		swapcourse, sem1, sem2, prac1, prac2, student1, student2 = swapStudents()
+		swapcourse, sem1, sem2, prac1, prac2, student1, student2 = swapStudents(chambers, allcourses, student_list, schedule)
 		newpoints = calcScore(allcourses, student_list, chambers)
 		if newpoints < points:
-			swapStudents(swapcourse, sem2, sem1, prac2, prac1, student2, student1)
+			swapStudents(chambers, allcourses, student_list, schedule, swapcourse, sem2, sem1, prac2, prac1, student2, student1)
 			newpoints = calcScore(allcourses, student_list, chambers)
 			if newpoints != points:
 				break
-	return allcourses, student_list, chambers
+	# return allcourses, student_list, chambers
 
 # hillclimbStudent(5000)
 
