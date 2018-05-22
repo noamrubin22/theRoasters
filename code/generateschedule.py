@@ -1,31 +1,9 @@
-import csv
 import random
 import math
-import generateschedule
-import scorefunction
-from parse import *
 from classes import Students, Room, Course
-<<<<<<< HEAD
-from generateschedule import complementCourse, createRooms, createCourses, createStudents, createEmptySchedule, createStudentGroups
-from scorefunction import calcScore
+from parse import *
 
-def createSchedule():
-	chambers = createRooms()
-	allcourses = createCourses()
-	student_list = createStudents()
-	schedule = createEmptySchedule()
-	allcourses, student_list = createStudentGroups(allcourses, student_list)
-	complementCourse(allcourses, schedule, chambers, student_list)
-=======
-# import cProfile, pstats, io
-# import time
-
-# global storage variables
-allcourses = []
-chambers = []
-schedule = {}
-
-def prepareData():
+def createRooms():
 	""" Creates lists for rooms, students and courses and schedule dict """
 
 	#* substract room information *#
@@ -58,8 +36,9 @@ def prepareData():
 				# add room to list
 				chambers.append(room)
 
-	# print(chambers)
+	return chambers
 
+def createCourses():
 	#* substract course information *#
 
 	# create list for courses
@@ -97,28 +76,79 @@ def prepareData():
 				# add course to list
 				allcourses.append(Course(courseName, courseLectures, courseSeminars, courseMaxSem, coursePracticals, courseMaxPrac))
 
+	return allcourses
+
+def createStudents():
 	# import student classes
 	student_list = []
 
 	student_list = createStudentClass()
 
+	return student_list
 
-
+def createEmptySchedule():
 	# create empty dictionary with all room-timelock combinations (roomlocks) as keys
 	roomlocks = list(range(0, 140))
 	schedule = dict.fromkeys(roomlocks)
 		#* prepare dict that represents schedule *#
 
->>>>>>> f04fa40e55101c07690fc4346afd71d07aaeafe8
-	return chambers, allcourses, student_list, schedule
+	return schedule
 
-for i in range(10):
-	chambers, allcourses, student_list, schedule = createSchedule()
-	print(calcScore(allcourses, student_list, chambers))
 
-<<<<<<< HEAD
+def createStudentGroups(allcourses, student_list):
+	# for each course
+	for course in allcourses:
+		# check all students
+		for student in student_list:
+			# if student is attenting course
+			if course.name in student.courses:
+				# add student to course class
+				course.addStudent(student.last_name)
 
-=======
+		# if course has seminars
+		if course.seminars > 0:
+			# count and add amount to course class
+			numofseminars = math.ceil(course.students/course.maxstudentssem)
+			course.addSeminar(numofseminars)
+
+		# if course has practicals
+		if course.practicals > 0:
+
+			# count and add to course class
+			numofpracticals = math.ceil(course.students/course.maxstudentsprac)
+			course.addPractical(numofpracticals)
+
+
+		#* divide students over groups *#
+		# start with group '1'
+		sem = 1
+
+		# if course has seminars
+		if course.seminars > 0:
+
+			# iterate over students in course with steps of max amount of students
+			for i in range(0, len(course.studentnames), course.maxstudentssem):
+
+				# create list with names of students
+				studentlist = course.studentnames[i: i + course.maxstudentssem]
+
+				# add studentlist to course class
+				course.createSeminarGroup(sem, studentlist)
+
+				# go on to the next group
+				sem += 1
+
+		# same for practical
+		prac = 1
+		if course.practicals > 0:
+			for i in range(0, len(course.studentnames), course.maxstudentsprac):
+				studentlist = course.studentnames[i: i + course.maxstudentsprac]
+				course.createPracticalGroup(prac, studentlist)
+				prac += 1
+
+
+	return allcourses, student_list
+
 def translateRoomlock(roomlock):
 	""" Translates roomlock number into roomnumber and timelock """
 
@@ -248,67 +278,17 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 	return
 
 def complementCourse(allcourses, schedule, chambers, student_list):
+
 	#* add studentnames, amount of seminars and practicals to course class *#
 	# another counter for check
-	amount_of_tries = 0
-	# for each course
 	for course in allcourses:
-		# check all students
-		for student in student_list:
-			# if student is attenting course
-			if course.name in student.courses:
-				# add student to course class
-				course.addStudent(student.last_name)
-
-		# if course has seminars
-		if course.seminars > 0:
-			# count and add amount to course class
-			numofseminars = math.ceil(course.students/course.maxstudentssem)
-			course.addSeminar(numofseminars)
-
-		# if course has practicals
-		if course.practicals > 0:
-
-			# count and add to course class
-			numofpracticals = math.ceil(course.students/course.maxstudentsprac)
-			course.addPractical(numofpracticals)
-
-
-		#* divide students over groups *#
-		# start with group '1'
-		sem = 1
-
-		# if course has seminars
-		if course.seminars > 0:
-
-			# iterate over students in course with steps of max amount of students
-			for i in range(0, len(course.studentnames), course.maxstudentssem):
-
-				# create list with names of students
-				studentlist = course.studentnames[i: i + course.maxstudentssem]
-
-				# add studentlist to course class
-				course.createSeminarGroup(sem, studentlist)
-
-				# go on to the next group
-				sem += 1
-
-		# same for practical
-		prac = 1
-		if course.practicals > 0:
-			for i in range(0, len(course.studentnames), course.maxstudentsprac):
-				studentlist = course.studentnames[i: i + course.maxstudentsprac]
-				course.createPracticalGroup(prac, studentlist)
-				prac += 1
-
 
 		# schedule lectures while course has still lectures left to schedule
 		scheduleClass(course, "lecture", schedule, chambers, student_list)
 		scheduleClass(course, "seminar", schedule, chambers, student_list)
 		scheduleClass(course, "practical", schedule, chambers, student_list)
 
-		# increase counter
-		amount_of_tries += 1
+
 		# print(amount_of_tries)
 		# print(allcourses[1].studentnames)
 
@@ -319,25 +299,4 @@ def complementCourse(allcourses, schedule, chambers, student_list):
 
 
 	return allcourses, schedule, chambers, student_list
-
-		# print(allcourses[4].practicalgroups[3])
-		# print(allcourses[4].practicals)
-		# print(student_list[511].schedule)
-
-		# print(allcourses[5].seminargroups[0]) # activiteiten van vak
-		# # print(chambers[1].booking) # bookings van een zaal
-		# print(allcourses[5].studentnames)
-
-## calculate profiler time
-# pr = cProfile.Profile()
-# pr.enable()
-
-chambers, allcourses, student_list, schedule = prepareData()
-complementCourse()
-# print(allcourses[5].activities)
-
-# chambers, allcourses, student_list, schedule = prepareData()
-# complementCourse()
-
->>>>>>> f04fa40e55101c07690fc4346afd71d07aaeafe8
 

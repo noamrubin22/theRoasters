@@ -7,7 +7,9 @@ from scorefunction import calcScore
 def print_schedule(amount):
 
     chambers, allcourses, student_list, schedule = prepareData()
+
     allcourses, schedule, chambers, student_list = complementCourse(allcourses, schedule, chambers, student_list)
+
 
     schedule_location = "visualisation/schedule{}.csv".format(amount)
     schedule_file = open(schedule_location, 'w')
