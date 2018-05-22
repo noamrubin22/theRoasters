@@ -2,21 +2,12 @@ import main
 import csv
 from main import prepareData, complementCourse
 from scorefunction import calcScore
-from flask import Flask, flash, redirect, render_template, request, session, url_for
-from flask_session import Session
-
 
 
 def print_schedule(amount):
 
-    # allcourses = []
-    # chambers = []
-    # schedule = {}
-    # print(chambers)
     chambers, allcourses, student_list, schedule = prepareData()
-    print("/n/n/n")
     allcourses, schedule, chambers, student_list = complementCourse(allcourses, schedule, chambers, student_list)
-    print(student_list)
 
     schedule_location = "visualisation/schedule{}.csv".format(amount)
     schedule_file = open(schedule_location, 'w')
@@ -58,5 +49,5 @@ def print_schedule(amount):
     print("Printed a schedule at {} with a score of {}.".format(schedule_location, score))
 
 
-print_schedule(0)
-print_schedule(1)
+for i in range(5):
+    print_schedule(i)

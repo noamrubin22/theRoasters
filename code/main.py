@@ -227,7 +227,6 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 	return
 
 def complementCourse(allcourses, schedule, chambers, student_list):
-	print("1", len(student_list))
 	#* add studentnames, amount of seminars and practicals to course class *#
 	# another counter for check
 	amount_of_tries = 0
