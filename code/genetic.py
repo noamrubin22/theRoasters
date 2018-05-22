@@ -2,8 +2,7 @@ def initial_population(amount):
 
     population = []
     parents = []
-    parents_max = 10;
-    k = 0
+    parents_max = 10
 
     for i in range(amount):
         timetable = []
@@ -25,9 +24,14 @@ def initial_population(amount):
     def points_score(timetable):
         return calcScore(timetable[0])
 
+    # sort the population array by score
     population = sorted(population, key=points_score, reverse=True)
 
-    return population[0:9]
+    for i in range(parents_max):
+        parents.append(population[i])
+
+    # now only top 10, later have the amount of schedules pushed be based on score
+    return parents
 
 
 def cross_over(parents, new_population):
@@ -42,4 +46,6 @@ def cross_over(parents, new_population):
         parent = [random.randint(0, len(parents))]
         pickroomlock = random.randint(0, 139)
 
-        
+        ...
+
+        new_population -= 1

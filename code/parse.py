@@ -5,7 +5,6 @@ from classes import Students
 MY_FILE = "../data/studenten_roostering.csv"
 
 # create empty list for students
-student_list = []
 
 def parse(raw_file, delimiter):
     """ Parses data """
@@ -42,13 +41,15 @@ def gimme_students():
 def createStudentClass():
     """ Adds features of student class per student """
 
+    student_list = []
+
     # parse csv file with students + information
     new_data = parse(MY_FILE, ";")
 
     # iterate over new data
     for i in range(len(new_data)):
 
-        # extract all information 
+        # extract all information
         last_name = new_data[i]['lastName']
         first_name = new_data[i]['firstName']
         student_id = new_data[i]['studentID']

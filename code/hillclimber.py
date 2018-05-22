@@ -15,6 +15,7 @@ import main
 import scorefunction
 import random
 import hillclimberstudents
+import csv
 from main import translateRoomlock
 from scorefunction import calcScore
 from hillclimberstudents import hillclimbStudent
@@ -37,44 +38,57 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 		# choose random course from courselist
 		course1 = random.randint(0, len(allcourses) - 1)
 		
+<<<<<<< HEAD
+
+=======
+>>>>>>> ac6efa74c597e1299f9eb7fecb190dcfe566244d
 	# same
 	if course2 == None:
 		course2 = random.randint(0, len(allcourses) - 1)
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> ac6efa74c597e1299f9eb7fecb190dcfe566244d
 	# if specific activity is not chosen
 	if activity1 == None:
 
 		# chose random activity from course
 		activity1 = random.randint(0, len(allcourses[course1].activities) - 1)
+
 	
 	# same
 	if activity2 == None:
 		activity2 = random.randint(0, len(allcourses[course2].activities) - 1)
 
+
 	# store random activities
 	randact1 = allcourses[course1].activities[activity1]
 	randact2 = allcourses[course2].activities[activity2]
+
 	
 	# store roomlocks
 	roomlock1 = randact1[0]
 	roomlock2 = randact2[0]
 
+
 	# swap the chosen activities from roomlock in schedule
 	allcourses[course1].changeSchedule(roomlock2, activity1)
 	allcourses[course2].changeSchedule(roomlock1, activity2)
+
 
 	# translate to room and timelock for both roomlocks
 	room1, timelock1 = translateRoomlock(roomlock1)
 	room2, timelock2 = translateRoomlock(roomlock2)
 
+
 	# store activity-groups 
 	coursegroup1 = allcourses[course1].activities[activity1][2]
 	coursegroup2 = allcourses[course2].activities[activity2][2]
+
 	
 	#* change schedule of individual students*# 
 
-	# start counter
-	originalcounter = 0
 	
 	# if first coursegroup has only one group (lecture)
 	if coursegroup1 == 0:
@@ -85,8 +99,6 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 			# that follows the course
 			if allcourses[course1].name in student.courses:
 
-				# increase counter
-				originalcounter += 1
 
 				# change individual schedule
 				student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
@@ -106,9 +118,6 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 					# if student is in seminargroup
 					if student.last_name in allcourses[course1].seminargroups[coursegroup1]:
 
-						
-						# increase counter
-						originalcounter += 1
 
 						# change individual schedule with swapped course
 						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
@@ -119,13 +128,13 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 					# if student is in practical-group
 					if student.last_name in allcourses[course1].practicalgroups[coursegroup1]:
 
-
-						# increase counter
-						originalcounter += 1
-
 						# change individual schedule
 						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> ac6efa74c597e1299f9eb7fecb190dcfe566244d
 	# same for the second coursegroup
 	if coursegroup2 == 0:
 		for student in student_list:
@@ -147,10 +156,10 @@ def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = Non
 	chambers[room1].changeBooking(timelock1, timelock2)
 	chambers[room2].changeBooking(timelock2, timelock1)
 
-	
 	# save content of schedule at swapped roomlocks
 	schedulecontent1 = schedule[roomlock1]
 	schedulecontent2 = schedule[roomlock2]
+
 
 	# switch courses in schedule
 	schedule[roomlock1] = schedulecontent2
@@ -190,23 +199,30 @@ def hillclimbRoomlocks(times):
 				print(course2, course1)
 				print("ERROR")
 				break
+		scores.append(newpoints)
 
-	return course1, activity1, course2, activity2
+	# return course1, activity1, course2, activity2
 
 # print original score
 originalscore = calcScore(allcourses, student_list, chambers)
 print("Started with: ", originalscore)
 
 # perform hillclimber for roomlocks
-hillclimbRoomlocks(1000)
+hillclimbRoomlocks(5000)
 
 # show intermediate score
 intermediate_score = calcScore(allcourses, student_list, chambers)
 print("After roomlock hillclimber:", intermediate_score)
 
 # perform hillclimber for students
-hillclimbStudent(1000)
+# hillclimbStudent(1000)
 
 # calculate and show final score 
 endscore = calcScore(allcourses, student_list, chambers)
+<<<<<<< HEAD
+print("Echte eindscore", endscore)
+
+
+=======
 print("Final score:", endscore)
+>>>>>>> ac6efa74c597e1299f9eb7fecb190dcfe566244d
