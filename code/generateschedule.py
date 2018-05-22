@@ -1,3 +1,15 @@
+##################################################### 
+# Heuristieken: Lectures & Lesroosters			  	#
+#												  	#
+# Names: Tessa Ridderikhof, Najib el Moussaoui 	  	#
+# 		 & Noam Rubin							  	#
+#												  	#
+# This code consists of function that are needed to	#
+# generate an empty schedule and complement it   	#
+# with courses, students and rooms.   				#
+# 												  	#
+#####################################################
+
 import random
 import math
 from classes import Students, Room, Course
@@ -240,7 +252,6 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 
 		# decrease activity counter
 		activity -= 1
-
 
 	return
 
