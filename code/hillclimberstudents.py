@@ -2,13 +2,14 @@ import main
 import scorefunction
 import random
 import csv
+import hillclimber
 from main import translateRoomlock
 from scorefunction import calcScore
 
-allcourses = main.allcourses
-student_list = main.student_list
-chambers = main.chambers
-schedule = main.schedule
+allcourses = hillclimber.allcourses
+student_list = hillclimber.student_list
+chambers = hillclimber.chambers
+schedule = hillclimber.schedule
 
 def swapStudents(swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac2 = None, student1 = None, student2 = None):
 	if swapcourse == None:
@@ -104,9 +105,9 @@ def swapStudents(swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac
 
 		return swapcourse, sem1, sem2, prac1, prac2, student1, student2
 
-studentswapscores = []
-points = calcScore(allcourses, student_list, chambers)
-studentswapscores.append(points)
+# studentswapscores = []
+# points = calcScore(allcourses, student_list, chambers)
+# studentswapscores.append(points)
 
 def hillclimbStudent(times):
 	for i in range(0, times):
@@ -118,13 +119,13 @@ def hillclimbStudent(times):
 			newpoints = calcScore(allcourses, student_list, chambers)
 			if newpoints != points:
 				break
-		studentswapscores.append(newpoints)
+		# studentswapscores.append(newpoints)
 	return allcourses, student_list, chambers
 
-hillclimbStudent(5000)
+# hillclimbStudent(5000)
 
-print(studentswapscores)
+# print(studentswapscores)
 
-with open("hillclimberstudent.csv", "w") as resultFile:
-	wr = csv.writer(resultFile, dialect = 'excel')
-	wr.writerow(studentswapscores)
+# with open("hillclimberstudent.csv", "w") as resultFile:
+# 	wr = csv.writer(resultFile, dialect = 'excel')
+# 	wr.writerow(studentswapscores)

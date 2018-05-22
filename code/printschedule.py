@@ -14,9 +14,9 @@ def print_schedule(amount):
     # schedule = {}
     # print(chambers)
     chambers, allcourses, student_list, schedule = prepareData()
-    print("/n/n/n")
+
     allcourses, schedule, chambers, student_list = complementCourse(allcourses, schedule, chambers, student_list)
-    print(student_list)
+
 
     schedule_location = "visualisation/schedule{}.csv".format(amount)
     schedule_file = open(schedule_location, 'w')

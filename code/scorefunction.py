@@ -1,5 +1,8 @@
-import main
-from main import translateRoomlock
+import generateschedule
+from generateschedule import translateRoomlock
+
+
+
 
 def calcScore(allcourses, student_list, chambers):
 

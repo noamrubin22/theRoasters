@@ -7,11 +7,16 @@ from scorefunction import calcScore
 from main import complementCourse
 from main import prepareData
 
+scores = []
 
-# for i in range(0, 10):
-# 	# chambers, allcourses, student_list, schedule = prepareData()
-# 	# complementCourse()
-# 	score = calcScore(main.allcourses, main.student_list, main.chambers)
-# 	scores.append(score)
 
-# print(scores)
+
+
+
+for i in range(0, 1000):
+	chambers, allcourses, student_list, schedule = prepareData()
+	allcourses, schedule, chambers, student_list = complementCourse(allcourses, schedule, chambers, student_list)
+	score = calcScore(allcourses, student_list, chambers)
+	scores.append(score)
+
+print(scores)
