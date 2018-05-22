@@ -6,14 +6,13 @@ from classes import Students, Room, Course
 # import cProfile, pstats, io
 # import time
 
-
-
+# global storage variables
 allcourses = []
 chambers = []
 schedule = {}
 
 def prepareData():
-	""" Create lists for rooms, students and courses and schedule dict """
+	""" Creates lists for rooms, students and courses and schedule dict """
 
 	#* substract room information *#
 
@@ -292,7 +291,7 @@ def complementCourse():
 		scheduleClass(course, "lecture", schedule)
 		scheduleClass(course, "seminar", schedule)
 		scheduleClass(course, "practical", schedule)
-		
+	
 		# increase counter
 		amount_of_tries += 1
 		# print(amount_of_tries)
@@ -316,32 +315,11 @@ def complementCourse():
 ## calculate profiler time
 # pr = cProfile.Profile()
 # pr.enable()
-
 chambers, allcourses, student_list, schedule = prepareData()
 complementCourse()
-print(allcourses[5].activities)
+# print(allcourses[5].activities)
 
 # pr.disable()
 # pr.print_stats(sort='time')
-
-def profile(fnc):
-
-	""" A decorator that uses cProfile to profile a function """
-
-	def inner(*args, **kwargs):
-
-		pr = cProfile.Profile()
-		pr.enable()
-		retval = fnc(*args, **kwargs)
-		pr.disable()
-		s = io.StringI0()
-		sortby = "cumulative"
-		ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-		ps.print_stats()
-		print(s.getvalue())
-		return retval
-
-	return inner
-
 
 

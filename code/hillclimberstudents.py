@@ -1,6 +1,7 @@
 import main
 import scorefunction
 import random
+import csv
 from main import translateRoomlock
 from scorefunction import calcScore
 
@@ -103,6 +104,9 @@ def swapStudents(swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac
 
 		return swapcourse, sem1, sem2, prac1, prac2, student1, student2
 
+studentswapscores = []
+points = calcScore(allcourses, student_list, chambers)
+studentswapscores.append(points)
 
 def hillclimbStudent(times):
 	for i in range(0, times):
@@ -111,7 +115,16 @@ def hillclimbStudent(times):
 		newpoints = calcScore(allcourses, student_list, chambers)
 		if newpoints < points:
 			swapStudents(swapcourse, sem2, sem1, prac2, prac1, student2, student1)
-			backpoints = calcScore(allcourses, student_list, chambers)
-			if backpoints != points:
+			newpoints = calcScore(allcourses, student_list, chambers)
+			if newpoints != points:
 				break
+		studentswapscores.append(newpoints)
 	return allcourses, student_list, chambers
+
+hillclimbStudent(5000)
+
+print(studentswapscores)
+
+with open("hillclimberstudent.csv", "w") as resultFile:
+	wr = csv.writer(resultFile, dialect = 'excel')
+	wr.writerow(studentswapscores)
