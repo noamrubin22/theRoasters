@@ -2,14 +2,14 @@ import main
 import scorefunction
 import random
 import csv
-import hillclimber
-from main import translateRoomlock
+from generateschedule import translateRoomlock
 from scorefunction import calcScore
 
-allcourses = hillclimber.allcourses
-student_list = hillclimber.student_list
-chambers = hillclimber.chambers
-schedule = hillclimber.schedule
+chambers = main.chambers
+allcourses = main.allcourses
+student_list = main.student_list
+schedule = main.schedule
+
 
 def swapStudents(swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac2 = None, student1 = None, student2 = None):
 	if swapcourse == None:
@@ -119,10 +119,10 @@ def hillclimbStudent(times):
 			newpoints = calcScore(allcourses, student_list, chambers)
 			if newpoints != points:
 				break
-		# studentswapscores.append(newpoints)
 	return allcourses, student_list, chambers
 
 # hillclimbStudent(5000)
+
 
 # print(studentswapscores)
 

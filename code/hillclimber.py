@@ -16,15 +16,15 @@ import scorefunction
 import random
 import hillclimberstudents
 import csv
-from main import translateRoomlock
+import generateschedule
+from generateschedule import translateRoomlock
 from scorefunction import calcScore
 from hillclimberstudents import hillclimbStudent
-from main import prepareData, complementCourse
 
-# complement variables
-chambers, allcourses, student_list, schedule = prepareData()
-
-allcourses, schedule, chambers, student_list = complementCourse(allcourses, schedule, chambers, student_list)
+chambers = main.chambers
+allcourses = main.allcourses
+student_list = main.student_list
+schedule = main.schedule
 
 def swapCourse(course1 = None, activity1 = None, course2 = None, activity2 = None):
 	""" """
@@ -188,7 +188,7 @@ def hillclimbRoomlocks(times):
 				print("ERROR")
 				break
 
-	# return course1, activity1, course2, activity2
+	return chambers, allcourses, student_list, schedule
 
 # print original score
 originalscore = calcScore(allcourses, student_list, chambers)
