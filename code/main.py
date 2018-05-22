@@ -7,9 +7,9 @@ from classes import Students, Room, Course
 # import time
 
 # global storage variables
-# allcourses = []
-# chambers = []
-# schedule = {}
+allcourses = []
+chambers = []
+schedule = {}
 
 def prepareData():
 	""" Creates lists for rooms, students and courses and schedule dict """
@@ -294,7 +294,7 @@ def complementCourse(allcourses, schedule, chambers, student_list):
 		# print(chambers)
 
 
-	return
+	return 
 		# print(allcourses[4].practicalgroups[3])
 		# print(allcourses[4].practicals)
 		# print(student_list[511].schedule)
