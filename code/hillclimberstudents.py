@@ -1,10 +1,10 @@
-import main
+# import main
 import scorefunction
 import random
 import csv
 from generateschedule import translateRoomlock
 from scorefunction import calcScore
-from main import createSchedule
+# from main import createSchedule
 
 # chambers = main.chambers
 # allcourses = main.allcourses
@@ -120,13 +120,6 @@ def hillclimbStudent(times, chambers, allcourses, student_list, schedule):
 			newpoints = calcScore(allcourses, student_list, chambers)
 			if newpoints != points:
 				break
-	# return allcourses, student_list, chambers
-
-# hillclimbStudent(5000)
 
 
-# print(studentswapscores)
 
-# with open("hillclimberstudent.csv", "w") as resultFile:
-# 	wr = csv.writer(resultFile, dialect = 'excel')
-# 	wr.writerow(studentswapscores)
