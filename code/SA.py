@@ -82,3 +82,4 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 					print("ERROR")
 					break
 	return
+

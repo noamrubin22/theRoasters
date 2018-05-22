@@ -120,3 +120,4 @@ def hillclimbStudent(times, chambers, allcourses, student_list, schedule):
 			newpoints = calcScore(allcourses, student_list, chambers)
 			if newpoints != points:
 				break
+

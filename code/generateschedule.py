@@ -255,15 +255,14 @@ def complementCourse(allcourses, schedule, chambers, student_list):
 		scheduleClass(course, "seminar", schedule, chambers, student_list)
 		scheduleClass(course, "practical", schedule, chambers, student_list)
 
-
-		# print(amount_of_tries)
-		# print(allcourses[1].studentnames)
-
-		# print(schedule) # heel schedule
-		# print(student_list[0].schedule)
-		# print(allcourses[4].activities)
-		# print(chambers)
-
-
 	return allcourses, schedule, chambers, student_list
+
+def createSchedule():
+	chambers = createRooms()
+	allcourses = createCourses()
+	student_list = createStudents()
+	schedule = createEmptySchedule()
+	allcourses, student_list = createStudentGroups(allcourses, student_list)
+	complementCourse(allcourses, schedule, chambers, student_list)
+	return chambers, allcourses, student_list, schedule
 
