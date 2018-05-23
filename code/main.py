@@ -43,7 +43,7 @@ intermediate_score = calcScore(allcourses, student_list, chambers)
 # calculate and show final score
 endscore = calcScore(allcourses, student_list, chambers)
 
-# print("Final score:", endscore)
+print("Final score:", endscore)
 
-# simulatedAnnealing(1000000, 0.001, chambers, allcourses, student_list, schedule)
+simulatedAnnealing(10000, 0.002, chambers, allcourses, student_list, schedule)
 
