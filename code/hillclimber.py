@@ -8,7 +8,8 @@
 # using a hillclimber algorithm where the only    	#
 # swaps being accepted are the ones that increase 	#
 # the score. The swaps are being made between	  	#
-# two random courses							  	#
+# two random courses								#
+#												  	#
 #####################################################
 
 import scorefunction

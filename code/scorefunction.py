@@ -2,9 +2,8 @@ import generateschedule
 from generateschedule import translateRoomlock
 
 
-
-
 def calcScore(allcourses, student_list, chambers):
+	""" Calculates the score of a schedule"""
 
 	# start-score of a valid schedule
 	points = 1000;
