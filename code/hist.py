@@ -11,6 +11,7 @@
 
 import scorefunction
 import csv
+import matplotlib.pyplot as plt
 from scorefunction import calcScore
 from generateschedule import createSchedule
 
@@ -18,7 +19,7 @@ from generateschedule import createSchedule
 scores = []
 
 # create 1000 random schedules
-for i in range(0, 1000):
+for i in range(0, 10000):
 	chambers, allcourses, student_list, schedule = createSchedule()	
 	
 	# calculate score of schedule
@@ -27,7 +28,14 @@ for i in range(0, 1000):
 	# append score to array
 	scores.append(score)
 
-# write score array to csv
-with open("histscores.csv", "w") as resultFile:
-	wr = csv.writer(resultFile, dialect = 'excel')
-	wr.writerow(scores)
+# plot scores
+plt.hist(scores, bins = len(score))
+plt.ylabel("Score")
+plt.xlabel("Times")
+plt.title("Histogram random schedules")
+plt.show()
+
+# # write score array to csv
+# with open("histscores.csv", "w") as resultFile:
+# 	wr = csv.writer(resultFile, dialect = 'excel')
+# 	wr.writerow(scores)

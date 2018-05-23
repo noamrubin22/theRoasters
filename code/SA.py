@@ -25,6 +25,9 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 	# intialize best_score counter
 	best_score = 0
 
+	# create array for scores (visualization)
+	scores = []
+
 	# loop until system has cooled
 	while temperature > 1:
 
@@ -32,7 +35,10 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 		points = calcScore(allcourses, student_list, chambers)
 		# print("Before swap: ", points)
 
-		# keep track of the best score and lists
+		# append score to list
+		scores.append(points)
+
+		# keep track of the best score and its variables
 		if points > best_score: 
 			best_score = points
 			best_courses = allcourses
@@ -66,6 +72,9 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 				# accept the worst solution
 				print("Accepted worst solution, score:", newpoints)
 
+				# # append score to list
+				# scores.append(newpoints)
+
 				# cool system
 				temperature *= 1 - cooling_rate
 
@@ -79,6 +88,9 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 				newpoints = calcScore(allcourses, student_list, chambers)
 				# print("      Back to normal?: ", newpoints)
 
+				# # append score to list
+				# scores.append(newpoints)
+
 				# if back-swap didn't go well 
 				if points != newpoints:
 
@@ -88,6 +100,7 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 					break
 
 	print("bestscore:", best_score)
+	# print(scores)
 
-	return best_score, best_courses, best_student_list, best_chambers
+	return best_score, best_courses, best_student_list, best_chambers, scores
 
