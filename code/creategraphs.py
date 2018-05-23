@@ -14,6 +14,7 @@
 import csv 
 import scorefunction
 import hillclimber
+import matplotlib.pyplot as plt
 import hillclimberstudents
 from scorefunction import calcScore
 from hillclimberstudents import hillclimbStudent
@@ -39,7 +40,14 @@ for i in range(1000):
 	# add score to array
 	scores.append(score)
 
-# write all scores to csv
-with open("hillclimberstudent.csv", "w") as resultFile:
-	wr = csv.writer(resultFile, dialect = 'excel')
-	wr.writerow(scores)
+# plot scores
+plt.plot(range(0, len(scores)), scores)
+plt.ylabel("Score")
+plt.xlabel("Amount of swaps")
+plt.title("Hillclimber roomlocks")
+plt.show()
+
+# # write all scores to csv
+# with open("hillclimberstudent.csv", "w") as resultFile:
+# 	wr = csv.writer(resultFile, dialect = 'excel')
+# 	wr.writerow(scores)
