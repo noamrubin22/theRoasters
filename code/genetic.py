@@ -1,9 +1,9 @@
-import main
+# import main
 import csv
-from main import createSchedule
+# from main import createSchedule
 from scorefunction import calcScore
 from printschedule import print_schedule
-from generateschedule import createEmptySchedule
+from generateschedule import createEmptySchedule, createSchedule
 import random
 
 
@@ -53,11 +53,14 @@ def selection(population):
     population = sorted(population, key=fitness, reverse=True)
 
     # set max and range 
-    probabilty = 10
+    probability = 10
     parents_max = 10
 
+    # iterate over parents
+    for i in range(parents_max):
+
         # create matingpool
-        for j in range(multiply):
+        for j in range(probability):
 
             # fittest schedules have highest probabilities 
             scores.append(calcScore(population[i][0][0], population[i][0][1], population[i][0][2]))
