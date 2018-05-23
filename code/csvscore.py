@@ -10,7 +10,6 @@ if 'Reflectie op de digitale cultuur lecture' in schedule.values:
 	print("Yes")
 
 
-
 roomlocks = []
 roomnames = []
 timelocks = []

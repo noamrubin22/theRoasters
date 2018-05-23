@@ -12,8 +12,10 @@
 
 import random
 import math
+import re
 from classes import Students, Room, Course
 from parse import *
+
 
 def createRooms():
 	""" Creates lists for rooms """
@@ -214,7 +216,7 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 		room, timelock = translateRoomlock(pickroomlock)
 
 		# add activity to schedule at roomlock
-		schedule[pickroomlock] = course.name + " " + typeClass + str(activity)
+		schedule[pickroomlock] = course.name + " " + typeClass + " " + str(activity)
 
 		#* determine group number *#
 
@@ -234,6 +236,7 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 		# update room class with new activity
 		room, timelock = translateRoomlock(pickroomlock)
 		chambers[room].add_booking(timelock)
+
 
 		# update student class with new activity
 		if typeClass == "lecture":
@@ -293,3 +296,72 @@ def createSchedule():
 	complementCourse(allcourses, schedule, chambers, student_list)
 
 	return chambers, allcourses, student_list, schedule
+
+def updateClassesFromSchedule(schedule):
+	#* update classes to new schedule *#
+
+	# print(schedule)
+
+	allcourses = createCourses()
+	chambers = createRooms()
+	student_list = createStudents()
+	allcourses, student_list = createStudentGroups(allcourses, student_list)
+
+	for roomlock, activity in schedule.items():
+		# print(activity)
+		if activity is not None:
+
+			if "lecture" in activity:
+				group = 0
+				typeClass = "lecture"
+
+			if re.search('seminar (\d+)', activity):
+				gr = re.search('seminar (\d+)', activity)
+				group = int(gr.group(1))
+				typeClass = "seminar"
+
+			if re.search('practical (\d+)', activity):
+				gr = re.search('practical (\d+)', activity)
+				group = int(gr.group(1))
+				typeClass = "practical"
+
+			
+
+			for course in allcourses:
+				if course.name in activity:
+					coursename = course.name
+
+				# update course class with new activity
+					course.updateSchedule(roomlock, (coursename + " " + typeClass), group)
+
+					# update room class with new activity
+					room, timelock = translateRoomlock(roomlock)
+					chambers[room].add_booking(timelock)
+
+					# print(course.practicalgroups)
+					# print(course.name)
+					# print(course.students)
+
+					# update student class with new activity
+					if typeClass == "lecture":
+						for student in student_list:
+							if course.name in student.courses:
+								student.updateStudentSchedule(timelock, course.name)
+
+					if typeClass == "seminar":
+						for student in student_list:
+							if course.name in student.courses:
+								if student.last_name in course.seminargroups[group]:
+									student.updateStudentSchedule(timelock, course.name)
+
+					if typeClass == "practical":
+						for student in student_list:
+							if course.name in student.courses:
+								if student.last_name in course.practicalgroups[group]:
+									student.updateStudentSchedule(timelock, course.name)
+
+	return allcourses, student_list, chambers				
+
+
+
+
