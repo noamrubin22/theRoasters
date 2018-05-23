@@ -3,6 +3,14 @@ from generateschedule import createSchedule, translateRoomlock
 
 chambers, allcourses, student_list, schedule = createSchedule()
 
+print(schedule)
+# print(schedule[5])
+
+if 'Reflectie op de digitale cultuur lecture' in schedule.values:
+	print("Yes")
+
+
+
 roomlocks = []
 roomnames = []
 timelocks = []
@@ -44,11 +52,11 @@ for roomlock in schedule:
 			elif typeclass == 1:
 				students = course.seminargroups[group]
 			elif typeclass == 2:
-				print(course.name)
-				print(course.practicalgroups)
-				print(group)
+				# print(course.name)
+				# print(course.practicalgroups)
+				# print(group)
 				students = course.practicalgroups[group]
-	print(students)
+	# print(students)
 
 
 	coursenames.append(coursename)
