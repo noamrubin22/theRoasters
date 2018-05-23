@@ -4,8 +4,8 @@
 # Names: Tessa Ridderikhof, Najib el Moussaoui 	  	#
 # 		 & Noam Rubin							  	#
 #												  	#
-# This code consists of function that are needed to	#
-# generate an empty schedule and complement it   	#
+# This code consists of functions that are needed   #
+# to generate an empty schedule and complement it   #
 # with courses, students and rooms.   				#
 # 												  	#
 #####################################################
@@ -48,6 +48,7 @@ def createRooms():
 
 	return chambers
 
+
 def createCourses():
 	""" Substracts course information and put into list """
 
@@ -56,6 +57,8 @@ def createCourses():
 
 	# load courses as classes in allcourses-list
 	with open('../data/vakken.csv', 'rt') as coursefile:
+
+		# clean text
 		courses = csv.reader(coursefile)
 		for row in courses:
 			for text in row:
@@ -184,8 +187,13 @@ def translateRoomlock(roomlock):
 	return room, timelock
 
 
+<<<<<<< HEAD
 def scheduleClass(course, typeClass, pickroomlock = None, schedule, chambers, student_list):
 	"""" Schedules """
+=======
+def scheduleClass(course, typeClass, schedule, chambers, student_list):
+	"""" Schedules activities of a course """
+>>>>>>> aa2c9024ed0decb77b7ab0156431da0195817c84
 
 	# group activities by type
 	if typeClass == "lecture":
@@ -269,11 +277,25 @@ def complementCourse(allcourses, schedule, chambers, student_list):
 	return allcourses, schedule, chambers, student_list
 
 def createSchedule():
+	""" Creates a schedule """
+
+	# creates list available rooms
 	chambers = createRooms()
+
+	# creates list of all courses
 	allcourses = createCourses()
+
+	# creates student_list
 	student_list = createStudents()
+
+	# create empty schedule with roomlocks as keys
 	schedule = createEmptySchedule()
+
+	# divide students over courses-groups
 	allcourses, student_list = createStudentGroups(allcourses, student_list)
+
+	# complement schedule with activities from courses
 	complementCourse(allcourses, schedule, chambers, student_list)
+
 	return chambers, allcourses, student_list, schedule
 

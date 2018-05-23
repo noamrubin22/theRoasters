@@ -20,8 +20,7 @@ from scorefunction import calcScore
 
 
 def swapStudents(chambers, allcourses, student_list, schedule, swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac2 = None, student1 = None, student2 = None):
-	
-	#* swap 2 students of the seminar- or practicalgroups of a random course *#
+	""" Swaps between seminar- or practicalgroups of two (random) students in a (random) course """
 
 	if swapcourse == None:
 
@@ -50,6 +49,7 @@ def swapStudents(chambers, allcourses, student_list, schedule, swapcourse = None
 		seminargroup2 = allcourses[swapcourse].seminargroups[sem2]
 
 		if student1 == None or student2 == None:
+
 			# pick random student from seminargroup
 			student1 = random.randint(0, len(seminargroup1) - 1)
 			student2 = random.randint(0, len(seminargroup2) - 1)
@@ -119,7 +119,7 @@ def swapStudents(chambers, allcourses, student_list, schedule, swapcourse = None
 
 
 def hillclimbStudent(times, chambers, allcourses, student_list, schedule):
-	#* perform student swap and change back if it does not lead to a better score *#
+	""" Performs student swap and changes back if it does not lead to a better score """
 	
 	# perform swap a given number of times
 	for i in range(0, times):
