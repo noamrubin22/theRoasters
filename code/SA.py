@@ -21,12 +21,22 @@ from hillclimber import swapCourse
 def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_list, schedule):
 	""" Searches for the optimal score by using a coolingscheme """
 
+	# intialize best_score counter
+	best_score = 0
+
 	# loop until system has cooled
 	while temperature > 1:
 
 		# calculate score before swap
 		points = calcScore(allcourses, student_list, chambers)
 		# print("Before swap: ", points)
+
+		# keep track of the best score and lists
+		if points > best_score: 
+			best_score = points
+			best_courses = allcourses
+			best_student_list = student_list
+			best_chambers = chambers
 
 		# perform swap
 		print(points)
@@ -36,11 +46,13 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 		newpoints = calcScore(allcourses, student_list, chambers)
 		# print("   New score: ", newpoints)
 
-		# # keep track of best score
-		# if (newpoints > best_score):
-		# 	best_score = newpoints
-		# 	print("SA:", best_score)
-			
+		# keep track of best score and lists
+		if newpoints > best_score:
+			best_score = newpoints
+			best_courses = allcourses
+			best_student_list = student_list
+			best_chambers = chambers
+
 		# if new score is worst 
 		if newpoints < points:
 
@@ -73,5 +85,8 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 					print(course2, course1)
 					print("ERROR")
 					break
-	return
+
+	print("bestscore:", best_score)
+
+	return best_score, best_courses, best_student_list, best_chambers
 
