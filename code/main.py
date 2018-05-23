@@ -1,4 +1,4 @@
-##################################################### 
+#####################################################
 # Heuristieken: Lectures & Lesroosters			  	#
 #												  	#
 # Names: Tessa Ridderikhof, Najib el Moussaoui 	  	#
@@ -28,21 +28,25 @@ chambers, allcourses, student_list, schedule = createSchedule()
 
 # print original score
 originalscore = calcScore(allcourses, student_list, chambers)
-print("Started with: ", originalscore)
+# print("Started with: ", originalscore)
 
 # # perform hillclimber for roomlocks
 # hillclimbRoomlocks(1000, chambers, allcourses, student_list, schedule)
 
 # show intermediate score
 intermediate_score = calcScore(allcourses, student_list, chambers)
-print("After roomlock hillclimber:", intermediate_score)
+# print("After roomlock hillclimber:", intermediate_score)
 
 # # perform hillclimber for students
 # hillclimbStudent(1000, chambers, allcourses, student_list, schedule)
 
-# calculate and show final score 
+# calculate and show final score
 endscore = calcScore(allcourses, student_list, chambers)
 
-print("Final score:", endscore)
+# print("Final score:", endscore)
 
+<<<<<<< HEAD
 simulatedAnnealing(1000000, 0.001, chambers, allcourses, student_list, schedule)
+=======
+# simulatedAnnealing(100000, 0.002, chambers, allcourses, student_list, schedule)
+>>>>>>> 2110611e9824e8b75acf0a43ae94401b2015bbea

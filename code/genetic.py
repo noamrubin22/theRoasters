@@ -1,72 +1,96 @@
-from generateschedule import createSchedule
+import main
+import csv
+from main import createSchedule
+from scorefunction import calcScore
+from printschedule import print_schedule
+from generateschedule import createEmptySchedule
+import random
+
 
 def initial_population(amount):
     """ Creates an intial population and returns the parents """
 
     # create empty list 
     population = []
-    parents = []
-
-    # set maximum parents
-    parents_max = 10
+    scores = []
 
     for i in range(amount):
-
-        timetable_info_info = []
+        timetable_info = []
         score_info = []
 
         # create a new random schedule
-        createSchedule()
+        chambers, allcourses, student_list, schedule = createSchedule()
 
-        # add all information about this specific schedule to an array
-        score_info.append(allcourses, student_list, chambers)
+        # add all information about this specific schedule
+        score_info.append(allcourses)
+        score_info.append(student_list)
+        score_info.append(chambers)
 
-        # add scorinformation and schedule 
+        # add individual schedule-info to timetable array
         timetable_info.append(score_info)
         timetable_info.append(schedule)
 
-        # add the array of information about this schedule to the timetable_info array
+        # add the array with the indivudual timetable-info to the population
         population.append(timetable_info)
 
-    return timetable_info
+    return population
 
-def selection(timetable_info):
+
+def selection(population):
     """ Calculates the fitness of an individual by returning the schedule score """
 
-    # calculates the fitness of an individual 
-    calcScore(timetable_info[0])
+    mating_pool = []
+    scores = []
 
-    # sort the population array by score
-    population = sorted(population, key=fitness_score, reverse=True)
+    def fitness(timetable_info):
+        """ Calculates the fitness of an individual """
 
-    for i in range(parents_max):
+        return calcScore(timetable_info[0][0],
+                         timetable_info[0][1],
+                         timetable_info[0][2])
 
-        # choose the fittest individuals 
-        parents.append(population[i])  # now only top 10, later have the amount of schedules pushed be based on score
-  
-    return parents
+    # choose the fittest individuals 
+    population = sorted(population, key=fitness, reverse=True)
+
+    # set max and range 
+    probabilty = 10
+    parents_max = 10
+
+        # create matingpool
+        for j in range(multiply):
+
+            # fittest schedules have highest probabilities 
+            scores.append(calcScore(population[i][0][0], population[i][0][1], population[i][0][2]))
+            mating_pool.append(population[i])
+        
+        # decrease probability 
+        probability -= 1
+
+    print(scores)
+
+    return mating_pool
 
 
-def cross_over(parents, new_population):
-    """ Creates offspring by exchanging the genes of parents among themselves """
+def cross_over(mating_pool, offspring):
+    """ Creates offspring by exchanging genes from mating pool """
+    
+    # create empty list for children
+    children = []
+
+    # iterate over offspring
+    for i in range(offspring):
+
+        # create an empty schedule
+        schedule = createEmptySchedule()
+        
+        mother = mating_pool[random.randint(0, len(mating_pool))]
+        father = mating_pool[random.randint(0, len(mating_pool))]
+
+    print(mother, father)
 
 
-    createSchedule()
 
-    # choose random parent 
-    random_parent = random.randint(0, len(parents))
+mating_pool = selection(initial_population(100))
 
-    # choose random roomlock
-    pickroomlock = random.randint(0, 139)
+cross_over(mating_pool)
 
-    # until new population does not exist
-    while new_population > 0:
-
-        # choose random parent
-        parent = [random.randint(0, len(parents))]
-        pickroomlock = random.randint(0, 139)
-
-        ...
-
-        # decrease amount new population
-        new_population -= 1
