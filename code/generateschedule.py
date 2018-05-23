@@ -1,4 +1,4 @@
-##################################################### 
+#####################################################
 # Heuristieken: Lectures & Lesroosters			  	#
 #												  	#
 # Names: Tessa Ridderikhof, Najib el Moussaoui 	  	#
@@ -264,7 +264,7 @@ def complementCourse(allcourses, schedule, chambers, student_list):
 	# for each course
 	for course in allcourses:
 
-		# schedule activities 
+		# schedule activities
 		scheduleClass(course, "lecture", schedule, chambers, student_list)
 		scheduleClass(course, "seminar", schedule, chambers, student_list)
 		scheduleClass(course, "practical", schedule, chambers, student_list)
@@ -293,4 +293,3 @@ def createSchedule():
 	complementCourse(allcourses, schedule, chambers, student_list)
 
 	return chambers, allcourses, student_list, schedule
-
