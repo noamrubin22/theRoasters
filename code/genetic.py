@@ -1,7 +1,11 @@
 import main
 import csv
-from main import prepareData, complementCourse
+from main import createSchedule
 from scorefunction import calcScore
+from printschedule import print_schedule
+from generateschedule import createEmptySchedule
+import random
+
 
 def initial_population(amount):
 
@@ -15,8 +19,8 @@ def initial_population(amount):
         score_info = []
 
         # create a new random schedule
-        chambers, allcourses, student_list, schedule = prepareData()
-        complementCourse(allcourses, schedule, chambers, student_list)
+        chambers, allcourses, student_list, schedule = createSchedule()
+
 
         # add all information about this specific schedule to an array
         score_info.append(allcourses)
@@ -39,29 +43,47 @@ def initial_population(amount):
 
     # print(calcScore(population[0][0][0], population[0][0][1], population[0][0][2]))
 
+    multiply = 10
     for i in range(parents_max):
-        scores.append(calcScore(population[i][0][0], population[i][0][1], population[i][0][2]))
-        parents.append(population[i])
+        for j in range(multiply):
+            scores.append(calcScore(population[i][0][0], population[i][0][1], population[i][0][2]))
+            parents.append(population[i])
+        multiply -= 1
 
+    print(len(parents))
     # now only top 10, later have the amount of schedules pushed be based on score
-    return scores # parents <<< uncomment either a) scores or b) parents to return a) top 10 scores b) top 10 schedules
+    return parents # <<< uncomment either a) scores or b) parents to return a) top 10 scores b) top 10 schedules
 
-print("Initial population: ", initial_population(1000))
 
-# def cross_over(parents, new_population):
-#
-#     parents = initial_population(10)
-#     chambers, allcourses, student_list, schedule = prepareData()
-#
-#
-#     random_parent = random.randint(0, len(parents))
-#     pickroomlock = random.randint(0, 139)
-#
-#     while new_population > 0:
-#
-#         parent = [random.randint(0, len(parents))]
-#         pickroomlock = random.randint(0, 139)
-#
-#         ...
-#
-#         new_population -= 1
+def cross_over(new_population):
+
+    parents = initial_population(10)
+    children = []
+
+    # print(parents[0][1])
+    parent = parents[random.randint(0, len(parents))])
+
+    for i in range(new_population):
+        schedule = createEmptySchedule()
+
+
+
+
+
+
+cross_over(2)
+
+
+
+
+    # random_parent = random.randint(0, len(parents))
+    # pickroomlock = random.randint(0, 139)
+    #
+    # while new_population > 0:
+    #
+    #     parent = [random.randint(0, len(parents))]
+    #     pickroomlock = random.randint(0, 139)
+    #
+    #     ...
+    #
+    #     new_population -= 1
