@@ -184,7 +184,7 @@ def translateRoomlock(roomlock):
 	return room, timelock
 
 
-def scheduleClass(course, typeClass, schedule, chambers, student_list):
+def scheduleClass(course, typeClass, pickroomlock = None, schedule, chambers, student_list):
 	"""" Schedules """
 
 	# group activities by type
