@@ -1,12 +1,22 @@
+##################################################### 
+# Heuristieken: Lectures & Lesroosters			  	#
+#												  	#
+# Names: Tessa Ridderikhof, Najib el Moussaoui 	  	#
+# 		 & Noam Rubin							  	#
+#												  	#
+# This code consists of functions that are needed   #
+# to generate an empty schedule and complement it   #
+# with courses, students and rooms.   				#
+# 												  	#
+#####################################################
+
 import random
 import math
 from classes import Students, Room, Course
 from parse import *
 
 def createRooms():
-	""" Creates lists for rooms, students and courses and schedule dict """
-
-	#* substract room information *#
+	""" Creates lists for rooms """
 
 	# create empty list
 	chambers = []
@@ -39,13 +49,15 @@ def createRooms():
 	return chambers
 
 def createCourses():
-	#* substract course information *#
+	""" Substracts course information and put into list """
 
 	# create list for courses
 	allcourses = []
 
 	# load courses as classes in allcourses-list
 	with open('../data/vakken.csv', 'rt') as coursefile:
+
+		# clean text
 		courses = csv.reader(coursefile)
 		for row in courses:
 			for text in row:
@@ -79,34 +91,43 @@ def createCourses():
 	return allcourses
 
 def createStudents():
-	# import student classes
+	""" Creates a list with students """
+
+	# create empty list
 	student_list = []
 
+	# import student classes
 	student_list = createStudentClass()
 
 	return student_list
 
 def createEmptySchedule():
+	""" Prepare dictionary that represents schedule """
+
 	# create empty dictionary with all room-timelock combinations (roomlocks) as keys
 	roomlocks = list(range(0, 140))
 	schedule = dict.fromkeys(roomlocks)
-		#* prepare dict that represents schedule *#
 
 	return schedule
 
-
 def createStudentGroups(allcourses, student_list):
+	"""" Divides students into practical and seminar groups """
+
 	# for each course
 	for course in allcourses:
+
 		# check all students
 		for student in student_list:
+
 			# if student is attenting course
 			if course.name in student.courses:
+
 				# add student to course class
 				course.addStudent(student.last_name)
 
 		# if course has seminars
 		if course.seminars > 0:
+
 			# count and add amount to course class
 			numofseminars = math.ceil(course.students/course.maxstudentssem)
 			course.addSeminar(numofseminars)
@@ -166,7 +187,7 @@ def translateRoomlock(roomlock):
 
 
 def scheduleClass(course, typeClass, schedule, chambers, student_list):
-	"""" Schedules """
+	"""" Schedules activities of a course """
 
 	# group activities by type
 	if typeClass == "lecture":
@@ -176,60 +197,20 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 	elif typeClass == "practical":
 		activity = course.practicals
 
-	# intiliaze counter to keep track of tempts to schedule lecture
-	counter = 0
-
-
 	# untill no activities are left
 	while activity > 0:
 
 		# choose random roomlock
 		pickroomlock = random.randint(0, 139)
+
 		# until an unoccupied roomlock is found
 		while schedule[pickroomlock] is not None:
+
 			# pick new random roomlock
 			pickroomlock = random.randint(0, 139)
 
 		# if room is free, substract the room and timelock
 		room, timelock = translateRoomlock(pickroomlock)
-
-		# print("free roomlock chosen")
-		# print(room, timelock)
-		# for lectures
-		# if typeClass == "lecture":
-
-		# 	# until an unoccupied roomlock is found with enough capacity (with a max of 20 times)
-		# 	while (course.students > int(chambers[room].capacity)) or (schedule[pickroomlock] is not None):
-
-		# 		# pick new random roomlock
-		# 		pickroomlock = random.randint(0, 139)
-
-		# 		# increase counter with every tempt
-		# 		counter += 1
-
-		# 		# substract room and timelock
-		# 		room, timelock = translateRoomlock(pickroomlock)
-
-		# 		# print(room,  timelock)
-		# 		print(counter)
-		# 		print("lectures stuck")
-
-		# 		# start over if too many temps are being done
-		# 		if counter > 50:
-		# 			return 1
-
-		# # same for seminars and practicals
-		# elif typeClass == "seminar":
-		# 	while course.maxstudentssem > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
-		# 		pickroomlock = random.randint(0, 139)
-		# 		room, timelock = translateRoomlock(pickroomlock)
-		# 		print("stuck with seminars")
-
-		# elif typeClass == "practical":
-		# 	while course.maxstudentsprac > int(chambers[room].capacity) or schedule[pickroomlock] is not None:
-		# 		pickroomlock = random.randint(0, 139)
-		# 		room, timelock = translateRoomlock(pickroomlock)
-		# 		print("stuck with practica")
 
 		# add activity to schedule at roomlock
 		schedule[pickroomlock] = course.name + " " + typeClass
@@ -274,29 +255,41 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 		# decrease activity counter
 		activity -= 1
 
-
 	return
 
 def complementCourse(allcourses, schedule, chambers, student_list):
+	""" Schedules activities for each course into schedule """
 
-	#* add studentnames, amount of seminars and practicals to course class *#
-	# another counter for check
+	# for each course
 	for course in allcourses:
 
-		# schedule lectures while course has still lectures left to schedule
+		# schedule activities 
 		scheduleClass(course, "lecture", schedule, chambers, student_list)
 		scheduleClass(course, "seminar", schedule, chambers, student_list)
 		scheduleClass(course, "practical", schedule, chambers, student_list)
 
-
-		# print(amount_of_tries)
-		# print(allcourses[1].studentnames)
-
-		# print(schedule) # heel schedule
-		# print(student_list[0].schedule)
-		# print(allcourses[4].activities)
-		# print(chambers)
-
-
 	return allcourses, schedule, chambers, student_list
+
+def createSchedule():
+	""" Creates a schedule """
+
+	# creates list available rooms
+	chambers = createRooms()
+
+	# creates list of all courses
+	allcourses = createCourses()
+
+	# creates student_list
+	student_list = createStudents()
+
+	# create empty schedule with roomlocks as keys
+	schedule = createEmptySchedule()
+
+	# divide students over courses-groups
+	allcourses, student_list = createStudentGroups(allcourses, student_list)
+
+	# complement schedule with activities from courses
+	complementCourse(allcourses, schedule, chambers, student_list)
+
+	return chambers, allcourses, student_list, schedule
 

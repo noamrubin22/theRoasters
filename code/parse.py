@@ -1,3 +1,14 @@
+##################################################### 
+# Heuristieken: Lectures & Lesroosters              #
+#                                                   #
+# Names: Tessa Ridderikhof, Najib el Moussaoui      #
+#        & Noam Rubin                               #
+#                                                   #
+# This script parses data from a csv file and       #
+# puts it into lists                                #
+#                                                   #
+#####################################################
+
 import csv
 from classes import Students
 
@@ -39,8 +50,9 @@ def gimme_students():
     return student_list;
 
 def createStudentClass():
-    """ Adds features of student class per student """
+    """ Adds features of student class per student and returns student-list """
 
+    # create empty list
     student_list = []
 
     # parse csv file with students + information
@@ -56,8 +68,6 @@ def createStudentClass():
 
         # create list for courses
         courses = []
-
-        # dict1_values = {k*2:v for (k,v) in dict1.items()}
 
         # extract courses from students and add to list
         if new_data[i]['course_1'] is not '':
