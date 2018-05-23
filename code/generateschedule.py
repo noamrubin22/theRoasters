@@ -1,4 +1,4 @@
-##################################################### 
+#####################################################
 # Heuristieken: Lectures & Lesroosters			  	#
 #												  	#
 # Names: Tessa Ridderikhof, Najib el Moussaoui 	  	#
@@ -213,7 +213,7 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 		room, timelock = translateRoomlock(pickroomlock)
 
 		# add activity to schedule at roomlock
-		schedule[pickroomlock] = course.name + " " + typeClass
+		schedule[pickroomlock] = course.name + " " + typeClass + str(activity)
 
 		#* determine group number *#
 
@@ -263,7 +263,7 @@ def complementCourse(allcourses, schedule, chambers, student_list):
 	# for each course
 	for course in allcourses:
 
-		# schedule activities 
+		# schedule activities
 		scheduleClass(course, "lecture", schedule, chambers, student_list)
 		scheduleClass(course, "seminar", schedule, chambers, student_list)
 		scheduleClass(course, "practical", schedule, chambers, student_list)
@@ -292,4 +292,3 @@ def createSchedule():
 	complementCourse(allcourses, schedule, chambers, student_list)
 
 	return chambers, allcourses, student_list, schedule
-

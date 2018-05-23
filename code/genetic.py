@@ -2,7 +2,6 @@ import main
 import csv
 from main import createSchedule
 from scorefunction import calcScore
-from printschedule import print_schedule
 from generateschedule import createEmptySchedule
 import random
 
@@ -65,58 +64,72 @@ def selection(population):
         # decrease probability
         probability -= 1
 
-    print(scores)
-
     return mating_pool
 
 
-def cross_over(mating_pool, offspring):
-    """ Creates offspring from mating pool by exchanging genes """
+def cross_over(mating_pool, amount_of_offspring):
+    """ Creates amount_of_offspring from mating pool by exchanging genes """
 
     # create empty list for children
     children = []
 
-    for i in range(offspring):
+    # amount of activities
+    activities = 125
+
+    for i in range(amount_of_offspring):
+
+        # amount of activities
+        activities = 125
+
+        placed_courses = []
 
         # first create an empty schedule
         schedule = createEmptySchedule()
-
-        print(schedule)
+        placed_courses = []
 
         # get a mother and father from the mating pool
+        parents = []
         mother = mating_pool[random.randint(0, len(mating_pool))]
         father = mating_pool[random.randint(0, len(mating_pool))]
+        parents.append(mother)
+        parents.append(father)
+
+        while activities > 0:
+
+            if activities % 2 == 0:
+                parent_schedule = parents[0][1]  # >>> [[allcourses, chambers, studentlist], schedule]
+            else:
+                parent_schedule = parents[1][1]
+
+            random_course = random.randint(0, len(parent_schedule) - 1)
 
 
+            # check if roomlock is free
+            while parent_schedule[random_course] is None:
+                random_course = random.randint(0, len(parent_schedule) - 1)
+            while schedule[random_course] is not None:
+                random_course = random.randint(0, len(parent_schedule) - 1)
+
+            placed = False
+            courses = []
+
+            for key, value in schedule.items():
+                courses.append(value)
+
+            while parent_schedule[random_course] in courses:
+                random_course = random.randint(0, len(parent_schedule) - 1)
+
+            schedule[random_course] = parent_schedule[random_course]
+
+            activities -= 1
 
 
+        children.append(schedule)
 
+    return children
 
+initial = initial_population(10)
 
-mating_pool = selection(initial_population(100))
+selectie = selection(initial)
 
-
-#     for i in range(new_population):
-#         schedule = createEmptySchedule()
-#
-#
-#
-#
-#
-#
-# cross_over(2)
-#
-#
-#
-#
-#     # random_parent = random.randint(0, len(mating_pool))
-#     pickroomlock = random.randint(0, 139)
-#
-#     while new_population > 0:
-#
-#         parent = [random.randint(0, len(mating_pool))]
-#         pickroomlock = random.randint(0, 139)
-#
-#         ...
-#
-#         new_population -= 1
+print("CHILD ===== ", cross_over(selectie, 1))
