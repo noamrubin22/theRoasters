@@ -48,6 +48,7 @@ def createRooms():
 
 	return chambers
 
+
 def createCourses():
 	""" Substracts course information and put into list """
 

@@ -45,4 +45,4 @@ endscore = calcScore(allcourses, student_list, chambers)
 
 print("Final score:", endscore)
 
-simulatedAnnealing(100000, 0.002, chambers, allcourses, student_list, schedule)
+simulatedAnnealing(1000000, 0.001, chambers, allcourses, student_list, schedule)
