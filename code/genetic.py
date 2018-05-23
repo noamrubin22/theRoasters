@@ -1,13 +1,20 @@
-import main
+# import main
 import csv
-from main import createSchedule
+# from main import createSchedule
 from scorefunction import calcScore
+<<<<<<< HEAD
 from generateschedule import createEmptySchedule
+=======
+from printschedule import print_schedule
+from generateschedule import createEmptySchedule, createSchedule
+>>>>>>> aa2c9024ed0decb77b7ab0156431da0195817c84
 import random
 
 
 def initial_population(amount):
+    """ Creates an intial population and returns the parents """
 
+    # create empty list 
     population = []
     scores = []
 
@@ -27,7 +34,11 @@ def initial_population(amount):
         timetable_info.append(score_info)
         timetable_info.append(schedule)
 
+<<<<<<< HEAD
         # add the array with individual timetable-info to the population
+=======
+        # add the array with the indivudual timetable-info to the population
+>>>>>>> aa2c9024ed0decb77b7ab0156431da0195817c84
         population.append(timetable_info)
 
     return population
@@ -46,6 +57,7 @@ def selection(population):
                          timetable_info[0][1],
                          timetable_info[0][2])
 
+<<<<<<< HEAD
     # choose the fittest individuals
     population = sorted(population, key=fitness, reverse=True)
 
@@ -60,6 +72,27 @@ def selection(population):
             # fittest schedules have highest probability
             scores.append(calcScore(population[i][0][0], population[i][0][1], population[i][0][2]))
             mating_pool.append(population[i])
+=======
+    # choose the fittest individuals 
+    population = sorted(population, key=fitness, reverse=True)
+
+    # set max and range 
+    probability = 10
+    parents_max = 10
+
+    # iterate over parents
+    for i in range(parents_max):
+
+        # create matingpool
+        for j in range(probability):
+
+            # fittest schedules have highest probabilities 
+            scores.append(calcScore(population[i][0][0], population[i][0][1], population[i][0][2]))
+            mating_pool.append(population[i])
+        
+        # decrease probability 
+        probability -= 1
+>>>>>>> aa2c9024ed0decb77b7ab0156431da0195817c84
 
         # decrease probability
         probability -= 1
@@ -67,6 +100,7 @@ def selection(population):
     return mating_pool
 
 
+<<<<<<< HEAD
 def cross_over(mating_pool, amount_of_offspring):
     """ Creates amount_of_offspring from mating pool by exchanging genes """
 
@@ -82,8 +116,18 @@ def cross_over(mating_pool, amount_of_offspring):
         activities = 125
 
         placed_courses = []
+=======
+def cross_over(mating_pool, offspring):
+    """ Creates offspring by exchanging genes from mating pool """
+    
+    # create empty list for children
+    children = []
 
-        # first create an empty schedule
+    # iterate over offspring
+    for i in range(offspring):
+>>>>>>> aa2c9024ed0decb77b7ab0156431da0195817c84
+
+        # create an empty schedule
         schedule = createEmptySchedule()
         placed_courses = []
 
@@ -132,4 +176,15 @@ initial = initial_population(10)
 
 selectie = selection(initial)
 
+<<<<<<< HEAD
 print("CHILD ===== ", cross_over(selectie, 1))
+=======
+    print(mother, father)
+
+
+
+mating_pool = selection(initial_population(100))
+
+cross_over(mating_pool)
+
+>>>>>>> aa2c9024ed0decb77b7ab0156431da0195817c84
