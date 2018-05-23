@@ -4,9 +4,9 @@ from main import createSchedule
 from scorefunction import calcScore
 
 
-def print_schedule(chambers, allcourses, student_list, schedule, amount):
+def print_schedule(schedule):
 
-    schedule_location = "visualisation/schedule{}.csv".format(amount)
+    schedule_location = "visualisation/schedule.csv"
     schedule_file = open(schedule_location, 'w')
 
     writer = csv.writer(schedule_file)

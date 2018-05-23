@@ -1,4 +1,4 @@
-##################################################### 
+#####################################################
 # Heuristieken: Lectures & Lesroosters			  	#
 #												  	#
 # Names: Tessa Ridderikhof, Najib el Moussaoui 	  	#
@@ -30,7 +30,7 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 
 		# choose random course from courselist
 		course1 = random.randint(0, len(allcourses) - 1)
-		
+
 	# same
 	if course2 == None:
 		course2 = random.randint(0, len(allcourses) - 1)
@@ -61,12 +61,12 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 	room1, timelock1 = translateRoomlock(roomlock1)
 	room2, timelock2 = translateRoomlock(roomlock2)
 
-	# store activity-groups 
+	# store activity-groups
 	coursegroup1 = allcourses[course1].activities[activity1][2]
 	coursegroup2 = allcourses[course2].activities[activity2][2]
 
-	
-	#* change schedule of individual students*# 
+
+	#* change schedule of individual students*#
 
 	# if first coursegroup has only one group (lecture)
 	if coursegroup1 == 0:
@@ -97,7 +97,7 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 
 						# change individual schedule with swapped course
 						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
-				
+
 				# if course has practical
 				elif allcourses[course1].practicals > 0:
 
@@ -136,7 +136,7 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 	schedule[roomlock1] = schedulecontent2
 	schedule[roomlock2] = schedulecontent1
 
-	return course1, activity1, course2, activity2
+	return course1, activity1, course2, activity2, schedule
 
 
 def hillclimbRoomlocks(times, chambers, allcourses, student_list, schedule):
@@ -156,7 +156,7 @@ def hillclimbRoomlocks(times, chambers, allcourses, student_list, schedule):
 
 		# if new score lower than old score
 		if newpoints < points:
-			
+
 			# swap back
 			swapCourse(chambers, allcourses, student_list, schedule, course1, activity1, course2, activity2)
 

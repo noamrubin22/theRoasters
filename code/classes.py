@@ -1,4 +1,4 @@
-##################################################### 
+#####################################################
 # Heuristieken: Lectures & Lesroosters			  	#
 #												  	#
 # Names: Tessa Ridderikhof, Najib el Moussaoui 	  	#
@@ -24,7 +24,7 @@ class Students:
 
 	def add_course(self, course):
 		""" Adds course to courselist """
-	
+
 		self.courses.append(self.course)
 
 
@@ -50,7 +50,7 @@ class Students:
 				activity[0] = newtimelock
 				# lelijke fix: dit is voor dubbel resetten om een of andere reden
 				break
-
+				
 	# returns name and student- ID
 	def __str__(self):
 	    return "Name: %s %s, ID: %s" % (self.first_name, self.last_name, self.student_ID)
@@ -147,13 +147,13 @@ class Course:
 
 	def updateSchedule(self, roomlock, activity, group):
 		""" Adds activity with features to activity- list schedule  """
-		
+
 		self.activities.append([roomlock, activity, group])
 
 	def changeSchedule(self, newroomlock, schedulespot):
 		""" Changes roomlock of activity """
 
-		self.activities[schedulespot][0] = newroomlock 
+		self.activities[schedulespot][0] = newroomlock
 
 	# returns amount of lectures, seminars and pracitcals
 	def __str__(self):
