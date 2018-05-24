@@ -27,8 +27,14 @@ def genetic(initial, offspring, generations, mutation):
         print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
 
     fittest = selection(children)
-    print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
-    print("schedule: ", fittest[0][1])
+    allcourses = fittest[0][0][0]
+    chambers = fittest[0][0][1]
+    student_list = fittest[0][0][2]
+    schedule = fittest[0][1]
+    print("fittest: ", calcScore(allcourses, student_list, chambers))
+    print("schedule: ", schedule)
+    print("Start hillclimbing on fittest schedule...")
+    hillclimbRoomlocks2(1000, chambers, allcourses, student_list, schedule)
 
     # print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
 
@@ -49,8 +55,8 @@ def initial_population(amount):
         # create a new random schedule
         chambers, allcourses, student_list, schedule = createSchedule()
 
-        print("Hillclimbing on schedule {}...".format(i))
-        hillclimbRoomlocks2(20, chambers, allcourses, student_list, schedule)
+        # print("Hillclimbing on schedule {}...".format(i))
+        # hillclimbRoomlocks2(40, chambers, allcourses, student_list, schedule)
 
 
         # add all information about this specific schedule
@@ -64,9 +70,6 @@ def initial_population(amount):
 
         # add the array with individual timetable-info to the population
         population.append(timetable_info)
-
-        hillclimbRoomlocks(amount, chambers, allcourses, student_list, schedule)
-
 
     return population
 
@@ -218,4 +221,4 @@ def cross_over(mating_pool, offspring, generation, chance):
     return children
 
 
-genetic(40, 40, 10, 0.3)
+genetic(1000, 1000, 10, 0.33)
