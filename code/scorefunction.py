@@ -45,10 +45,6 @@ def calcScore(allcourses, student_list, chambers):
 			# if activity = lecture
 			if activity[2] == 0:
 
-				# substract points when on the same day
-				if day in dayActivity:
-					points -= 10
-
 				# add day to list linked to lecture
 				for group in groups:
 					dayActivity[group].append(day)
@@ -56,14 +52,17 @@ def calcScore(allcourses, student_list, chambers):
 			# for seminars and practicals
 			else:
 
-				# substract points when on the same day
-				if day in dayActivity[activity[2]]:
-					points -= 10
-
 				# add day to list linked to group
 				dayActivity[activity[2]].append(day)
 
 		# print(dayActivity)
+		# print(dayActivity[1].count(0))
+
+		for group in groups:
+			for day in range(0, 5):
+				dayoccurance = dayActivity[group].count(day)
+				if dayoccurance > 1:
+					points -= ((dayoccurance - 1) * 10)
 		#* add points for spreading of activities over week *#
 
 		# iterate over groups
@@ -159,31 +158,11 @@ def calcScore(allcourses, student_list, chambers):
 	# print("Points: ", points)
 	return points
 
-# points = calcScore(main.allcourses, main.student_list, main.chambers)
-
 
 chambers1, allcourses1, student_list1, schedule = createSchedule()
 score1 = calcScore(allcourses1, student_list1, chambers1)
 print("score1: ", score1)
-print(len(allcourses1))
-print(allcourses1[8].activities)
-
-# print(schedule)
 allcourses2, student_list2, chambers2 = updateClassesFromSchedule(schedule)
 score2 = calcScore(allcourses2, student_list2, chambers2)
 print("score2: ", score2)
-print(len(allcourses2))
-print(allcourses2[8].activities)
-
-# courses1 = []
-# for course1 in allcourses1:
-# 	courses1.append(course1.activities)
-
-# courses2 = []
-# for course2 in allcourses2:
-# 	courses2.append(course2.activities)
-
-# print(courses1)
-# print(courses2)
-
 

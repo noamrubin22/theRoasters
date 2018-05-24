@@ -300,15 +300,12 @@ def createSchedule():
 def updateClassesFromSchedule(schedule):
 	#* update classes to new schedule *#
 
-	# print(schedule)
-
 	allcourses = createCourses()
 	chambers = createRooms()
 	student_list = createStudents()
 	allcourses, student_list = createStudentGroups(allcourses, student_list)
 
 	for roomlock, activity in schedule.items():
-		# print(activity)
 		if activity is not None:
 
 			if "lecture" in activity:
@@ -337,10 +334,6 @@ def updateClassesFromSchedule(schedule):
 					# update room class with new activity
 					room, timelock = translateRoomlock(roomlock)
 					chambers[room].add_booking(timelock)
-
-					# print(course.practicalgroups)
-					# print(course.name)
-					# print(course.students)
 
 					# update student class with new activity
 					if typeClass == "lecture":
