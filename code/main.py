@@ -25,6 +25,7 @@ from SA import simulatedAnnealing
 
 # create schedule
 chambers, allcourses, student_list, schedule = createSchedule()
+print(student_list[4].courses)
 
 # print original score
 originalscore = calcScore(allcourses, student_list, chambers)
