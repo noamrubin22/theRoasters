@@ -310,7 +310,6 @@ def updateClassesFromSchedule(schedule):
 
 			if "lecture" in activity:
 				splittext = activity.split(" lecture ")
-				print(splittext)
 				typeClass = "lecture"
 				coursename = splittext[0]
 				group = 0
