@@ -34,11 +34,19 @@ print("Started with: ", originalscore)
 
 
 # # perform hillclimber for roomlocks
+<<<<<<< HEAD
 # hillclimbRoomlocks(3000, chambers, allcourses, student_list, schedule)
 
 # # show intermediate score
 # intermediate_score = calcScore(allcourses, student_list, chambers)
 # print("After roomlock hillclimber:", intermediate_score)
+=======
+# hillclimbRoomlocks(1000, chambers, allcourses, student_list, schedule)
+
+# # show intermediate score
+# intermediate_score = calcScore(allcourses, student_list, chambers)
+# # print("After roomlock hillclimber:", intermediate_score)
+>>>>>>> f1c0473244e59b2f212fa402e6d03ee4f4c18d05
 
 # # perform hillclimber for students
 # hillclimbStudent(1000, chambers, allcourses, student_list, schedule)
@@ -48,5 +56,5 @@ print("Started with: ", originalscore)
 
 # print("Final score:", endscore)
 
-# simulatedAnnealing(10000, 0.002, chambers, allcourses, student_list, schedule)
+simulatedAnnealing(1000, 0.002, chambers, allcourses, student_list, schedule)
 

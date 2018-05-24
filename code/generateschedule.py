@@ -323,6 +323,8 @@ def updateClassesFromSchedule(schedule):
 			if "practical" in activity:
 				splittext = activity.split(" practical ")
 				typeClass = "practical"
+
+
 				coursename = splittext[0]
 				group = int(splittext[1])
 
@@ -354,8 +356,4 @@ def updateClassesFromSchedule(schedule):
 								if student.last_name in course.practicalgroups[group]:
 									student.updateStudentSchedule(timelock, course.name)
 
-	return allcourses, student_list, chambers				
-
-
-
-
+	return allcourses, student_list, chambers
