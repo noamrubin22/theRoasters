@@ -19,28 +19,39 @@ from scorefunction import calcScore
 from hillclimber import swapCourse
 from generateschedule import createSchedule
 
-def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_list, schedule):
+
+def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, student_list, schedule):
 	""" Searches for the optimal score by using a coolingscheme """
 
-	# intialize best_score counter
-	best_score = 0
+	# placeholders
+	best_score = None
+	best_course = None
+	best_student_list = None
+	best_chambers = None
 
-	# create array for scores (visualization)
+	# initialize temperatures
+	temp_start = 100000
+	temp_final = 1
+
+	# array for scores for visualization
 	scores = []
 
-	# loop until system has cooled
-	while temperature > 1:
+	# set start temperature 
+	temperature = temp_start
 
-		# calculate score before swap
+	# loop until system has cooled
+	for i in range(min_iterations):
+
+		# calculate score schedule
 		points = calcScore(allcourses, student_list, chambers)
 
 		print("Before swap: ", points)
 
-		# append score to list (visualisation)
+		# append score to list for visualisation
 		scores.append(points)
 
 		# keep track of the best score and its variables
-		if points > best_score: 
+		if best_score == None or points > best_score: 
 			best_score = points
 			best_courses = allcourses
 			best_student_list = student_list
@@ -53,13 +64,6 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 		newpoints = calcScore(allcourses, student_list, chambers)
 		
 		print("   New score: ", newpoints)
-
-		# keep track of best score and variables
-		if newpoints > best_score:
-			best_score = newpoints
-			best_courses = allcourses
-			best_student_list = student_list
-			best_chambers = chambers
 
 		# if new score is worst 
 		if newpoints < points:
@@ -75,7 +79,7 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 				points = newpoints
 
 				# cool system
-				temperature *= 1 - cooling_rate
+				temperature = coolingscheme(temperature, min_iterations, i)
 
 			# if acceptance chance lower than random number
 			else:
@@ -100,17 +104,18 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 		# if new score is better
 		else: 
 
-			# accept
+			# accept it
 			points = newpoints 
+			print("accepted score:" )
 
 
 	print("bestscore:", best_score)
-	# print(scores)
+
 
 	return best_score, best_courses, best_student_list, best_chambers, scores
 
 
-# create schedule
-chambers, allcourses, student_list, schedule = createSchedule()
-simulatedAnnealing(1000, 0.002, chambers, allcourses, student_list, schedule)
-
+# def sigmoidalFunctie(beginTemperatuur, eindTemperatuur, minIteraties, i):
+#     "Berekent temperatuur aan de hand van sigmoidale formule"
+#     temperatuur = eindTemperatuur + (beginTemperatuur - eindTemperatuur) / (1 + math.exp(0.3 * (i - minIteraties / 2)))
+#     return temperatuur
