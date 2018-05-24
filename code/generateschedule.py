@@ -309,24 +309,26 @@ def updateClassesFromSchedule(schedule):
 		if activity is not None:
 
 			if "lecture" in activity:
-				group = 0
+				splittext = activity.split(" lecture ")
+				print(splittext)
 				typeClass = "lecture"
+				coursename = splittext[0]
+				group = 0
 
-			if re.search('seminar (\d+)', activity):
-				gr = re.search('seminar (\d+)', activity)
-				group = int(gr.group(1))
+			if "seminar" in activity:
+				splittext = activity.split(" seminar ")
 				typeClass = "seminar"
+				coursename = splittext[0]
+				group = int(splittext[1])
 
-			if re.search('practical (\d+)', activity):
-				gr = re.search('practical (\d+)', activity)
-				group = int(gr.group(1))
+			if "practical" in activity:
+				splittext = activity.split(" practical ")
 				typeClass = "practical"
-
-			
+				coursename = splittext[0]
+				group = int(splittext[1])
 
 			for course in allcourses:
-				if course.name in activity:
-					coursename = course.name
+				if coursename == course.name:
 
 				# update course class with new activity
 					course.updateSchedule(roomlock, (coursename + " " + typeClass), group)
