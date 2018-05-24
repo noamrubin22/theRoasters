@@ -6,7 +6,7 @@ import re
 from scorefunction import calcScore
 from generateschedule import createEmptySchedule, createSchedule
 import random
-from hillclimber import swapCourse
+from hillclimber import swapCourse, hillclimbRoomlocks
 from generateschedule import updateClassesFromSchedule
 from hillclimberscheduleplaces import swapCourse2, hillclimbRoomlocks2
 
@@ -64,6 +64,9 @@ def initial_population(amount):
 
         # add the array with individual timetable-info to the population
         population.append(timetable_info)
+
+        hillclimbRoomlocks(amount, chambers, allcourses, student_list, schedule)
+
 
     return population
 
@@ -125,6 +128,8 @@ def cross_over(mating_pool, offspring, generation, chance):
 
     # create empty list for children
     children = []
+    fittest_score = 0
+
     fittest_score = 0
 
     # iterate over offspring
@@ -201,9 +206,11 @@ def cross_over(mating_pool, offspring, generation, chance):
 
         score = calcScore(allcourses, student_list, chambers)
 
+
         # if score > fittest_score:
         #     fittest_score = score
         print("Schedule: {}, generation: {}, score: {}".format(i, generation, score))
+
 
         # add the array with individual timetable-info to the population
         children.append(timetable_info)

@@ -7,7 +7,7 @@
 # This code 						   				#
 # 												  	#
 #####################################################
-
+from __future__ import division
 import csv
 import random
 import math
@@ -21,13 +21,14 @@ from generateschedule import createSchedule, updateClassesFromSchedule
 from scorefunction import calcScore
 from hillclimber import hillclimbRoomlocks
 from hillclimberstudents import hillclimbStudent
-# from SA import simulatedAnnealing
-from printschedule import print_schedule
+
+from SA import simulatedAnnealing
+from coolingschemes import linear_temperature, exponential_temperature, geman_temperature
+
 
 
 # create schedule
 chambers, allcourses, student_list, schedule = createSchedule()
-
 
 
 # print original score
@@ -44,8 +45,9 @@ intermediate_score = calcScore(allcourses, student_list, chambers)
 print("After roomlock hillclimber:", intermediate_score)
 
 
-# perform hillclimber for students
-hillclimbStudent(1000, chambers, allcourses, student_list, schedule)
+
+# # perform hillclimber for students
+# hillclimbStudent(1000, chambers, allcourses, student_list, schedule)
 
 # calculate and show final score
 endscore = calcScore(allcourses, student_list, chambers)
@@ -55,7 +57,6 @@ print("Final score:", endscore)
 print_schedule(schedule, allcourses, student_list, chambers)
 
 
-
-
+# simulatedAnnealing(geman_temperature, 1000, chambers, allcourses, student_list, schedule)
 
 
