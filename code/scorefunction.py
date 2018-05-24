@@ -55,8 +55,6 @@ def calcScore(allcourses, student_list, chambers):
 				# add day to list linked to group
 				dayActivity[activity[2]].append(day)
 
-		# print(dayActivity)
-		# print(dayActivity[1].count(0))
 
 		for group in groups:
 			for day in range(0, 5):
@@ -108,6 +106,7 @@ def calcScore(allcourses, student_list, chambers):
 			# add roomlock to list
 			timelocksStudent.append(activity[0])
 
+
 	# for all courses
 	for course in allcourses:
 
@@ -158,11 +157,4 @@ def calcScore(allcourses, student_list, chambers):
 	# print("Points: ", points)
 	return points
 
-
-chambers1, allcourses1, student_list1, schedule = createSchedule()
-score1 = calcScore(allcourses1, student_list1, chambers1)
-print("score1: ", score1)
-allcourses2, student_list2, chambers2 = updateClassesFromSchedule(schedule)
-score2 = calcScore(allcourses2, student_list2, chambers2)
-print("score2: ", score2)
 
