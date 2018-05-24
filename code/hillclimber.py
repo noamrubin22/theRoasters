@@ -37,13 +37,19 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 
 	# if specific activity is not chosen
 	if activity1 == None:
-
 		# chose random activity from course
-		activity1 = random.randint(0, len(allcourses[course1].activities) - 1)
+		if len(allcourses[course1].activities) == 0:
+			activity1 = 0
+		else:
+		
+			activity1 = random.randint(0, len(allcourses[course1].activities) - 1)
 
 	# same
 	if activity2 == None:
-		activity2 = random.randint(0, len(allcourses[course2].activities) - 1)
+		if len(allcourses[course2].activities) == 0:
+			activity2 = 0
+		else:
+			activity2 = random.randint(0, len(allcourses[course2].activities) - 1)
 
 	# store random activities
 	randact1 = allcourses[course1].activities[activity1]
@@ -149,7 +155,7 @@ def hillclimbRoomlocks(times, chambers, allcourses, student_list, schedule):
 		points = calcScore(allcourses, student_list, chambers)
 
 		# perform swap
-		course1, activity1, course2, activity2 = swapCourse(chambers, allcourses, student_list, schedule)
+		course1, activity1, course2, activity2, schedule = swapCourse(chambers, allcourses, student_list, schedule)
 
 		# calculate new scores
 		newpoints = calcScore(allcourses, student_list, chambers)

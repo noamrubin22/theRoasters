@@ -21,9 +21,11 @@ def genetic(initial, offspring, generations, mutation):
     for i in range(generations):
         fittest = selection(children)
         children = cross_over(fittest, offspring, i + 1, mutation)
+        print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
 
-    # print(children[1])
     fittest = selection(children)
+    print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
+
     # print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
 
 def initial_population(amount):
@@ -96,11 +98,9 @@ def selection(population):
 
     return mating_pool
 
-<<<<<<< HEAD
-def mutation(schedule, chance):
-=======
+
 def mutation(schedule, chambers, allcourses, student_list, chance):
->>>>>>> 823e13e2ce2d6150a60998bae3f1f1fcca01f720
+
 
     probability = random.random()
 
@@ -110,11 +110,9 @@ def mutation(schedule, chambers, allcourses, student_list, chance):
     return
 
 
-<<<<<<< HEAD
-def cross_over(mating_pool, offspring, generation):
-=======
+
 def cross_over(mating_pool, offspring, generation, chance):
->>>>>>> 823e13e2ce2d6150a60998bae3f1f1fcca01f720
+
     """ Creates offspring by exchanging genes from mating pool """
 
     # create empty list for children
@@ -168,14 +166,8 @@ def cross_over(mating_pool, offspring, generation, chance):
                     parent_schedule = parents[random.randint(0, len(parents) - 1)][1]
                     counter = 0
                     newparentcounter += 1
-<<<<<<< HEAD
-                    if newparentcounter > 100:
-                        break
-
-=======
                     if newparentcounter > 500:
                         break
->>>>>>> 823e13e2ce2d6150a60998bae3f1f1fcca01f720
                     # print("nieuwe parent gekozen")
 
 
@@ -213,30 +205,12 @@ def cross_over(mating_pool, offspring, generation, chance):
 
         score = calcScore(allcourses, student_list, chambers)
 
-        print("\n\n\n\nSchedule: {}, generation: {}, score: {}\n\n\n\{}\n\n\n\n".format(i, generation, score, schedule))
+        # print("Schedule: {}, generation: {}, score: {}".format(i, generation, score))
 
         # add the array with individual timetable-info to the population
         children.append(timetable_info)
 
     return children
 
-<<<<<<< HEAD
-genetic(1000, 100, 6, 0)
 
-
-
-
-# initial = initial_population(10)
-#
-# selectie = selection(initial)
-#
-# cross_over(selectie, 1)
-#
-# student = initial[0][0][1][0]
-#
-# print(student.show_schedule())
-#
-# print("CHILD ===== ", cross_over(selectie, 2))
-=======
-genetic(1000, 50, 1, 0.2)
->>>>>>> 823e13e2ce2d6150a60998bae3f1f1fcca01f720
+genetic(1000, 1000, 20, 0.2)
