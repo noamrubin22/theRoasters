@@ -58,7 +58,7 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 			best_chambers = chambers
 
 		# pick random neighbour by swapping 
-		course1, activity1, course2, activity2 = swapCourse(chambers, allcourses, student_list, schedule)
+		course1, activity1, course2, activity2, schedule = swapCourse(chambers, allcourses, student_list, schedule)
 
 		# calculate new score
 		newpoints = calcScore(allcourses, student_list, chambers)
