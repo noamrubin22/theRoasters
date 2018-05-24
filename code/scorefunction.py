@@ -8,7 +8,7 @@ def calcScore(allcourses, student_list, chambers):
 
 	# start-score of a valid schedule
 	points = 1000
-	allcoursespoints = [] 
+	allcoursespoints = []
 	roomlocks_per_day = 28
 
 	#* create groups and dict to keep up the days per activity *#
@@ -22,13 +22,13 @@ def calcScore(allcourses, student_list, chambers):
 		if course.seminars > 0:
 
 			# create list with amount of seminar-groups
-			groups = list(range(1, course.seminars + 1))
+			groups = list(range(1, int(course.seminars) + 1))
 
 		# if practical exist
 		elif course.practicals > 0:
 
 			# create list with amount of practical-groups
-			groups = list(range(1, course.practicals + 1))
+			groups = list(range(1, int(course.practicals) + 1))
 
 		# otherwise only one group (lecture)
 		else:
@@ -162,5 +162,3 @@ def calcScore(allcourses, student_list, chambers):
 			timelocksStudent.append(activity[0])
 
 	return points
-
-

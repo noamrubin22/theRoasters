@@ -49,6 +49,7 @@ def swapCourse2(chambers, allcourses, student_list, schedule, roomlock1 = None, 
 	allcourses, student_list, chambers = updateClassesFromSchedule(schedule)
 
 
+	# return chambers, allcourses, student_list, schedule
 
 	return roomlock1, roomlock2, chambers, allcourses, student_list, schedule
 
@@ -61,7 +62,7 @@ def hillclimbRoomlocks2(times, chambers, allcourses, student_list, schedule):
 
 		# calculate score before swap
 		points = calcScore(allcourses, student_list, chambers)
-		print("Before swap: ", points)
+		# print("Before swap: ", points)
 
 		# perform swap
 		roomlock1, roomlock2, chambers, allcourses, student_list, schedule = swapCourse2(chambers, allcourses, student_list, schedule)
@@ -69,7 +70,7 @@ def hillclimbRoomlocks2(times, chambers, allcourses, student_list, schedule):
 
 		# calculate new scores
 		newpoints = calcScore(allcourses, student_list, chambers)
-		print("   After swap: ", newpoints)
+		# print("   After swap: ", newpoints)
 
 		# if new score lower than old score
 		if newpoints < points:
@@ -79,17 +80,17 @@ def hillclimbRoomlocks2(times, chambers, allcourses, student_list, schedule):
 
 			# calculate new score
 			newpoints = calcScore(allcourses, student_list, chambers)
-			print("      Back to normal: ", newpoints)
+			# print("      Back to normal: ", newpoints)
 
 			# if back-swap didn't go well
 			if points != newpoints:
 
 				# print courses and break loop
-				print(roomlock2, roomlock1)
-				print("ERROR")
+				# print(roomlock2, roomlock1)
+				# print("ERROR")
 				break
 
 	return newpoints
 
-chambers, allcourses, student_list, schedule = createSchedule()
-hillclimbRoomlocks2(1000, chambers, allcourses, student_list, schedule)
+# chambers, allcourses, student_list, schedule = createSchedule()
+# hillclimbRoomlocks2(1000, chambers, allcourses, student_list, schedule)
