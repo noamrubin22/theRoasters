@@ -7,13 +7,16 @@ def calcScore(allcourses, student_list, chambers):
 	""" Calculates the score of a schedule"""
 
 	# start-score of a valid schedule
-	points = 1000;
-	roomlocks_per_day = 28;
+	points = 1000
+	allcoursespoints = [] 
+	roomlocks_per_day = 28
 
 	#* create groups and dict to keep up the days per activity *#
 
 	# iterate over courses
 	for course in allcourses:
+
+		coursepoints = 0
 
 		# if seminar(s) exist
 		if course.seminars > 0:
@@ -55,14 +58,13 @@ def calcScore(allcourses, student_list, chambers):
 				# add day to list linked to group
 				dayActivity[activity[2]].append(day)
 
-		# print(dayActivity)
-		# print(dayActivity[1].count(0))
 
 		for group in groups:
 			for day in range(0, 5):
 				dayoccurance = dayActivity[group].count(day)
 				if dayoccurance > 1:
 					points -= ((dayoccurance - 1) * 10)
+					coursepoints -= ((dayoccurance - 1) * 10)
 		#* add points for spreading of activities over week *#
 
 		# iterate over groups
@@ -74,6 +76,7 @@ def calcScore(allcourses, student_list, chambers):
 				# add points if they are spread (mo- thu, mo-fri)
 				if (abs(dayActivity[group][0] - dayActivity[group][1]) >= 3):
 					points += 20
+					coursepoints += 20
 
 			# when 3 activities in the week
 			if (len(dayActivity[group]) == 3):
@@ -81,6 +84,7 @@ def calcScore(allcourses, student_list, chambers):
 				# add points if spread (mo-we-fr)
 				if 0 in dayActivity[group] and 2 in dayActivity[group] and 4 in dayActivity[group]:
 					points += 20
+					coursepoints += 20
 
 			# if 4 activities in the week
 			if (len(dayActivity[group]) == 4):
@@ -88,30 +92,9 @@ def calcScore(allcourses, student_list, chambers):
 				# add points if spread  (mo-tu-th-fr)
 				if 0 in dayActivity[group] and 1 in dayActivity[group] and 3 in dayActivity[group] and 4 in dayActivity[group]:
 					points += 20
+					coursepoints += 20
 
-
-
-
-	# for all students
-	for student in student_list:
-
-		# create empty list
-		timelocksStudent = []
-
-		# for each activity in schedule
-		for activity in student.schedule:
-
-			# if roomlock is occupied substract points
-			if activity[0] in timelocksStudent:
-				points -= 1
-
-			# add roomlock to list
-			timelocksStudent.append(activity[0])
-
-	# for all courses
-	for course in allcourses:
-
-		# and activities
+				# and activities
 		for activity in course.activities:
 
 			# substract room and timelock
@@ -128,6 +111,7 @@ def calcScore(allcourses, student_list, chambers):
 					maluspoints = course.students - int(chambers[room].capacity)
 					# print(maluspoints)
 					points -= maluspoints
+					coursepoints -= maluspoints
 
 			# for practical/seminars
 			else:
@@ -142,6 +126,7 @@ def calcScore(allcourses, student_list, chambers):
 						maluspoints = course.maxstudentssem - int(chambers[room].capacity)
 						# print(maluspoints)
 						points -= maluspoints
+						coursepoints -= maluspoints
 
 				# if practical
 				else:
@@ -153,16 +138,29 @@ def calcScore(allcourses, student_list, chambers):
 						maluspoints = course.maxstudentsprac - int(chambers[room].capacity)
 						print(maluspoints)
 						points -= maluspoints
+						coursepoints -= maluspoints
 
-	# show points
-	# print("Points: ", points)
+		allcoursespoints.append([course.name, coursepoints])
+
+
+
+	# for all students
+	for student in student_list:
+
+		# create empty list
+		timelocksStudent = []
+
+		# for each activity in schedule
+		for activity in student.schedule:
+
+			# if roomlock is occupied substract points
+			if activity[0] in timelocksStudent:
+				points -= 1
+				coursepoints -= 1
+
+			# add roomlock to list
+			timelocksStudent.append(activity[0])
+
 	return points
 
-
-chambers1, allcourses1, student_list1, schedule = createSchedule()
-score1 = calcScore(allcourses1, student_list1, chambers1)
-print("score1: ", score1)
-allcourses2, student_list2, chambers2 = updateClassesFromSchedule(schedule)
-score2 = calcScore(allcourses2, student_list2, chambers2)
-print("score2: ", score2)
 

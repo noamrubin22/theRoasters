@@ -14,38 +14,46 @@ import math
 import generateschedule
 import scorefunction
 import hillclimber
-import SA
+# import SA
 from parse import createStudentClass, parse, gimme_students
 from classes import Students, Room, Course
-from generateschedule import createSchedule
+from generateschedule import createSchedule, updateClassesFromSchedule
 from scorefunction import calcScore
 from hillclimber import hillclimbRoomlocks
 from hillclimberstudents import hillclimbStudent
 from SA import simulatedAnnealing
 from coolingschemes import linear_temperature, exponential_temperature, geman_temperature
 
+
+
 # create schedule
 chambers, allcourses, student_list, schedule = createSchedule()
-# print(student_list[4].courses)
+
 
 # print original score
-originalscore = calcScore(allcourses, student_list, chambers)
-# print("Started with: ", originalscore)
+originalscore, allcoursespoints = calcScore(allcourses, student_list, chambers)
+print("Started with: ", originalscore)
+print(allcoursespoints)
 
-# # perform hillclimber for roomlocks
-# hillclimbRoomlocks(1000, chambers, allcourses, student_list, schedule)
+# perform hillclimber for roomlocks
 
-# # show intermediate score
-# intermediate_score = calcScore(allcourses, student_list, chambers)
-# # print("After roomlock hillclimber:", intermediate_score)
+hillclimbRoomlocks(3000, chambers, allcourses, student_list, schedule)
+
+# show intermediate score
+intermediate_score, allcoursespoints = calcScore(allcourses, student_list, chambers)
+print("After roomlock hillclimber:", intermediate_score)
+
+
 
 # # perform hillclimber for students
 # hillclimbStudent(1000, chambers, allcourses, student_list, schedule)
 
 # calculate and show final score
-endscore = calcScore(allcourses, student_list, chambers)
+endscore, allcoursespoints = calcScore(allcourses, student_list, chambers)
 
 print("Final score:", endscore)
+print(allcoursespoints)
 
-simulatedAnnealing(geman_temperature, 1000, chambers, allcourses, student_list, schedule)
+# simulatedAnnealing(geman_temperature, 1000, chambers, allcourses, student_list, schedule)
+
 
