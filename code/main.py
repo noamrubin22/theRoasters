@@ -22,6 +22,8 @@ from scorefunction import calcScore
 from hillclimber import hillclimbRoomlocks
 from hillclimberstudents import hillclimbStudent
 # from SA import simulatedAnnealing
+from printschedule import print_schedule
+
 
 # create schedule
 chambers, allcourses, student_list, schedule = createSchedule()
@@ -29,16 +31,16 @@ chambers, allcourses, student_list, schedule = createSchedule()
 
 
 # print original score
-originalscore, allcoursespoints = calcScore(allcourses, student_list, chambers)
+originalscore = calcScore(allcourses, student_list, chambers)
 print("Started with: ", originalscore)
-print(allcoursespoints)
+
 
 # perform hillclimber for roomlocks
 
-hillclimbRoomlocks(3000, chambers, allcourses, student_list, schedule)
+hillclimbRoomlocks(5000, chambers, allcourses, student_list, schedule)
 
 # show intermediate score
-intermediate_score, allcoursespoints = calcScore(allcourses, student_list, chambers)
+intermediate_score = calcScore(allcourses, student_list, chambers)
 print("After roomlock hillclimber:", intermediate_score)
 
 
@@ -46,10 +48,12 @@ print("After roomlock hillclimber:", intermediate_score)
 hillclimbStudent(1000, chambers, allcourses, student_list, schedule)
 
 # calculate and show final score
-endscore, allcoursespoints = calcScore(allcourses, student_list, chambers)
+endscore = calcScore(allcourses, student_list, chambers)
 
 print("Final score:", endscore)
-print(allcoursespoints)
+
+print_schedule(schedule, allcourses, student_list, chambers)
+
 
 
 
