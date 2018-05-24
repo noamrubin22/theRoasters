@@ -17,7 +17,7 @@ import csv
 import math
 from scorefunction import calcScore
 from hillclimber import swapCourse
-
+from generateschedule import createSchedule
 
 def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_list, schedule):
 	""" Searches for the optimal score by using a coolingscheme """
@@ -33,9 +33,10 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 
 		# calculate score before swap
 		points = calcScore(allcourses, student_list, chambers)
-		# print("Before swap: ", points)
 
-		# append score to list
+		print("Before swap: ", points)
+
+		# append score to list (visualisation)
 		scores.append(points)
 
 		# keep track of the best score and its variables
@@ -45,15 +46,15 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 			best_student_list = student_list
 			best_chambers = chambers
 
-		# perform swap
-		print(points)
+		# pick random neighbour by swapping 
 		course1, activity1, course2, activity2 = swapCourse(chambers, allcourses, student_list, schedule)
 
 		# calculate new score
 		newpoints = calcScore(allcourses, student_list, chambers)
-		# print("   New score: ", newpoints)
+		
+		print("   New score: ", newpoints)
 
-		# keep track of best score and lists
+		# keep track of best score and variables
 		if newpoints > best_score:
 			best_score = newpoints
 			best_courses = allcourses
@@ -63,7 +64,7 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 		# if new score is worst 
 		if newpoints < points:
 
-			# calculate acceptance probability
+			# calculate acceptance chance
 			acceptance_probability = math.exp((newpoints - points) / temperature)
 
 			# if acceptance chance higher than random number
@@ -71,9 +72,7 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 			
 				# accept the worst solution
 				print("Accepted worst solution, score:", newpoints)
-
-				# # append score to list
-				# scores.append(newpoints)
+				points = newpoints
 
 				# cool system
 				temperature *= 1 - cooling_rate
@@ -86,10 +85,6 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 
 				# calculate new score and print
 				newpoints = calcScore(allcourses, student_list, chambers)
-				# print("      Back to normal?: ", newpoints)
-
-				# # append score to list
-				# scores.append(newpoints)
 
 				# if back-swap didn't go well 
 				if points != newpoints:
@@ -99,8 +94,23 @@ def simulatedAnnealing(temperature, cooling_rate, chambers, allcourses, student_
 					print("ERROR")
 					break
 
+				# continue with previous score
+				points = newpoints
+
+		# if new score is better
+		else: 
+
+			# accept
+			points = newpoints 
+
+
 	print("bestscore:", best_score)
 	# print(scores)
 
 	return best_score, best_courses, best_student_list, best_chambers, scores
+
+
+# create schedule
+chambers, allcourses, student_list, schedule = createSchedule()
+simulatedAnnealing(1000, 0.002, chambers, allcourses, student_list, schedule)
 
