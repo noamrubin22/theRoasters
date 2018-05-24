@@ -318,7 +318,7 @@ def updateClassesFromSchedule(schedule):
 				splittext = activity.split(" seminar ")
 				typeClass = "seminar"
 				coursename = splittext[0]
-				group = int(splittext[1])
+				group = int(float(splittext[1]))
 
 			if "practical" in activity:
 				splittext = activity.split(" practical ")
@@ -326,7 +326,7 @@ def updateClassesFromSchedule(schedule):
 
 
 				coursename = splittext[0]
-				group = int(splittext[1])
+				group = int(float(splittext[1]))
 
 			for course in allcourses:
 				if coursename == course.name:
