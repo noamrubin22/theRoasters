@@ -19,6 +19,7 @@ def genetic(initial, offspring, generations, mutation):
         fittest = selection(children)
         children = cross_over(fittest, offspring, i + 1)
 
+    # print(children[1])    
     fittest = selection(children)
     # print("fittest: ", fittest)
 
@@ -123,19 +124,22 @@ def cross_over(mating_pool, offspring, generation):
 
         # get a mother and father from the mating pool
         parents = []
-        mother = mating_pool[random.randint(0, len(mating_pool) - 1)]
-        father = mating_pool[random.randint(0, len(mating_pool) - 1)]
-        parents.append(mother)
-        parents.append(father)
+
+        for j in range(10):
+            parents.append(mating_pool[random.randint(0, len(mating_pool) - 1)])
+
+        parent_schedule = parents[random.randint(0, len(parents) - 1)][1]
+        # print(parent_schedule)
+
 
         while activities > 0:
 
             # print("Applying crossover between parents...")
 
-            if activities % 2 == 0:
-                parent_schedule = parents[0][1]  # >>> [[allcourses, chambers, studentlist], schedule]
-            else:
-                parent_schedule = parents[1][1]
+            # if activities % 2 == 0:
+            #     parent_schedule = parents[0][1]  # >>> [[allcourses, chambers, studentlist], schedule]
+            # else:
+            #     parent_schedule = parents[1][1]
 
             random_course = random.randint(0, len(parent_schedule) - 1)
 
@@ -146,9 +150,15 @@ def cross_over(mating_pool, offspring, generation):
                 if value is not None:
                     courses.append(value)
 
-
+            counter = 0
             while schedule[random_course] is not None or parent_schedule[random_course] is None or parent_schedule[random_course] in courses:
                 random_course = random.randint(0, len(parent_schedule) - 1)
+                counter += 1
+                # print(counter)
+                if counter > 100:
+                    parent_schedule = parents[random.randint(0, len(parents) - 1)][1]
+                    counter = 0
+                    # print("nieuwe parent gekozen")
 
 
 
@@ -158,9 +168,9 @@ def cross_over(mating_pool, offspring, generation):
             # while parent_schedule[random_course] in courses:
             #     random_course = random.randint(0, len(parent_schedule) - 1)
 
-            print(schedule[random_course], end="")
+            # print(schedule[random_course], end="")
             schedule[random_course] = parent_schedule[random_course]
-            print(" ----> wordt ----> {}".format(schedule[random_course], parent_schedule[random_course]))
+            # print(" ----> wordt ----> {}".format(schedule[random_course], parent_schedule[random_course]))
 
             # if activities == 1:
             #     print("Courses[{}]: {}".format(len(courses), courses))
@@ -182,15 +192,16 @@ def cross_over(mating_pool, offspring, generation):
         timetable_info.append(schedule)
 
         score = calcScore(allcourses, student_list, chambers)
+        print(i, score)
 
-        # print("\n\n\n\nSchedule: {}, generation: {}, score: {}\n\n\n\{}\n\n\n\n".format(i, generation, score, schedule))
+        print("\n\n\n\nSchedule: {}, generation: {}, score: {}\n\n\n\{}\n\n\n\n".format(i, generation, score, schedule))
 
         # add the array with individual timetable-info to the population
         children.append(timetable_info)
 
     return children
 
-genetic(100, 10, 2, 0)
+genetic(200, 100, 1, 0)
 
 
 
