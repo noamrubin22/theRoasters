@@ -1,9 +1,20 @@
+#####################################################
+# Heuristieken: Lectures & Lesroosters			  	#
+#												  	#
+# Names: Tessa Ridderikhof, Najib el Moussaoui 	  	#
+# 		 & Noam Rubin							  	#
+#												  	#
+# This code consist of function that present the   	#
+# different cooling schemes recommended for     	#
+# the simulated annealing alogirthm 			 	#
+#												  	#
+#####################################################
+
 import math
 
-
+# initiliaze temperatures
 start_temp = 1000000
 final_temp = 1
-sig_const = 0.3
 reheats = 4
 
 

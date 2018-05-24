@@ -126,7 +126,6 @@ def mutation(schedule, chambers, allcourses, student_list, chance):
 
 
 def cross_over(mating_pool, offspring, generation, chance):
-
     """ Creates offspring by exchanging genes from mating pool """
 
     # create empty list for children

@@ -113,9 +113,3 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 
 
 	return best_score, best_courses, best_student_list, best_chambers, scores
-
-
-# def sigmoidalFunctie(beginTemperatuur, eindTemperatuur, minIteraties, i):
-#     "Berekent temperatuur aan de hand van sigmoidale formule"
-#     temperatuur = eindTemperatuur + (beginTemperatuur - eindTemperatuur) / (1 + math.exp(0.3 * (i - minIteraties / 2)))
-#     return temperatuur
