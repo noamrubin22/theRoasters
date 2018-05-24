@@ -93,19 +93,14 @@ def selection(population):
 
     return mating_pool
 
-# def mutation(schedule, chance):
-#
-#     random = random.random()
-#
-# def cross_over(mating_pool, amount_of_offspring):
-#     """ Creates amount_of_offspring from mating pool by exchanging genes """
-#
-#     if random < chance:
-#         course1,
-#         activity1,
-#         course2,
-#         activity2,
-#         schedule = swapCourse(chambers, allcourses, student_list, schedule)
+def mutation(schedule, chance):
+
+    probability = random.random()
+
+    if probability < chance:
+        swapCourse(chambers, allcourses, student_list, schedule)
+
+    return
 
 
 def cross_over(mating_pool, offspring, generation):
@@ -125,8 +120,10 @@ def cross_over(mating_pool, offspring, generation):
         # get a mother and father from the mating pool
         parents = []
 
-        for j in range(10):
-            parents.append(mating_pool[random.randint(0, len(mating_pool) - 1)])
+        parents = mating_pool
+
+        # for j in range(10):
+        #     parents.append(mating_pool[random.randint(0, len(mating_pool) - 1)])
 
         parent_schedule = parents[random.randint(0, len(parents) - 1)][1]
         # print(parent_schedule)
@@ -151,6 +148,7 @@ def cross_over(mating_pool, offspring, generation):
                     courses.append(value)
 
             counter = 0
+            newparentcounter = 0
             while schedule[random_course] is not None or parent_schedule[random_course] is None or parent_schedule[random_course] in courses:
                 random_course = random.randint(0, len(parent_schedule) - 1)
                 counter += 1
@@ -158,6 +156,10 @@ def cross_over(mating_pool, offspring, generation):
                 if counter > 100:
                     parent_schedule = parents[random.randint(0, len(parents) - 1)][1]
                     counter = 0
+                    newparentcounter += 1
+                    if newparentcounter > 100:
+                        break
+
                     # print("nieuwe parent gekozen")
 
 
@@ -201,7 +203,7 @@ def cross_over(mating_pool, offspring, generation):
 
     return children
 
-genetic(200, 100, 1, 0)
+genetic(1000, 100, 6, 0)
 
 
 
