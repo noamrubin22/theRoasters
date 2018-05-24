@@ -25,6 +25,7 @@ from SA import simulatedAnnealing
 
 # create schedule
 chambers, allcourses, student_list, schedule = createSchedule()
+print(student_list[4].courses)
 
 # print original score
 originalscore = calcScore(allcourses, student_list, chambers)
@@ -33,9 +34,9 @@ originalscore = calcScore(allcourses, student_list, chambers)
 # # perform hillclimber for roomlocks
 # hillclimbRoomlocks(1000, chambers, allcourses, student_list, schedule)
 
-# show intermediate score
-intermediate_score = calcScore(allcourses, student_list, chambers)
-# print("After roomlock hillclimber:", intermediate_score)
+# # show intermediate score
+# intermediate_score = calcScore(allcourses, student_list, chambers)
+# # print("After roomlock hillclimber:", intermediate_score)
 
 # # perform hillclimber for students
 # hillclimbStudent(1000, chambers, allcourses, student_list, schedule)
@@ -45,5 +46,5 @@ endscore = calcScore(allcourses, student_list, chambers)
 
 print("Final score:", endscore)
 
-simulatedAnnealing(10000, 0.002, chambers, allcourses, student_list, schedule)
+simulatedAnnealing(1000, 0.002, chambers, allcourses, student_list, schedule)
 

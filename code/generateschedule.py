@@ -300,36 +300,37 @@ def createSchedule():
 def updateClassesFromSchedule(schedule):
 	#* update classes to new schedule *#
 
-	# print(schedule)
-
 	allcourses = createCourses()
 	chambers = createRooms()
 	student_list = createStudents()
 	allcourses, student_list = createStudentGroups(allcourses, student_list)
 
 	for roomlock, activity in schedule.items():
-		# print(activity)
 		if activity is not None:
 
 			if "lecture" in activity:
-				group = 0
+				splittext = activity.split(" lecture ")
+				print(splittext)
 				typeClass = "lecture"
+				coursename = splittext[0]
+				group = 0
 
-			if re.search('seminar (\d+)', activity):
-				gr = re.search('seminar (\d+)', activity)
-				group = int(gr.group(1))
+			if "seminar" in activity:
+				splittext = activity.split(" seminar ")
 				typeClass = "seminar"
+				coursename = splittext[0]
+				group = int(splittext[1])
 
-			if re.search('practical (\d+)', activity):
-				gr = re.search('practical (\d+)', activity)
-				group = int(gr.group(1))
+			if "practical" in activity:
+				splittext = activity.split(" practical ")
 				typeClass = "practical"
 
 
+				coursename = splittext[0]
+				group = int(splittext[1])
 
 			for course in allcourses:
-				if course.name in activity:
-					coursename = course.name
+				if coursename == course.name:
 
 				# update course class with new activity
 					course.updateSchedule(roomlock, (coursename + " " + typeClass), group)
@@ -337,10 +338,6 @@ def updateClassesFromSchedule(schedule):
 					# update room class with new activity
 					room, timelock = translateRoomlock(roomlock)
 					chambers[room].add_booking(timelock)
-
-					# print(course.practicalgroups)
-					# print(course.name)
-					# print(course.students)
 
 					# update student class with new activity
 					if typeClass == "lecture":
@@ -360,4 +357,4 @@ def updateClassesFromSchedule(schedule):
 								if student.last_name in course.practicalgroups[group]:
 									student.updateStudentSchedule(timelock, course.name)
 
-	return allcourses, student_list, chambers				
+	return allcourses, student_list, chambers
