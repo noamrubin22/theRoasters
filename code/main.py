@@ -23,9 +23,9 @@ from scorefunction import calcScore
 from hillclimber import hillclimbRoomlocks
 from hillclimberstudents import hillclimbStudent
 from SA import simulatedAnnealing
-from coolingschemes import linear, exponential, sigmoidal, geman, lin_exp, multiple_simulated_annealing
+from coolingschemes import linear, exponential, sigmoidal, geman, lin_exp, gem_lin, gem_exp, lin_exp_gem
 from printschedule import print_schedule
-# from plot import plot_simulated_annealing
+from plot import plot_simulated_annealing
 
 # create schedule
 chambers, allcourses, student_list, schedule = createSchedule()
@@ -45,7 +45,7 @@ print("Started with: ", originalscore)
 # intermediate_score = calcScore(allcourses, student_list, chambers)
 # print("After roomlock hillclimber:", intermediate_score)
 
-hillclimbRoomlocks(5000, chambers, allcourses, student_list, schedule)
+# hillclimbRoomlocks(5000, chambers, allcourses, student_list, schedule)
 
 
 
@@ -55,9 +55,9 @@ print("After roomlock hillclimber:", intermediate_score)
 
 
 # # perform hillclimber for students
-hillclimbStudent(10000, chambers, allcourses, student_list, schedule)
+# hillclimbStudent(10000, chambers, allcourses, student_list, schedule)
 
-hillclimbRoomlocks(2000, chambers, allcourses, student_list, schedule)
+# hillclimbRoomlocks(2000, chambers, allcourses, student_list, schedule)
 
 # calculate and show final score
 endscore = calcScore(allcourses, student_list, chambers)
@@ -72,27 +72,27 @@ input = []
 
 # perform geman
 chambers, allcourses, student_list, schedule = createSchedule()
-best_score, best_courses, best_student_list, best_chambers, scores = simulatedAnnealing(geman, 100, chambers, allcourses, student_list, schedule)
-# plot_simulated_annealing(scores, geman, best_score)
+best_score, best_courses, best_student_list, best_chambers, scores = simulatedAnnealing(lin_exp_gem, 10, chambers, allcourses, student_list, schedule)
+plot_simulated_annealing(scores, gem_lin, best_score)
 
-input.append(scores)
-print("........................................hoi")
+# input.append(scores)
+# print("........................................hoi")
 
-chambers, allcourses, student_list, schedule = createSchedule()
-best_score, best_courses, best_student_list, best_chambers, scores = simulatedAnnealing(linear, 100, chambers, allcourses, student_list, schedule)
-# plot_simulated_annealing(scores, linear, best_score)
+# chambers, allcourses, student_list, schedule = createSchedule()
+# best_score, best_courses, best_student_list, best_chambers, scores = simulatedAnnealing(linear, 100, chambers, allcourses, student_list, schedule)
+# # plot_simulated_annealing(scores, linear, best_score)
 
-input.append(scores)
-print("              .............................................hallo")
-chambers, allcourses, student_list, schedule = createSchedule()
-best_score, best_courses, best_student_list, best_chambers, scores = simulatedAnnealing(sigmoidal, 100, chambers, allcourses, student_list, schedule)
+# input.append(scores)
+# print("              .............................................hallo")
+# chambers, allcourses, student_list, schedule = createSchedule()
+# best_score, best_courses, best_student_list, best_chambers, scores = simulatedAnnealing(sigmoidal, 100, chambers, allcourses, student_list, schedule)
 
-input.append(scores)
-print("...............................................................................hey")
+# input.append(scores)
+# print("...............................................................................hey")
 
-chambers, allcourses, student_list, schedule = createSchedule()
-best_score, best_courses, best_student_list, best_chambers, scores = simulatedAnnealing(exponential, 100, chambers, allcourses, student_list, schedule)
-# plot_simulated_annealing(scores, geman, best_score)
-input.append(scores)
-print(len(scores))
-print(scores)
+# chambers, allcourses, student_list, schedule = createSchedule()
+# best_score, best_courses, best_student_list, best_chambers, scores = simulatedAnnealing(exponential, 100, chambers, allcourses, student_list, schedule)
+# # plot_simulated_annealing(scores, geman, best_score)
+# input.append(scores)
+# print(len(scores))
+# print(scores)
