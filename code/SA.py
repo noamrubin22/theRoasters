@@ -20,7 +20,7 @@ from hillclimber import swapCourse
 from generateschedule import createSchedule
 
 
-def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, student_list, schedule):
+def simulated_annealing(coolingscheme, min_iterations, chambers, allcourses, student_list, schedule):
 	""" Searches for the optimal score by using a coolingscheme """
 
 	# placeholders
@@ -32,7 +32,7 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 	# initialize temperatures
 	temp_start = 10
 
-	# array for scores for visualization
+	# array for scores (visualization)
 	scores = []
 
 	# set start temperature
@@ -42,7 +42,11 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 	for i in range(min_iterations):
 
 		# calculate score schedule
+<<<<<<< HEAD
 		points = calcScore(allcourses, student_list, chambers)
+=======
+		points = calc_score(allcourses, student_list, chambers)
+>>>>>>> 43617eef6741eaabc7c9e660abd76464970905ef
 
 		# append score to list for visualisation
 		scores.append(points)
@@ -55,6 +59,7 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 			best_chambers = chambers
 			best_schedule = schedule
 
+<<<<<<< HEAD
 		# pick random neighbour by swapping
 		course1, activity1, course2, activity2, schedule = swapCourse(chambers, allcourses, student_list, schedule)
 
@@ -62,6 +67,15 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 		newpoints = calcScore(allcourses, student_list, chambers)
 
 		# if new score is worst
+=======
+		# pick random neighbour by swapping 
+		course1, activity1, course2, activity2, schedule = swap_course(chambers, allcourses, student_list, schedule)
+
+		# calculate new score
+		newpoints = calc_score(allcourses, student_list, chambers)
+		
+		# if new score is worst 
+>>>>>>> 43617eef6741eaabc7c9e660abd76464970905ef
 		if newpoints < points:
 
 			# calculate acceptance chance
@@ -80,10 +94,10 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 			else:
 
 				# swap back
-				swapCourse(chambers, allcourses, student_list, schedule, course1, activity1, course2, activity2)
+				swap_course(chambers, allcourses, student_list, schedule, course1, activity1, course2, activity2)
 
 				# calculate new score and print
-				newpoints = calcScore(allcourses, student_list, chambers)
+				newpoints = calc_score(allcourses, student_list, chambers)
 
 				# if back-swap didn't go well
 				if points != newpoints:
@@ -100,6 +114,10 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 		else:
 
 			# accept it
+<<<<<<< HEAD
 			points = newpoints
+=======
+			points = newpoints 
+>>>>>>> 43617eef6741eaabc7c9e660abd76464970905ef
 
 	return best_score, best_courses, best_student_list, best_chambers, best_schedule, scores

@@ -145,3 +145,5 @@ def hillclimbStudent(times, chambers, allcourses, student_list, schedule):
 			if newpoints != points:
 				break
 
+	return newpoints
+

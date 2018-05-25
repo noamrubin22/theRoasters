@@ -4,10 +4,11 @@
 # Names: Tessa Ridderikhof, Najib el Moussaoui 	  	#
 # 		 & Noam Rubin							  	#
 #												  	#
-# This code consist of function that present the   	#
-# different cooling schemes recommended for     	#
-# the simulated annealing alogirthm 			 	#
-#												  	#
+# This code consist of functions that can be used   #
+# as cooling schemes in the simulated annealing     #
+# algorithm. Some functions are combinations of     #
+# of different cooling schemes                      #
+#                                  				  	#
 #####################################################
 
 import math
@@ -15,7 +16,6 @@ import math
 # initiliaze temperatures
 start_temp = 10
 final_temp = 0.0001
-
 
 def linear(min_iterations, i, start = start_temp, final = final_temp):
     """ Returns temperature calculated using a linear function """
@@ -42,6 +42,7 @@ def sigmoidal(min_iterations, i, start = start_temp, final = final_temp ):
 
     return temperature
 
+
 def geman(min_iterations, i, start = start_temp):
 	""" Returns temperature, calculated using a geman function """
  
@@ -59,6 +60,7 @@ def lin_exp(min_iterations, i):
     else: 
         return linear(min_iterations, i)
 
+
 def exp_sig(min_iterations, i): 
     """ Temperature is calculated using an exponential and linear function """
 
@@ -70,7 +72,7 @@ def exp_sig(min_iterations, i):
 
 
 def gem_lin(min_iterations, i): 
-    """ Temperature is calculated using an exponential and linear function """
+    """ Temperature is calculated using an geman and linear function """
 
     # vary between the functions
     if i % 2 == 0: 
@@ -81,7 +83,7 @@ def gem_lin(min_iterations, i):
 
 
 def gem_exp(min_iterations, i): 
-    """ Temperature is calculated using an exponential and linear function """
+    """ Temperature is calculated using an exponential and geman function """
 
     # vary between the functions
     if i % 2 == 0: 
@@ -90,20 +92,22 @@ def gem_exp(min_iterations, i):
         return exponential(min_iterations, i)
 
 
-def lin_exp_gem(min_iterations, i): 
-    """ Temperature is calculated using an exponential and linear function """
-
-    counter = 0 
+def lin_sig(min_iterations, i): 
+    """ Temperature is calculated using an sigmoidal and linear function """
 
     # vary between the functions
     if i % 2 == 0: 
-        return exponential(min_iterations, i)
+        return sigmoidal(min_iterations, i)
     else: 
-        counter+= 1 
-        
-        if counter % 2 == 0:
-            return linear(min_iterations, i)
-        else: 
-            return geman(min_iterations, i)
+       return linear(min_iterations, i)
+
+def gem_exp(min_iterations, i): 
+    """ Temperature is calculated using an geman and sigmoidal function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return geman(min_iterations, i)
+    else: 
+        return sigmoidal(min_iterations, i)
 
 
