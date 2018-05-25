@@ -49,7 +49,7 @@ def gimme_students():
 
     return student_list;
 
-def createStudentClass():
+def create_student_class():
     """ Adds features of student class per student and returns student-list """
 
     # create empty list

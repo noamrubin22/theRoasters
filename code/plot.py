@@ -12,8 +12,8 @@
 
 import csv
 import matplotlib.pyplot as plt
-from generateschedule import createSchedule
-from SA import simulatedAnnealing
+from generateschedule import create_schedule
+from SA import simulated_annealing
 
 # input = [(scores, type), (scores,type)]
 def plot_simulated_annealing(scores, coolingscheme, best_score): 

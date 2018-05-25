@@ -95,6 +95,7 @@ def gem_exp(min_iterations, i):
 def lin_sig(min_iterations, i): 
     """ Temperature is calculated using an sigmoidal and linear function """
 
+    # vary between the functions
     if i % 2 == 0: 
         return sigmoidal(min_iterations, i)
     else: 
