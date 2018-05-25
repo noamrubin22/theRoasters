@@ -12,7 +12,7 @@ from hillclimberscheduleplaces import swapCourse2, hillclimb_roomlocks2
 total_gen_scores = {}
 
 def genetic(initial, survival_rate, offspring, generations, mutation):
-    """ Implements a genetic algorithm on the scheduling problem """
+    """ Implements a genetic algorithm on scheduling problem """
 
     # creates initial population
     print("Creating initial population...")
@@ -22,9 +22,9 @@ def genetic(initial, survival_rate, offspring, generations, mutation):
     print("Selecting fittest individuals...")
     fittest = selection(genesis, survival_rate)
 
-    # performs cross over
-    print("Mating :)))))))")
     children = cross_over(fittest, offspring, 0, mutation)
+    print("\t\tSomething about the birds and the bees...\n")
+
 
     # for amount of generations
     for i in range(generations):
@@ -34,7 +34,6 @@ def genetic(initial, survival_rate, offspring, generations, mutation):
 
         # perform cross over, add mutation
         children = cross_over(fittest, offspring, i + 1, mutation)
-        # print("fittest: ", calc_score(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
 
     # select fittest children
     fittest = selection(children, survival_rate)
@@ -45,23 +44,17 @@ def genetic(initial, survival_rate, offspring, generations, mutation):
     student_list = fittest[0][0][1]
     schedule = fittest[0][1]
 
-    # calculate score 
+    # calculate score
     fittest_score = calc_score(allcourses, student_list, chambers)
     print("fittest: ", fittest_score)
     print("schedule: ", schedule)
-    print("Start hillclimbing on fittest schedule...")
 
     # write scores in txt file
     score_file = open('scores.txt', 'w')
     score_file.write(str(total_gen_scores))
 
-    # swap between roomlocks using a hillclimber
-    hillclimb_roomlocks2(1000, chambers, allcourses, student_list, schedule)
+    return schedule, allcourses, student_list, chambers
 
-    # if algorithm == "GA":
-    #     return fittest, fittest_score, initial, survival_rate, offspring, generations, mutation
-
-    # print("fittest: ", calc_score(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
 
 
 def initial_population(amount):
@@ -108,8 +101,6 @@ def selection(population, rate):
     def fitness(timetable_info):
         """ Calculates the fitness of an individual """
 
-        # print("Calculating fitness scores...")
-
         return calc_score(timetable_info[0][0],
                          timetable_info[0][1],
                          timetable_info[0][2])
@@ -126,19 +117,6 @@ def selection(population, rate):
         # fittest schedules have highest probabilities
         scores.append(calc_score(population[i][0][0], population[i][0][1], population[i][0][2]))
         mating_pool.append(population[i])
-
-    # iterate over parents
-    # for i in range(rate):
-    #
-    #     # create matingpool
-    #     for j in range(probability):
-    #
-    #         # fittest schedules have highest probabilities
-    #         scores.append(calc_score(population[i][0][0], population[i][0][1], population[i][0][2]))
-    #         mating_pool.append(population[i])
-    #
-    #     # decrease probability
-    #     probability -= 1
 
     return mating_pool
 
@@ -183,9 +161,6 @@ def cross_over(mating_pool, offspring, generation, chance):
         # decrease probability
         probability -= 1
 
-    # set fittest_score
-    fittest_score = 0
-
     # iterate over offspring
     for i in range(offspring):
 
@@ -200,16 +175,9 @@ def cross_over(mating_pool, offspring, generation, chance):
         parents = mating_pool
         random_parent = chance_array[random.randint(0, len(chance_array) - 1)]
         parent_schedule = parents[random_parent][1]
-        
+
         # until no activities are left
         while activities > 0:
-
-            # print("Applying crossover between parents...")
-
-            # if activities % 2 == 0:
-            #     parent_schedule = parents[0][1]  # >>> [[allcourses, chambers, studentlist], schedule]
-            # else:
-            #     parent_schedule = parents[1][1]
 
             # choose random course from parent schedule
             random_course = random.randint(0, len(parent_schedule) - 1)
@@ -232,19 +200,19 @@ def cross_over(mating_pool, offspring, generation, chance):
 
             # if schedule has no place for the random course, a None value is chosen, or the random course is already chosen
             while schedule[random_course] is not None or parent_schedule[random_course] is None or parent_schedule[random_course] in courses:
-                
+
                 # choose new random course from parent schedule
                 random_course = random.randint(0, len(parent_schedule) - 1)
 
                 # increase counter
                 counter += 1
-        
+
                 # if random course still not scheduled
                 if counter > 100:
 
                     # choose new parent
                     parent_schedule = parents[random.randint(0, len(parents) - 1)][1]
-                    
+
                     # reset counter
                     counter = 0
 
@@ -291,7 +259,7 @@ def cross_over(mating_pool, offspring, generation, chance):
 
             # adjust fittest score
             fittest_score = score
-            
+
             print("New best found ---> Schedule: {}, generation: {}, score: {}".format(i, generation, score))
 
         # add the array with individual timetable-info to the population

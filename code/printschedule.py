@@ -34,7 +34,7 @@ def print_schedule(schedule, allcourses, student_list, chambers):
         timetable.append(timelock)
         j += 1
 
-    score, acp = calcScore(allcourses, student_list, chambers)
+    score = calcScore(allcourses, student_list, chambers)
 
     fields = ['Score = {}'.format(score), 'A1.04', 'A1.06', 'A1.08', 'A1.10', 'B0.201', 'C0.110', 'C1.112']
 
@@ -44,5 +44,3 @@ def print_schedule(schedule, allcourses, student_list, chambers):
         writer.writerow(timelock)
 
     print("Printed a schedule at {} with a score of {}.".format(schedule_location, score))
-
-
