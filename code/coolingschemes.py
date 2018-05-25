@@ -69,3 +69,25 @@ def exp_sig(min_iterations, i):
         return exponential(current_temp, min_iterations, i)
 
 
+def gem_lin(min_iterations, i): 
+    """ Temperature is calculated using an exponential and linear function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return linear(current_temp, min_iterations, i)
+    else: 
+        return geman(current_temp, min_iterations, i)
+
+
+
+def gem_exp(min_iterations, i): 
+    """ Temperature is calculated using an exponential and linear function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return geman(current_temp, min_iterations, i)
+    else: 
+        return exponential(current_temp, min_iterations, i)
+
+
+

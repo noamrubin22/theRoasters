@@ -99,7 +99,6 @@ def selection(population, rate):
 
     for i in range(rate):
         # fittest schedules have highest probabilities
-        print(i)
         scores.append(calcScore(population[i][0][0], population[i][0][1], population[i][0][2]))
         mating_pool.append(population[i])
 
@@ -137,12 +136,12 @@ def cross_over(mating_pool, offspring, generation, chance):
     # create empty list for children
     children = []
     fittest_score = 0
-    chance = []
+    chance_array = []
     probability = len(mating_pool)
 
     for i in range(len(mating_pool)):
         for j in range(probability):
-            chance.append(i)
+            chance_array.append(i)
         probability -= 1
 
 
@@ -163,7 +162,7 @@ def cross_over(mating_pool, offspring, generation, chance):
 
         # for j in range(10):
         #     parents.append(mating_pool[random.randint(0, len(mating_pool) - 1)])
-        random_parent = chance[random.randint(0, len(chance) - 1)]
+        random_parent = chance_array[random.randint(0, len(chance_array) - 1)]
         parent_schedule = parents[random_parent][1]
         # print(parent_schedule)
 
@@ -225,7 +224,7 @@ def cross_over(mating_pool, offspring, generation, chance):
 
         # if score > fittest_score:
         #     fittest_score = score
-        # print("Schedule: {}, generation: {}, score: {}".format(i, generation, score))
+        print("Schedule: {}, generation: {}, score: {}".format(i, generation, score))
 
 
         # add the array with individual timetable-info to the population
@@ -234,4 +233,4 @@ def cross_over(mating_pool, offspring, generation, chance):
     return children
 
 
-genetic(20, 0.2, 20, 10, 0.3)
+genetic(1000, 0.2, 1000, 20, 0.25)
