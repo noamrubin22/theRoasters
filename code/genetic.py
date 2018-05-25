@@ -25,15 +25,19 @@ def genetic(initial, survival_rate, offspring, generations, mutation):
         children = cross_over(fittest, offspring, i + 1, mutation)
         # print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
 
-    fittest = selection(children)
+    fittest = selection(children, survival_rate)
     allcourses = fittest[0][0][0]
     chambers = fittest[0][0][1]
     student_list = fittest[0][0][2]
     schedule = fittest[0][1]
-    print("fittest: ", calcScore(allcourses, student_list, chambers))
+    fittest_score = calcScore(allcourses, student_list, chambers)
+    print("fittest: ", fittest_score)
     print("schedule: ", schedule)
     print("Start hillclimbing on fittest schedule...")
     hillclimbRoomlocks2(1000, chambers, allcourses, student_list, schedule)
+
+    # if algorithm == "GA":
+    #     return fittest, fittest_score, initial, survival_rate, offspring, generations, mutation
 
     # print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
 
@@ -124,7 +128,11 @@ def mutation(schedule, chambers, allcourses, student_list, chance):
     probability = random.random()
 
     if probability < chance:
-        swapCourse2(chambers, allcourses, student_list, schedule)
+        print("!!! MUTATION !!!")
+        print("Hillclimbing on schedule {} times...".format(int(probability * 100)))
+        hillclimbRoomlocks2(int(probability * 100), chambers, allcourses, student_list, schedule)
+
+        # swapCourse2(chambers, allcourses, student_list, schedule)
 
     return
 
@@ -233,4 +241,4 @@ def cross_over(mating_pool, offspring, generation, chance):
     return children
 
 
-genetic(1000, 0.2, 1000, 20, 0.25)
+genetic(100, 0.25, 50, 20, 0.1)
