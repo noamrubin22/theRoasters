@@ -51,11 +51,13 @@ for i in range(10000):
 	# add hillclimber student score to array
 
 
-# plot scores
-plt.plot(range(0, len(scores)), scores)
-plt.plot(range(len(scores), len(scores) + len(studentscores)), studentscores)
-plt.ylabel("Score")
-plt.xlabel("Amount of swaps")
-plt.title("Hillclimber")
-plt.show()
+# # plot scores
+# plt.plot(range(0, len(scores)), scores)
+# plt.plot(range(len(scores), len(scores) + len(studentscores)), studentscores)
+# plt.ylabel("Score")
+# plt.xlabel("Amount of swaps")
+# plt.title("Hillclimber")
+# plt.show()
+
+plot_hillclimber(scores, studentscores)
 
