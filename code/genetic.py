@@ -13,11 +13,11 @@ total_gen_scores = {}
 
 def genetic(initial, survival_rate, offspring, generations, mutation):
     """ Implements a genetic algorithm on scheduling problem """
-    print("Creating initial population...")
+    print("\n\t\tCreating initial population...\n")
     genesis = initial_population(initial)
-    print("Selecting fittest individuals...")
+    print("\t\tSelecting fittest individuals...\n")
     fittest = selection(genesis, survival_rate)
-    print("Mating :)))))))")
+    print("\t\tSomething about the birds and the bees...\n")
     children = cross_over(fittest, offspring, 0, mutation)
 
     for i in range(generations):
@@ -31,22 +31,15 @@ def genetic(initial, survival_rate, offspring, generations, mutation):
     student_list = fittest[0][0][1]
     schedule = fittest[0][1]
     fittest_score = calcScore(allcourses, student_list, chambers)
-    print("fittest: ", fittest_score)
-    print("schedule: ", schedule)
-    print("Start hillclimbing on fittest schedule...")
+    print("\t\tFittest: ", fittest_score)
 
     score_file = open('scores.txt', 'w')
 
     score_file.write(str(total_gen_scores))
 
+    return schedule, allcourses, student_list, chambers
 
-    hillclimbRoomlocks2(1000, chambers, allcourses, student_list, schedule)
-
-    # if algorithm == "GA":
-    #     return fittest, fittest_score, initial, survival_rate, offspring, generations, mutation
-
-    # print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
-
+    print_schedule(schedule, allcourses, student_list, chambers)
 
 def initial_population(amount):
     """ Creates an intial population and returns the parents """
@@ -135,11 +128,7 @@ def mutation(schedule, chambers, allcourses, student_list, chance):
     probability = random.random()
 
     if probability < chance:
-        print("!!! MUTATION !!!")
-        print("Hillclimbing on schedule {} times...".format(int(probability * 100)))
         hillclimbRoomlocks2(int(probability * 100), chambers, allcourses, student_list, schedule)
-
-        # swapCourse2(chambers, allcourses, student_list, schedule)
 
     return
 
@@ -162,7 +151,6 @@ def cross_over(mating_pool, offspring, generation, chance):
         probability -= 1
 
 
-    fittest_score = 0
 
     # iterate over offspring
     for i in range(offspring):
@@ -241,9 +229,9 @@ def cross_over(mating_pool, offspring, generation, chance):
 
 
 
-        # if score > fittest_score:
-        #     fittest_score = score
-        print("Schedule: {}, generation: {}, score: {}".format(i, generation, score))
+        if score > fittest_score:
+            fittest_score = score
+            print("New best found ---> Schedule: {}, generation: {}, score: {}".format(i, generation, score))
 
 
         # add the array with individual timetable-info to the population
@@ -254,4 +242,4 @@ def cross_over(mating_pool, offspring, generation, chance):
     return children
 
 
-genetic(50, 0.20, 50, 2, 0.2)
+# genetic(50, 0.20, 50, 2, 0.2)

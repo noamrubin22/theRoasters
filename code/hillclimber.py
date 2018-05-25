@@ -27,7 +27,7 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 
 	# if specific course is not chosen
 	if course1 == None:
-		
+
 		# choose random course from courselist
 		course1 = random.randint(0, len(allcourses) - 1)
 
@@ -41,7 +41,7 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 		if len(allcourses[course1].activities) == 0:
 			activity1 = 0
 		else:
-		
+
 			activity1 = random.randint(0, len(allcourses[course1].activities) - 1)
 
 	# same
