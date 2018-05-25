@@ -1,6 +1,6 @@
 import generateschedule
-from generateschedule import translateRoomlock
-from generateschedule import updateClassesFromSchedule, createSchedule
+from helpers import translateRoomlock
+from helpers import updateClassesFromSchedule, createSchedule
 
 
 def calcScore(allcourses, student_list, chambers):

@@ -2,6 +2,7 @@ from __future__ import division
 import csv
 import random
 import math
+<<<<<<< HEAD
 # import generateschedule
 # import scorefunction
 # import hillclimber
@@ -19,6 +20,19 @@ from algorithms import *
 # from printschedule import print_schedule
 # from plot import plot_simulated_annealing
 # from genetic import genetic
+=======
+import hillclimber
+from parse import createStudentClass, parse, gimme_students
+from classes import Students, Room, Course
+from helpers import createSchedule, updateClassesFromSchedule, calcScore
+from hillclimber import hillclimbRoomlocks
+from hillclimberstudents import hillclimbStudent
+from SA import simulatedAnnealing
+from helpers import linear, exponential, sigmoidal, geman, lin_exp
+from printschedule import print_schedule
+from plot import plot_simulated_annealing
+from genetic import genetic
+>>>>>>> 0776b41f76caddcecdb50c1a1360d02c2bdce87c
 
 def main():
 
