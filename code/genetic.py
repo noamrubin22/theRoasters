@@ -12,21 +12,21 @@ from hillclimberscheduleplaces import swapCourse2, hillclimbRoomlocks2
 
 
 
-def genetic(initial, offspring, generations, mutation):
+def genetic(initial, survival_rate, offspring, generations, mutation):
     """ Implements a genetic algorithm on scheduling problem """
     print("Creating initial population...")
     genesis = initial_population(initial)
     print("Selecting fittest individuals...")
-    fittest = selection(genesis)
+    fittest = selection(genesis, survival_rate)
     print("Mating :)))))))")
     children = cross_over(fittest, offspring, 0, mutation)
 
     for i in range(generations):
-        fittest = selection(children)
+        fittest = selection(children, survival_rate)
         children = cross_over(fittest, offspring, i + 1, mutation)
         print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
 
-    fittest = selection(children)
+    fittest = selection(children, survival_rate)
     print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
     print("schedule: ", fittest[0][1])
 
@@ -49,8 +49,8 @@ def initial_population(amount):
         # create a new random schedule
         chambers, allcourses, student_list, schedule = createSchedule()
 
-        print("Hillclimbing on schedule {}...".format(i))
-        hillclimbRoomlocks2(20, chambers, allcourses, student_list, schedule)
+        # print("Hillclimbing on schedule {}...".format(i))
+        # hillclimbRoomlocks2(20, chambers, allcourses, student_list, schedule)
 
 
         # add all information about this specific schedule
@@ -65,13 +65,13 @@ def initial_population(amount):
         # add the array with individual timetable-info to the population
         population.append(timetable_info)
 
-        hillclimbRoomlocks(amount, chambers, allcourses, student_list, schedule)
+        # hillclimbRoomlocks(amount, chambers, allcourses, student_list, schedule)
 
 
     return population
 
 
-def selection(population):
+def selection(population, rate):
     """ Calculates the fitness of an individual by returning the schedule score """
 
     mating_pool = []
@@ -91,11 +91,11 @@ def selection(population):
     population = sorted(population, key=fitness, reverse=True)
 
     # set max and range
-    probability = 10
-    parents_max = 10
+    probability = int(rate * len(population))
+    rate = int(rate * 100)
 
     # iterate over parents
-    for i in range(parents_max):
+    for i in range(rate):
 
         # create matingpool
         for j in range(probability):
@@ -218,4 +218,4 @@ def cross_over(mating_pool, offspring, generation, chance):
     return children
 
 
-genetic(40, 40, 10, 0.3)
+genetic(100, 0.5, 100, 10, 0.3)
