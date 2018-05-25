@@ -130,6 +130,7 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
 
 	#* update roomschedules *#
+	# print(allcourses[course1].seminargroups)
 
 	chambers[room1].changeBooking(timelock1, timelock2)
 	chambers[room2].changeBooking(timelock2, timelock1)

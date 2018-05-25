@@ -45,7 +45,7 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 		# calculate score schedule
 		points = calcScore(allcourses, student_list, chambers)
 
-		print("Before swap: ", points)
+		# print("Before swap: ", points)
 
 		# append score to list for visualisation
 		scores.append(points)
@@ -63,7 +63,7 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 		# calculate new score
 		newpoints = calcScore(allcourses, student_list, chambers)
 		
-		print("   New score: ", newpoints)
+		# print("   New score: ", newpoints)
 
 		# if new score is worst 
 		if newpoints < points:
@@ -75,7 +75,7 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 			if (acceptance_probability > random.random()):
 			
 				# accept the worst solution
-				print("Accepted worst solution, score:", newpoints)
+				# print("Accepted worst solution, score:", newpoints)
 				points = newpoints
 
 				# cool system
@@ -106,7 +106,7 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 
 			# accept it
 			points = newpoints 
-			print("accepted score:" )
+			# print("accepted score:" )
 
 
 	print("bestscore:", best_score)
