@@ -257,8 +257,8 @@ def complement_course(allcourses, schedule, chambers, student_list):
 
 		# schedule activities
 		schedule_class(course, "lecture", schedule, chambers, student_list)
-		schedule_class(course, "seminar", schedule, chambers, student_l_cst)
-		scheduleClass(course, "practical", schedule, chambers, student_list)
+		schedule_class(course, "seminar", schedule, chambers, student_list)
+		schedule_class(course, "practical", schedule, chambers, student_list)
 
 	return allcourses, schedule, chambers, student_list
 
@@ -914,7 +914,7 @@ def selection(population, rate):
     population = sorted(population, key=fitness, reverse=True)
 
     # set max and range
-    probability = int(rate * len(population))
+    probability = int(float(rate * len(population)))
     rate = int(rate * 100)
 
     for i in range(rate):
@@ -1129,7 +1129,7 @@ def print_schedule(schedule, allcourses, student_list, chambers):
         timetable.append(timelock)
         j += 1
 
-    score, acp = calcScore(allcourses, student_list, chambers)
+    score = calc_score(allcourses, student_list, chambers)
 
     fields = ["Score = {}".format(score), "A1.04", "A1.06", "A1.08", "A1.10", "B0.201", "C0.110", "C1.112"]
 
@@ -1190,13 +1190,9 @@ def multiple_simulated_annealing(scores):
 
 
 def plot_average_hillclimb(repetitions, runs):
-<<<<<<< HEAD
-# """ Performs the hillclimber a certain number of times (repetitions) with a specified number of runs
-#  	and plot the average scores """
-=======
 	""" Performs the hillclimber a certain number of times (repetitions) with a specified number of runs and plot the average scores """
 
->>>>>>> 0776b41f76caddcecdb50c1a1360d02c2bdce87c
+
 	totalscores = []
 	for i in range(repetitions):
 		algorithm_scores = []
@@ -1221,13 +1217,9 @@ def plot_average_hillclimb(repetitions, runs):
 
 
 def plot_average_SA(repetitions, runs):
-<<<<<<< HEAD
-# """ Performs all cooling schemes of simulated annealing a certain number of times (repetitions) and
-# plots the average scores """
-=======
 	""" Performs all cooling schemes of simulated annealing a certain number of times (repetitions) and
 	plots the average scores """
->>>>>>> 0776b41f76caddcecdb50c1a1360d02c2bdce87c
+
 	totalscores = []
 	for i in range(repetitions):
 		algorithm_scores = []
