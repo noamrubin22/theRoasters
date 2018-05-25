@@ -133,7 +133,7 @@ def create_student_groups(allcourses, student_list):
 
 		#* divide students over groups *#
 
-		# start with group '1'
+		# start with group "1"
 		sem = 1
 
 		# if course has seminars
@@ -299,7 +299,7 @@ def update_classes_from_schedule(schedule):
 	# for each activity in new schedule
 	for roomlock, activity in schedule.items():
 
-		# if it's not an empty roomlock
+		# if it"s not an empty roomlock
 		if activity is not None:
 
 			# if lecture
@@ -704,10 +704,10 @@ def swap_students(chambers, allcourses, student_list, schedule, swapcourse = Non
 
 		# determine timelocks of activities
 		for activity in allcourses[swapcourse].activities:
-			if activity[2] == sem1 and 'seminar' in activity[1]:
+			if activity[2] == sem1 and "seminar" in activity[1]:
 				roomlock1 = activity[0]
 				room1, timelock1 = translate_roomlock(roomlock1)
-			if activity[2] == sem2 and 'seminar' in activity[1]:
+			if activity[2] == sem2 and "seminar" in activity[1]:
 				roomlock2 = activity[0]
 				room2, timelock2 = translate_roomlock(roomlock2)
 
@@ -746,10 +746,10 @@ def swap_students(chambers, allcourses, student_list, schedule, swapcourse = Non
 
 		# determine timelocks of activities
 		for activity in allcourses[swapcourse].activities:
-			if activity[2] == prac1 and 'practical' in activity[1]:
+			if activity[2] == prac1 and "practical" in activity[1]:
 				roomlock1 = activity[0]
 				room1, timelock1 = translate_roomlock(roomlock1)
-			if activity[2] == prac2 and 'practical' in activity[1]:
+			if activity[2] == prac2 and "practical" in activity[1]:
 				roomlock2 = activity[0]
 				room2, timelock2 = translate_roomlock(roomlock2)
 
@@ -1047,7 +1047,7 @@ def cross_over(mating_pool, offspring, generation, chance):
                     # increase parent-counter
                     newparentcounter += 1
 
-                    # if 500 new parents weren't enough
+                    # if 500 new parents weren"t enough
                     if newparentcounter > 500:
                         break
 
@@ -1100,16 +1100,17 @@ def cross_over(mating_pool, offspring, generation, chance):
 
 def print_schedule(schedule, allcourses, student_list, chambers):
 
+	# creat
     schedule_location = "visualisation/schedule.csv"
-    schedule_file = open(schedule_location, 'w')
+    schedule_file = open(schedule_location, "w")
 
     writer = csv.writer(schedule_file)
 
-    times = ['Monday 09:00 - 11:00', 'Monday 11:00 - 13:00', 'Monday 13:00 - 15:00', 'Monday 15:00 - 17:00',
-             'Tuesday 09:00 - 11:00', 'Tuesday 11:00 - 13:00', 'Tuesday 13:00 - 15:00', 'Tuesday 15:00 - 17:00',
-             'Wednesday 09:00 - 11:00', 'Wednesday 11:00 - 13:00', 'Wednesday 13:00 - 15:00', 'Wednesday 15:00 - 17:00',
-             'Thursday 09:00 - 11:00', 'Thursday 11:00 - 13:00', 'Thursday 13:00 - 15:00', 'Thursday 15:00 - 17:00',
-             'Friday 09:00 - 11:00', 'Friday 11:00 - 13:00', 'Friday 13:00 - 15:00', 'Friday 15:00 - 17:00']
+    times = ["Monday 09:00 - 11:00", "Monday 11:00 - 13:00", "Monday 13:00 - 15:00", "Monday 15:00 - 17:00",
+             "Tuesday 09:00 - 11:00", "Tuesday 11:00 - 13:00", "Tuesday 13:00 - 15:00", "Tuesday 15:00 - 17:00",
+             "Wednesday 09:00 - 11:00", "Wednesday 11:00 - 13:00", "Wednesday 13:00 - 15:00", "Wednesday 15:00 - 17:00",
+             "Thursday 09:00 - 11:00", "Thursday 11:00 - 13:00", "Thursday 13:00 - 15:00", "Thursday 15:00 - 17:00",
+             "Friday 09:00 - 11:00", "Friday 11:00 - 13:00", "Friday 13:00 - 15:00", "Friday 15:00 - 17:00"]
 
     timetable = []
 
@@ -1130,7 +1131,7 @@ def print_schedule(schedule, allcourses, student_list, chambers):
 
     score, acp = calcScore(allcourses, student_list, chambers)
 
-    fields = ['Score = {}'.format(score), 'A1.04', 'A1.06', 'A1.08', 'A1.10', 'B0.201', 'C0.110', 'C1.112']
+    fields = ["Score = {}".format(score), "A1.04", "A1.06", "A1.08", "A1.10", "B0.201", "C0.110", "C1.112"]
 
     writer.writerow(fields)
 
