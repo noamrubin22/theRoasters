@@ -9,53 +9,6 @@ from hillclimber import swapCourse, hillclimb_roomlocks
 from generateschedule import updateClassesFromSchedule
 from hillclimberscheduleplaces import swapCourse2, hillclimb_roomlocks2
 
-total_gen_scores = {}
-
-def genetic(initial, survival_rate, offspring, generations, mutation):
-    """ Implements a genetic algorithm on scheduling problem """
-
-    # creates initial population
-    print("Creating initial population...")
-    genesis = initial_population(initial)
-
-    # selects fittest individuals
-    print("Selecting fittest individuals...")
-    fittest = selection(genesis, survival_rate)
-
-    children = cross_over(fittest, offspring, 0, mutation)
-    print("\t\tSomething about the birds and the bees...\n")
-
-
-    # for amount of generations
-    for i in range(generations):
-
-        # select fittest children (that survived)
-        fittest = selection(children, survival_rate)
-
-        # perform cross over, add mutation
-        children = cross_over(fittest, offspring, i + 1, mutation)
-
-    # select fittest children
-    fittest = selection(children, survival_rate)
-
-    # extracting varibles best schedule
-    allcourses = fittest[0][0][0]
-    chambers = fittest[0][0][2]
-    student_list = fittest[0][0][1]
-    schedule = fittest[0][1]
-
-    # calculate score
-    fittest_score = calc_score(allcourses, student_list, chambers)
-    print("fittest: ", fittest_score)
-    print("schedule: ", schedule)
-
-    # write scores in txt file
-    score_file = open('scores.txt', 'w')
-    score_file.write(str(total_gen_scores))
-
-    return schedule, allcourses, student_list, chambers
-
-
 
 def initial_population(amount):
     """ Creates an intial population and returns the parents """
@@ -65,16 +18,11 @@ def initial_population(amount):
 
     for i in range(amount):
 
-        # print("Generating initial population...")
-
         timetable_info = []
         score_info = []
 
         # create a new random schedule
         chambers, allcourses, student_list, schedule = create_schedule()
-
-        # print("Hillclimbing on schedule {}...".format(i))
-        # hillclimb_roomlocks2(20, chambers, allcourses, student_list, schedule)
 
         # add all information about this specific schedule
         score_info.append(allcourses)
@@ -144,7 +92,6 @@ def cross_over(mating_pool, offspring, generation, chance):
     children = []
     fittest_score = 0
     chance_array = []
-    gen_scores = []
 
     # determine probability
     probability = len(mating_pool)
@@ -251,21 +198,17 @@ def cross_over(mating_pool, offspring, generation, chance):
         # calculate score
         score = calc_score(allcourses, student_list, chambers)
 
-        # add to score file
-        gen_scores.append(score)
-
         # if score is better than the fittest
         if score > fittest_score:
 
             # adjust fittest score
             fittest_score = score
 
+            # print best new score of the generation to the console
             print("New best found ---> Schedule: {}, generation: {}, score: {}".format(i, generation, score))
 
         # add the array with individual timetable-info to the population
         children.append(timetable_info)
 
-    # create score dict
-    total_gen_scores[generation] = gen_scores
 
     return children
