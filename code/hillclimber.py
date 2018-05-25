@@ -42,10 +42,6 @@ def swap_course(chambers, allcourses, student_list, schedule, course1 = None, ac
 		if len(allcourses[course1].activities) == 0:
 			activity1 = 0
 		else:
-<<<<<<< HEAD
-
-=======
->>>>>>> 43617eef6741eaabc7c9e660abd76464970905ef
 			activity1 = random.randint(0, len(allcourses[course1].activities) - 1)
 
 	# same
@@ -122,7 +118,7 @@ def swap_course(chambers, allcourses, student_list, schedule, course1 = None, ac
 
 					# if student is in practical- or seminargroup
 					if student.last_name in allcourses[course1].seminargroups[coursegroup1] or student.last_name in allcourses[course1].practicalgroups[coursegroup1]:
-						
+
 						# change individual schedule
 						student.change_student_schedule(timelock1, timelock2, allcourses[course1].name)
 
