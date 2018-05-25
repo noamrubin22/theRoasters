@@ -5,14 +5,14 @@ from classes import Students, Room, Course
 from parse import *
 
 
-def createRooms():
+def create_rooms():
 	""" Creates lists for rooms """
 
 	# create empty list
 	chambers = []
 
 	# read csv file with rooms
-	with open('../data/zalen.csv', 'rt') as csvfile:
+	with open("../data/zalen.csv", "rt") as csvfile:
 
 		# create csvfile
 		rooms = csv.reader(csvfile)
@@ -39,60 +39,60 @@ def createRooms():
 	return chambers
 
 
-def createCourses():
+def create_courses():
 	""" Substracts course information and put into list """
 
 	# create list for courses
 	allcourses = []
 
 	# load courses as classes in allcourses-list
-	with open('../data/vakken.csv', 'rt') as coursefile:
+	with open("../data/vakken.csv", "rt") as coursefile:
 
 		# clean text
 		courses = csv.reader(coursefile)
 		for row in courses:
 			for text in row:
-				courseInfo = text.split(";")
+				course_info = text.split(";")
 
 				# add course name
-				courseName = courseInfo[0]
+				course_name = course_info[0]
 
 				# add amount of lectures
-				courseLectures = courseInfo[1]
+				course_lectures = course_info[1]
 
 				# add amount of seminars
-				courseSeminars = courseInfo[2]
+				course_seminars = course_info[2]
 
 				# add max amount seminars
-				courseMaxSem = courseInfo[3]
-				if courseMaxSem == "nvt":
-					courseMaxSem = 0
+				course_max_sem = course_info[3]
+				if course_max_sem == "nvt":
+					course_max_sem = 0
 
 				# add amount of practicals
-				coursePracticals = courseInfo[4]
+				course_practicals = course_info[4]
 
 				# add max amount practicals
-				courseMaxPrac = courseInfo[5]
-				if courseMaxPrac == "nvt":
-					courseMaxPrac = 0
+				course_max_prac = course_info[5]
+				if course_max_prac == "nvt":
+					course_max_prac = 0
 
 				# add course to list
-				allcourses.append(Course(courseName, courseLectures, courseSeminars, courseMaxSem, coursePracticals, courseMaxPrac))
+				allcourses.append(Course(course_name, course_lectures, course_seminars, course_max_sem, course_practicals, course_max_prac))
 
 	return allcourses
 
-def createStudents():
+def create_students():
 	""" Creates a list with students """
 
 	# create empty list
 	student_list = []
 
-	# import student classes
-	student_list = createStudentClass()
+	# import student classces
+	student_list = create_student_class()
 
 	return student_list
 
-def createEmptySchedule():
+def create_empty_schedule():
 	""" Prepare dictionary that represents schedule """
 
 	# create empty dictionary with all room-timelock combinations (roomlocks) as keys
@@ -101,7 +101,7 @@ def createEmptySchedule():
 
 	return schedule
 
-def createStudentGroups(allcourses, student_list):
+def create_student_groups(allcourses, student_list):
 	"""" Divides students into practical and seminar groups """
 
 	# for each course
@@ -114,25 +114,26 @@ def createStudentGroups(allcourses, student_list):
 			if course.name in student.courses:
 
 				# add student to course class
-				course.addStudent(student.last_name)
+				course.add_student(student.last_name)
 
 		# if course has seminars
 		if course.seminars > 0:
 
 			# count and add amount to course class
 			numofseminars = math.ceil(course.students/course.maxstudentssem)
-			course.addSeminar(numofseminars)
+			course.add_seminar(numofseminars)
 
 		# if course has practicals
 		if course.practicals > 0:
 
 			# count and add to course class
 			numofpracticals = math.ceil(course.students/course.maxstudentsprac)
-			course.addPractical(numofpracticals)
+			course.add_practical(numofpracticals)
 
 
 		#* divide students over groups *#
-		# start with group '1'
+
+		# start with group "1"
 		sem = 1
 
 		# if course has seminars
@@ -145,7 +146,7 @@ def createStudentGroups(allcourses, student_list):
 				studentlist = course.studentnames[i: i + course.maxstudentssem]
 
 				# add studentlist to course class
-				course.createSeminarGroup(sem, studentlist)
+				course.create_seminar_group(sem, studentlist)
 
 				# go on to the next group
 				sem += 1
@@ -155,13 +156,13 @@ def createStudentGroups(allcourses, student_list):
 		if course.practicals > 0:
 			for i in range(0, len(course.studentnames), course.maxstudentsprac):
 				studentlist = course.studentnames[i: i + course.maxstudentsprac]
-				course.createPracticalGroup(prac, studentlist)
+				course.create_practical_group(prac, studentlist)
 				prac += 1
 
 
 	return allcourses, student_list
 
-def translateRoomlock(roomlock):
+def translate_roomlock(roomlock):
 	""" Translates roomlock number into roomnumber and timelock """
 
 	# amount of rooms per timelock
@@ -177,15 +178,15 @@ def translateRoomlock(roomlock):
 	return room, timelock
 
 
-def scheduleClass(course, typeClass, schedule, chambers, student_list):
+def schedule_class(course, type_class, schedule, chambers, student_list):
 	"""" Schedules activities of a course """
 
 	# group activities by type
-	if typeClass == "lecture":
+	if type_class == "lecture":
 		activity = course.lectures
-	elif typeClass == "seminar":
+	elif type_class == "seminar":
 		activity = course.seminars
-	elif typeClass == "practical":
+	elif type_class == "practical":
 		activity = course.practicals
 
 	# untill no activities are left
@@ -201,15 +202,15 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 			pickroomlock = random.randint(0, 139)
 
 		# if room is free, substract the room and timelock
-		room, timelock = translateRoomlock(pickroomlock)
+		room, timelock = translate_roomlock(pickroomlock)
 
 		# add activity to schedule at roomlock
-		schedule[pickroomlock] = course.name + " " + typeClass + " " + str(activity)
+		schedule[pickroomlock] = course.name + " " + type_class + " " + str(activity)
 
 		#* determine group number *#
 
 		# lecture has only 1 group
-		if typeClass == "lecture":
+		if type_class == "lecture":
 			group = 0
 
 		# seminars and practicals > 1 group,
@@ -219,134 +220,150 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 			group = activity
 
 		# update course class with new activity
-		course.updateSchedule(pickroomlock, (course.name + " " + typeClass), group)
+		course.update_schedule(pickroomlock, (course.name + " " + type_class), group)
 
 		# update room class with new activity
-		room, timelock = translateRoomlock(pickroomlock)
+		room, timelock = translate_roomlock(pickroomlock)
 		chambers[room].add_booking(timelock)
 
-
 		# update student class with new activity
-		if typeClass == "lecture":
+		if type_class == "lecture":
 			for student in student_list:
 				if course.name in student.courses:
-					student.updateStudentSchedule(timelock, course.name)
+					student.update_student_schedule(timelock, course.name)
 
-		if typeClass == "seminar":
+		if type_class == "seminar":
 			for student in student_list:
 				if course.name in student.courses:
 					if student.last_name in course.seminargroups[activity]:
-						student.updateStudentSchedule(timelock, course.name)
+						student.update_student_schedule(timelock, course.name)
 
-		if typeClass == "practical":
+		if type_class == "practical":
 			for student in student_list:
 				if course.name in student.courses:
 					if student.last_name in course.practicalgroups[activity]:
-						student.updateStudentSchedule(timelock, course.name)
+						student.update_student_schedule(timelock, course.name)
 
 		# decrease activity counter
 		activity -= 1
 
 	return
 
-def complementCourse(allcourses, schedule, chambers, student_list):
+def complement_course(allcourses, schedule, chambers, student_list):
 	""" Schedules activities for each course into schedule """
 
 	# for each course
 	for course in allcourses:
 
 		# schedule activities
-		scheduleClass(course, "lecture", schedule, chambers, student_list)
-		scheduleClass(course, "seminar", schedule, chambers, student_list)
+		schedule_class(course, "lecture", schedule, chambers, student_list)
+		schedule_class(course, "seminar", schedule, chambers, student_l_cst)
 		scheduleClass(course, "practical", schedule, chambers, student_list)
 
 	return allcourses, schedule, chambers, student_list
 
-def createSchedule():
+def create_schedule():
 	""" Creates a schedule """
 
 	# creates list available rooms
-	chambers = createRooms()
+	chambers = create_rooms()
 
 	# creates list of all courses
-	allcourses = createCourses()
+	allcourses = create_courses()
 
 	# creates student_list
-	student_list = createStudents()
+	student_list = create_students()
 
 	# create empty schedule with roomlocks as keys
-	schedule = createEmptySchedule()
+	schedule = create_empty_schedule()
 
 	# divide students over courses-groups
-	allcourses, student_list = createStudentGroups(allcourses, student_list)
+	allcourses, student_list = create_student_groups(allcourses, student_list)
 
 	# complement schedule with activities from courses
-	complementCourse(allcourses, schedule, chambers, student_list)
+	complement_course(allcourses, schedule, chambers, student_list)
 
 	return chambers, allcourses, student_list, schedule
 
-def updateClassesFromSchedule(schedule):
-	#* update classes to new schedule *#
+def update_classes_from_schedule(schedule):
+	""" Updates classes from new schedule """ 
 
-	allcourses = createCourses()
-	chambers = createRooms()
-	student_list = createStudents()
-	allcourses, student_list = createStudentGroups(allcourses, student_list)
+	# load all student, courses and room -information into variables
+	allcourses = create_courses()
+	chambers = create_rooms()
+	student_list = create_students()
 
+	# create student groups
+	allcourses, student_list = create_student_groups(allcourses, student_list)
+
+	# for each activity in new schedule
 	for roomlock, activity in schedule.items():
+
+		# if it"s not an empty roomlock
 		if activity is not None:
 
+			# if lecture
 			if "lecture" in activity:
+
+				# split text 
 				splittext = activity.split(" lecture ")
-				typeClass = "lecture"
+
+				# assign class
+				type_class = "lecture"
+
+				# split text and determine group
 				coursename = splittext[0]
 				group = 0
 
+			# same for seminar
 			if "seminar" in activity:
 				splittext = activity.split(" seminar ")
-				typeClass = "seminar"
+				type_class = "seminar"
 				coursename = splittext[0]
 				group = int(float(splittext[1]))
 
+			# and practical
 			if "practical" in activity:
 				splittext = activity.split(" practical ")
-				typeClass = "practical"
-
-
+				type_class = "practical"
 				coursename = splittext[0]
 				group = int(float(splittext[1]))
 
+			# for each course in course-list
 			for course in allcourses:
+
+				# find adjusted course
 				if coursename == course.name:
 
 				# update course class with new activity
-					course.updateSchedule(roomlock, (coursename + " " + typeClass), group)
+					course.update_schedule(roomlock, (coursename + " " + type_class), group)
 
 					# update room class with new activity
-					room, timelock = translateRoomlock(roomlock)
+					room, timelock = translate_roomlock(roomlock)
 					chambers[room].add_booking(timelock)
 
 					# update student class with new activity
-					if typeClass == "lecture":
+					if type_class == "lecture":
 						for student in student_list:
 							if course.name in student.courses:
-								student.updateStudentSchedule(timelock, course.name)
+								student.update_student_schedule(timelock, course.name)
 
-					if typeClass == "seminar":
+					if type_class == "seminar":
 						for student in student_list:
 							if course.name in student.courses:
 								if student.last_name in course.seminargroups[group]:
-									student.updateStudentSchedule(timelock, course.name)
+									student.updat_student_schedule(timelock, course.name)
 
-					if typeClass == "practical":
+					if type_class == "practical":
 						for student in student_list:
 							if course.name in student.courses:
 								if student.last_name in course.practicalgroups[group]:
-									student.updateStudentSchedule(timelock, course.name)
+									student.updat_student_schedule(timelock, course.name)
 
 	return allcourses, student_list, chambers
 
-def calcScore(allcourses, student_list, chambers):
+
+def calc_score(allcourses, student_list, chambers):
 	""" Calculates the score of a schedule"""
 
 	# start-score of a valid schedule
@@ -441,7 +458,7 @@ def calcScore(allcourses, student_list, chambers):
 		for activity in course.activities:
 
 			# substract room and timelock
-			room, timelock = translateRoomlock(activity[0])
+			room, timelock = translate_roomlock(activity[0])
 
 			# for lectures
 			if activity[2] == 0:
@@ -485,28 +502,26 @@ def calcScore(allcourses, student_list, chambers):
 
 		allcoursespoints.append([course.name, coursepoints])
 
-
-
 	# for all students
 	for student in student_list:
 
 		# create empty list
-		timelocksStudent = []
+		timelocks_student = []
 
 		# for each activity in schedule
 		for activity in student.schedule:
 
 			# if roomlock is occupied substract points
-			if activity[0] in timelocksStudent:
+			if activity[0] in timelocks_student:
 				points -= 1
 				coursepoints -= 1
 
 			# add roomlock to list
-			timelocksStudent.append(activity[0])
+			timelocks_student.append(activity[0])
 
 	return points
 
-def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, activity1 = None, course2 = None, activity2 = None):
+def swap_course(chambers, allcourses, student_list, schedule, course1 = None, activity1 = None, course2 = None, activity2 = None):
 	""" Swaps roomlocks of 2 (random) courses """
 
 	#* swap roomlock 2 (random) courses *#
@@ -523,7 +538,8 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 
 	# if specific activity is not chosen
 	if activity1 == None:
-		# chose random activity from course
+
+		# choose random activity from course
 		if len(allcourses[course1].activities) == 0:
 			activity1 = 0
 		else:
@@ -545,12 +561,12 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 	roomlock2 = randact2[0]
 
 	# swap the chosen activities from roomlock in schedule
-	allcourses[course1].changeSchedule(roomlock2, activity1)
-	allcourses[course2].changeSchedule(roomlock1, activity2)
+	allcourses[course1].change_schedule(roomlock2, activity1)
+	allcourses[course2].change_schedule(roomlock1, activity2)
 
 	# translate to room and timelock for both roomlocks
-	room1, timelock1 = translateRoomlock(roomlock1)
-	room2, timelock2 = translateRoomlock(roomlock2)
+	room1, timelock1 = translate_roomlock(roomlock1)
+	room2, timelock2 = translate_roomlock(roomlock2)
 
 	# store activity-groups
 	coursegroup1 = allcourses[course1].activities[activity1][2]
@@ -569,7 +585,7 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 			if allcourses[course1].name in student.courses:
 
 				# change individual schedule
-				student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
+				student.change_student_schedule(timelock1, timelock2, allcourses[course1].name)
 
 	# for seminars and practicals (group > 1)
 	else:
@@ -587,51 +603,55 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 					if student.last_name in allcourses[course1].seminargroups[coursegroup1]:
 
 							# change individual schedule with swapped course
-							student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
+							student.change_student_schedule(timelock1, timelock2, allcourses[course1].name)
 
 				# if course has practical
 				elif allcourses[course1].practicals > 0 and allcourses[course1].seminars == 0:
+
 					# if student is in practical-group
 					if student.last_name in allcourses[course1].practicalgroups[coursegroup1]:
-						# print(student.last_name)
-						# change individual schedule
-						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
 
+						# change individual schedule
+						student.change_student_schedule(timelock1, timelock2, allcourses[course1].name)
+
+				# if student has both practicals and seminarsa
 				elif allcourses[course1].seminars > 0 and allcourses[course1].practicals > 0:
+
+					# if student is in practical- or seminargroup
 					if student.last_name in allcourses[course1].seminargroups[coursegroup1] or student.last_name in allcourses[course1].practicalgroups[coursegroup1]:
-						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
+
+						# change individual schedule
+						student.change_student_schedule(timelock1, timelock2, allcourses[course1].name)
 
 	# same for the second coursegroup
 	if coursegroup2 == 0:
 		for student in student_list:
 			if allcourses[course2].name in student.courses:
-				student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
+				student.change_student_schedule(timelock2, timelock1, allcourses[course2].name)
 
+	# for seminars and practicals
 	else:
 		for student in student_list:
+
 				# if course has seminar
 				if allcourses[course2].seminars > 0 and allcourses[course2].practicals == 0:
-
-					# if student is in seminargroup
 					if student.last_name in allcourses[course2].seminargroups[coursegroup2]:
-
-							# change individual schedule with swapped course
-							student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
+							student.change_student_schedule(timelock2, timelock1, allcourses[course2].name)
 
 				# if course has practical
 				elif allcourses[course2].practicals > 0 and allcourses[course2].seminars == 0:
-					# if student is in practical-group
 					if student.last_name in allcourses[course2].practicalgroups[coursegroup2]:
-						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
+						student.change_student_schedule(timelock2, timelock1, allcourses[course2].name)
 
+				# if student has both practicals and seminars
 				elif allcourses[course2].seminars > 0 and allcourses[course2].practicals > 0:
 					if student.last_name in allcourses[course2].seminargroups[coursegroup2] or student.last_name in allcourses[course2].practicalgroups[coursegroup2]:
-						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
+						student.change_student_schedule(timelock2, timelock1, allcourses[course2].name)
 
 	#* update roomschedules *#
 
-	chambers[room1].changeBooking(timelock1, timelock2)
-	chambers[room2].changeBooking(timelock2, timelock1)
+	chambers[room1].change_booking(timelock1, timelock2)
+	chambers[room2].change_booking(timelock2, timelock1)
 
 	# save content of schedule at swapped roomlocks
 	schedulecontent1 = schedule[roomlock1]
@@ -644,7 +664,7 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 	return course1, activity1, course2, activity2, schedule
 
 
-def swapStudents(chambers, allcourses, student_list, schedule, swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac2 = None, student1 = None, student2 = None):
+def swap_students(chambers, allcourses, student_list, schedule, swapcourse = None, sem1 = None, sem2 = None, prac1 = None, prac2 = None, student1 = None, student2 = None):
 	""" Swaps between seminar- or practicalgroups of two (random) students in a (random) course """
 
 	if swapcourse == None:
@@ -680,23 +700,23 @@ def swapStudents(chambers, allcourses, student_list, schedule, swapcourse = None
 			student2 = random.randint(0, len(seminargroup2) - 1)
 
 		# swap students in seminargroups in course-class
-		allcourses[swapcourse].switchSeminarStudent(sem1, sem2, student1, student2)
+		allcourses[swapcourse].switch_seminar_student(sem1, sem2, student1, student2)
 
 		# determine timelocks of activities
 		for activity in allcourses[swapcourse].activities:
-			if activity[2] == sem1 and 'seminar' in activity[1]:
+			if activity[2] == sem1 and "seminar" in activity[1]:
 				roomlock1 = activity[0]
-				room1, timelock1 = translateRoomlock(roomlock1)
-			if activity[2] == sem2 and 'seminar' in activity[1]:
+				room1, timelock1 = translate_roomlock(roomlock1)
+			if activity[2] == sem2 and "seminar" in activity[1]:
 				roomlock2 = activity[0]
-				room2, timelock2 = translateRoomlock(roomlock2)
+				room2, timelock2 = translate_roomlock(roomlock2)
 
 		# update student schedule
 		for student in student_list:
 			if student.last_name == allcourses[swapcourse].seminargroups[sem1][student1]:
-				student.changeStudentSchedule(timelock2, timelock1, allcourses[swapcourse].name)
+				student.change_student_schedule(timelock2, timelock1, allcourses[swapcourse].name)
 			if student.last_name == allcourses[swapcourse].seminargroups[sem2][student2]:
-				student.changeStudentSchedule(timelock1, timelock2, allcourses[swapcourse].name)
+				student.change_student_schedule(timelock1, timelock2, allcourses[swapcourse].name)
 
 		return swapcourse, sem1, sem2, prac1, prac2, student1, student2
 
@@ -722,23 +742,23 @@ def swapStudents(chambers, allcourses, student_list, schedule, swapcourse = None
 			student2 = random.randint(0, len(practicalgroup2) - 1)
 
 		# swap students in seminargroups in course-class
-		allcourses[swapcourse].switchPracticalStudent(prac1, prac2, student1, student2)
+		allcourses[swapcourse].switch_practical_student(prac1, prac2, student1, student2)
 
 		# determine timelocks of activities
 		for activity in allcourses[swapcourse].activities:
-			if activity[2] == prac1 and 'practical' in activity[1]:
+			if activity[2] == prac1 and "practical" in activity[1]:
 				roomlock1 = activity[0]
-				room1, timelock1 = translateRoomlock(roomlock1)
-			if activity[2] == prac2 and 'practical' in activity[1]:
+				room1, timelock1 = translate_roomlock(roomlock1)
+			if activity[2] == prac2 and "practical" in activity[1]:
 				roomlock2 = activity[0]
-				room2, timelock2 = translateRoomlock(roomlock2)
+				room2, timelock2 = translate_roomlock(roomlock2)
 
 		# update student schedule
 		for student in student_list:
 			if student.last_name == allcourses[swapcourse].practicalgroups[prac1][student1]:
-				student.changeStudentSchedule(timelock2, timelock1, allcourses[swapcourse].name)
+				student.change_student_schedule(timelock2, timelock1, allcourses[swapcourse].name)
 			if student.last_name == allcourses[swapcourse].practicalgroups[prac2][student2]:
-				student.changeStudentSchedule(timelock1, timelock2, allcourses[swapcourse].name)
+				student.change_student_schedule(timelock1, timelock2, allcourses[swapcourse].name)
 
 		return swapcourse, sem1, sem2, prac1, prac2, student1, student2
 
@@ -810,7 +830,6 @@ def gem_lin(min_iterations, i):
         return geman(min_iterations, i)
 
 
-
 def gem_exp(min_iterations, i):
     """ Temperature is calculated using an exponential and geman function """
 
@@ -830,6 +849,7 @@ def lin_sig(min_iterations, i):
     else:
        return linear(min_iterations, i)
 
+
 def gem_exp(min_iterations, i):
     """ Temperature is calculated using an geman and sigmoidal function """
 
@@ -838,6 +858,7 @@ def gem_exp(min_iterations, i):
         return geman(min_iterations, i)
     else:
         return sigmoidal(min_iterations, i)
+
 
 def initial_population(amount):
     """ Creates an intial population and returns the parents """
@@ -1026,7 +1047,7 @@ def cross_over(mating_pool, offspring, generation, chance):
                     # increase parent-counter
                     newparentcounter += 1
 
-                    # if 500 new parents weren't enough
+                    # if 500 new parents weren"t enough
                     if newparentcounter > 500:
                         break
 
@@ -1079,16 +1100,17 @@ def cross_over(mating_pool, offspring, generation, chance):
 
 def print_schedule(schedule, allcourses, student_list, chambers):
 
+	# creat
     schedule_location = "visualisation/schedule.csv"
-    schedule_file = open(schedule_location, 'w')
+    schedule_file = open(schedule_location, "w")
 
     writer = csv.writer(schedule_file)
 
-    times = ['Monday 09:00 - 11:00', 'Monday 11:00 - 13:00', 'Monday 13:00 - 15:00', 'Monday 15:00 - 17:00',
-             'Tuesday 09:00 - 11:00', 'Tuesday 11:00 - 13:00', 'Tuesday 13:00 - 15:00', 'Tuesday 15:00 - 17:00',
-             'Wednesday 09:00 - 11:00', 'Wednesday 11:00 - 13:00', 'Wednesday 13:00 - 15:00', 'Wednesday 15:00 - 17:00',
-             'Thursday 09:00 - 11:00', 'Thursday 11:00 - 13:00', 'Thursday 13:00 - 15:00', 'Thursday 15:00 - 17:00',
-             'Friday 09:00 - 11:00', 'Friday 11:00 - 13:00', 'Friday 13:00 - 15:00', 'Friday 15:00 - 17:00']
+    times = ["Monday 09:00 - 11:00", "Monday 11:00 - 13:00", "Monday 13:00 - 15:00", "Monday 15:00 - 17:00",
+             "Tuesday 09:00 - 11:00", "Tuesday 11:00 - 13:00", "Tuesday 13:00 - 15:00", "Tuesday 15:00 - 17:00",
+             "Wednesday 09:00 - 11:00", "Wednesday 11:00 - 13:00", "Wednesday 13:00 - 15:00", "Wednesday 15:00 - 17:00",
+             "Thursday 09:00 - 11:00", "Thursday 11:00 - 13:00", "Thursday 13:00 - 15:00", "Thursday 15:00 - 17:00",
+             "Friday 09:00 - 11:00", "Friday 11:00 - 13:00", "Friday 13:00 - 15:00", "Friday 15:00 - 17:00"]
 
     timetable = []
 
@@ -1109,7 +1131,7 @@ def print_schedule(schedule, allcourses, student_list, chambers):
 
     score, acp = calcScore(allcourses, student_list, chambers)
 
-    fields = ['Score = {}'.format(score), 'A1.04', 'A1.06', 'A1.08', 'A1.10', 'B0.201', 'C0.110', 'C1.112']
+    fields = ["Score = {}".format(score), "A1.04", "A1.06", "A1.08", "A1.10", "B0.201", "C0.110", "C1.112"]
 
     writer.writerow(fields)
 
@@ -1178,7 +1200,7 @@ def plot_average_hillclimb(repetitions, runs):
 	totalscores = []
 	for i in range(repetitions):
 		algorithm_scores = []
-		chambers, allcourses, student_list, schedule = createSchedule()
+		chambers, allcourses, student_list, schedule = create_schedule()
 		for i in range(runs):
 			score = hillclimbRoomlocks(1, chambers, allcourses, student_list, schedule)
 			algorithm_scores.append(score)
@@ -1209,13 +1231,13 @@ def plot_average_SA(repetitions, runs):
 	totalscores = []
 	for i in range(repetitions):
 		algorithm_scores = []
-		chambers, allcourses, student_list, schedule = createSchedule()
+		chambers, allcourses, student_list, schedule = create_schedule()
 		best_score, best_courses, best_student_list, best_chambers, geman_scores = simulatedAnnealing(geman, runs, chambers, allcourses, student_list, schedule)
-		chambers, allcourses, student_list, schedule = createSchedule()
+		chambers, allcourses, student_list, schedule = create_schedule()
 		best_score, best_courses, best_student_list, best_chambers, linear_scores = simulatedAnnealing(linear, runs, chambers, allcourses, student_list, schedule)
-		chambers, allcourses, student_list, schedule = createSchedule()
+		chambers, allcourses, student_list, schedule = create_schedule()
 		best_score, best_courses, best_student_list, best_chambers, sigmoidal_scores = simulatedAnnealing(sigmoidal, runs, chambers, allcourses, student_list, schedule)
-		chambers, allcourses, student_list, schedule = createSchedule()
+		chambers, allcourses, student_list, schedule = create_schedule()
 		best_score, best_courses, best_student_list, best_chambers, exponential_scores = simulatedAnnealing(exponential, runs, chambers, allcourses, student_list, schedule)
 		algorithm_scores.append([geman_scores, linear_scores, sigmoidal_scores, exponential_scores])
 		totalscores.append(algorithm_scores)
