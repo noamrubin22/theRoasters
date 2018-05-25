@@ -1,6 +1,16 @@
+##################################################### 
+# Heuristieken: Lectures & Lesroosters              #
+#                                                   #
+# Names: Tessa Ridderikhof, Najib el Moussaoui      #
+#        & Noam Rubin                               #
+#                                                   #
+# This script consists of the algorithms used to 	#
+# optimalize schedules 		     			        #
+#                                                   #
+#####################################################
+
 import helpers 
 from helpers import *
-
 
 def hillclimb_student(times, chambers, allcourses, student_list, schedule):
 	""" Performs student swap and changes back if it does not lead to a better score """
@@ -30,6 +40,7 @@ def hillclimb_student(times, chambers, allcourses, student_list, schedule):
 				break
 
 	return newpoints
+
 
 def hillclimb_roomlocks(times, chambers, allcourses, student_list, schedule):
 	""" Searches for the optimal score by swapping roomlocks """
@@ -64,6 +75,7 @@ def hillclimb_roomlocks(times, chambers, allcourses, student_list, schedule):
 				break
 
 	return newpoints
+
 
 def simulated_annealing(coolingscheme, min_iterations, chambers, allcourses, student_list, schedule):
 	""" Searches for the optimal score by using a coolingscheme """
@@ -146,14 +158,8 @@ def simulated_annealing(coolingscheme, min_iterations, chambers, allcourses, stu
 
 			# accept it
 			points = newpoints
-			# print("accepted score:" )
-
-
-	print("bestscore:", best_score)
-
 
 	return best_schedule, best_score, best_courses, best_student_list, best_chambers, scores
-
 
 
 def genetic(initial, survival_rate, offspring, generations, mutation):
