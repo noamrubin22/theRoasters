@@ -23,9 +23,9 @@ from scorefunction import calcScore
 from hillclimber import hillclimbRoomlocks
 from hillclimberstudents import hillclimbStudent
 from SA import simulatedAnnealing
-from coolingschemes import linear, exponential, sigmoidal, geman, lin_exp 
+from coolingschemes import linear, exponential, sigmoidal, geman, lin_exp, multiple_simulated_annealing
 from printschedule import print_schedule
-from plot import plot_simulated_annealing
+# from plot import plot_simulated_annealing
 
 # create schedule
 chambers, allcourses, student_list, schedule = createSchedule()

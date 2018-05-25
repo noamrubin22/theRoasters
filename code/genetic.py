@@ -9,7 +9,7 @@ from hillclimber import swapCourse, hillclimbRoomlocks
 from generateschedule import updateClassesFromSchedule
 from hillclimberscheduleplaces import swapCourse2, hillclimbRoomlocks2
 
-
+total_gen_scores = {}
 
 def genetic(initial, survival_rate, offspring, generations, mutation):
     """ Implements a genetic algorithm on scheduling problem """
@@ -27,14 +27,18 @@ def genetic(initial, survival_rate, offspring, generations, mutation):
 
     fittest = selection(children, survival_rate)
     allcourses = fittest[0][0][0]
-    chambers = fittest[0][0][1]
-    student_list = fittest[0][0][2]
+    chambers = fittest[0][0][2]
+    student_list = fittest[0][0][1]
     schedule = fittest[0][1]
     fittest_score = calcScore(allcourses, student_list, chambers)
     print("fittest: ", fittest_score)
     print("schedule: ", schedule)
     print("Start hillclimbing on fittest schedule...")
-    hillclimbRoomlocks2(1000, chambers, allcourses, student_list, schedule)
+    # hillclimbRoomlocks2(1000, chambers, allcourses, student_list, schedule)
+    
+    score_file = open('scores.txt', 'w')
+
+    score_file.write(total_gen_scores)
 
     # if algorithm == "GA":
     #     return fittest, fittest_score, initial, survival_rate, offspring, generations, mutation
@@ -145,7 +149,10 @@ def cross_over(mating_pool, offspring, generation, chance):
     children = []
     fittest_score = 0
     chance_array = []
+    gen_scores = []
+
     probability = len(mating_pool)
+
 
     for i in range(len(mating_pool)):
         for j in range(probability):
@@ -228,7 +235,7 @@ def cross_over(mating_pool, offspring, generation, chance):
         timetable_info.append(schedule)
 
         score = calcScore(allcourses, student_list, chambers)
-
+        gen_scores.append(score)
 
         # if score > fittest_score:
         #     fittest_score = score
@@ -238,7 +245,9 @@ def cross_over(mating_pool, offspring, generation, chance):
         # add the array with individual timetable-info to the population
         children.append(timetable_info)
 
+    total_gen_scores[generation] = gen_scores
+
     return children
 
 
-genetic(100, 0.25, 50, 20, 0.1)
+genetic(100, 0.2, 100, 1, 0.2)
