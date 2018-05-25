@@ -52,7 +52,7 @@ def create_rooms():
 
 
 def create_courses():
-	""" Substracts course information and put into list """
+	""" Substracts course information and puts into list """
 
 	# create list for courses
 	allcourses = []
@@ -188,15 +188,15 @@ def translate_roomlock(roomlock):
 	return room, timelock
 
 
-def schedule_class(course, typeClass, schedule, chambers, student_list):
+def schedule_class(course, type_class, schedule, chambers, student_list):
 	"""" Schedules activities of a course """
 
 	# group activities by type
-	if typeClass == "lecture":
+	if type_class == "lecture":
 		activity = course.lectures
-	elif typeClass == "seminar":
+	elif type_class == "seminar":
 		activity = course.seminars
-	elif typeClass == "practical":
+	elif type_class == "practical":
 		activity = course.practicals
 
 	# untill no activities are left
@@ -215,12 +215,12 @@ def schedule_class(course, typeClass, schedule, chambers, student_list):
 		room, timelock = translateRoomlock(pickroomlock)
 
 		# add activity to schedule at roomlock
-		schedule[pickroomlock] = course.name + " " + typeClass + " " + str(activity)
+		schedule[pickroomlock] = course.name + " " + type_class + " " + str(activity)
 
 		#* determine group number *#
 
 		# lecture has only 1 group
-		if typeClass == "lecture":
+		if type_class == "lecture":
 			group = 0
 
 		# seminars and practicals > 1 group,
@@ -230,25 +230,25 @@ def schedule_class(course, typeClass, schedule, chambers, student_list):
 			group = activity
 
 		# update course class with new activity
-		course.update_schedule(pickroomlock, (course.name + " " + typeClass), group)
+		course.update_schedule(pickroomlock, (course.name + " " + type_class), group)
 
 		# update room class with new activity
 		room, timelock = translate_roomlock(pickroomlock)
 		chambers[room].add_booking(timelock)
 
 		# update student class with new activity
-		if typeClass == "lecture":
+		if type_class == "lecture":
 			for student in student_list:
 				if course.name in student.courses:
 					student.update_student_schedule(timelock, course.name)
 
-		if typeClass == "seminar":
+		if type_class == "seminar":
 			for student in student_list:
 				if course.name in student.courses:
 					if student.last_name in course.seminargroups[activity]:
 						student.update_student_schedule(timelock, course.name)
 
-		if typeClass == "practical":
+		if type_class == "practical":
 			for student in student_list:
 				if course.name in student.courses:
 					if student.last_name in course.practicalgroups[activity]:
@@ -295,63 +295,79 @@ def create_schedule():
 
 	return chambers, allcourses, student_list, schedule
 
-def update_classesFromSchedule(schedule):
-	#* update classes to new schedule *#
+def update_classes_from_schedule(schedule):
+	""" Updates classes from new schedule """ 
 
-	allcourses = createCourses()
-	chambers = createRooms()
-	student_list = createStudents()
-	allcourses, student_list = createStudentGroups(allcourses, student_list)
+	# load all student, courses and room -information into variables
+	allcourses = create_courses()
+	chambers = create_rooms()
+	student_list = create_students()
 
+	# create student groups
+	allcourses, student_list = create_student_groups(allcourses, student_list)
+
+	# for each activity in new schedule
 	for roomlock, activity in schedule.items():
+
+		# if it's not an empty roomlock
 		if activity is not None:
 
+			# if lecture
 			if "lecture" in activity:
+
+				# split text 
 				splittext = activity.split(" lecture ")
-				typeClass = "lecture"
+
+				# assign class
+				type_class = "lecture"
+
+				# split text and determine group
 				coursename = splittext[0]
 				group = 0
 
+			# same for seminar
 			if "seminar" in activity:
 				splittext = activity.split(" seminar ")
-				typeClass = "seminar"
+				type_class = "seminar"
 				coursename = splittext[0]
 				group = int(float(splittext[1]))
 
+			# and practical
 			if "practical" in activity:
 				splittext = activity.split(" practical ")
-				typeClass = "practical"
-
-
+				type_class = "practical"
 				coursename = splittext[0]
 				group = int(float(splittext[1]))
 
+			# for each course in course-list
 			for course in allcourses:
+
+				# find adjusted course
 				if coursename == course.name:
 
 				# update course class with new activity
-					course.updateSchedule(roomlock, (coursename + " " + typeClass), group)
+					course.update_schedule(roomlock, (coursename + " " + type_class), group)
 
 					# update room class with new activity
-					room, timelock = translateRoomlock(roomlock)
+					room, timelock = translate_roomlock(roomlock)
 					chambers[room].add_booking(timelock)
 
 					# update student class with new activity
-					if typeClass == "lecture":
+					if type_class == "lecture":
 						for student in student_list:
 							if course.name in student.courses:
-								student.updateStudentSchedule(timelock, course.name)
+								student.update_student_schedule(timelock, course.name)
 
-					if typeClass == "seminar":
+					if type_class == "seminar":
 						for student in student_list:
 							if course.name in student.courses:
 								if student.last_name in course.seminargroups[group]:
-									student.updateStudentSchedule(timelock, course.name)
+									student.updat_student_schedule(timelock, course.name)
 
-					if typeClass == "practical":
+					if type_class == "practical":
 						for student in student_list:
 							if course.name in student.courses:
 								if student.last_name in course.practicalgroups[group]:
-									student.updateStudentSchedule(timelock, course.name)
+									student.updat_student_schedule(timelock, course.name)
 
 	return allcourses, student_list, chambers

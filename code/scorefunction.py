@@ -1,9 +1,9 @@
 import generateschedule
-from generateschedule import translateRoomlock
+from generateschedule import translate_roomlock
 from generateschedule import updateClassesFromSchedule, createSchedule
 
 
-def calcScore(allcourses, student_list, chambers):
+def calc_score(allcourses, student_list, chambers):
 	""" Calculates the score of a schedule"""
 
 	# start-score of a valid schedule
@@ -98,7 +98,7 @@ def calcScore(allcourses, student_list, chambers):
 		for activity in course.activities:
 
 			# substract room and timelock
-			room, timelock = translateRoomlock(activity[0])
+			room, timelock = translate_roomlock(activity[0])
 
 			# for lectures
 			if activity[2] == 0:
@@ -142,23 +142,21 @@ def calcScore(allcourses, student_list, chambers):
 
 		allcoursespoints.append([course.name, coursepoints])
 
-
-
 	# for all students
 	for student in student_list:
 
 		# create empty list
-		timelocksStudent = []
+		timelocks_student = []
 
 		# for each activity in schedule
 		for activity in student.schedule:
 
 			# if roomlock is occupied substract points
-			if activity[0] in timelocksStudent:
+			if activity[0] in timelocks_student:
 				points -= 1
 				coursepoints -= 1
 
 			# add roomlock to list
-			timelocksStudent.append(activity[0])
+			timelocks_student.append(activity[0])
 
 	return points
