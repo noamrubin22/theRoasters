@@ -12,30 +12,26 @@
 import scorefunction
 import csv
 import matplotlib.pyplot as plt
+import plot
 from scorefunction import calcScore
+from hillclimber import hillclimbRoomlocks
 from generateschedule import createSchedule
+from plot import plot_random_schedules
 
 # create empty array to hold scores
 scores = []
 
 # create 1000 random schedules
-for i in range(0, 10000):
+for i in range(0, 100):
 	chambers, allcourses, student_list, schedule = createSchedule()	
 	
 	# calculate score of schedule
-	score = calcScore(allcourses, student_list, chambers)
+	# score = calcScore(allcourses, student_list, chambers)
+
+	score = hillclimbRoomlocks(1000, chambers, allcourses, student_list, schedule)
 	
 	# append score to array
 	scores.append(score)
 
 # plot scores
-plt.hist(scores, bins = len(score))
-plt.ylabel("Score")
-plt.xlabel("Times")
-plt.title("Histogram random schedules")
-plt.show()
-
-# # write score array to csv
-# with open("histscores.csv", "w") as resultFile:
-# 	wr = csv.writer(resultFile, dialect = 'excel')
-# 	wr.writerow(scores)
+plot_random_schedules(scores)

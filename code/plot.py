@@ -31,7 +31,7 @@ def plot_simulated_annealing(scores, coolingscheme, best_score):
 def plot_random_schedules(scores):
 	""" Creates an histogram of random schedules"""
 
-	plt.hist(scores, bins = len(score))
+	plt.hist(scores, bins = len(scores))
 	plt.ylabel("Score")
 	plt.xlabel("Times")
 	plt.title("Histogram random schedules")

@@ -16,7 +16,7 @@ import scorefunction
 import random
 import csv
 import generateschedule
-from generateschedule import translateRoomlock
+from generateschedule import translateRoomlock, updateClassesFromSchedule
 from scorefunction import calcScore
 
 
@@ -41,7 +41,6 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 		if len(allcourses[course1].activities) == 0:
 			activity1 = 0
 		else:
-		
 			activity1 = random.randint(0, len(allcourses[course1].activities) - 1)
 
 	# same
@@ -96,21 +95,24 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 			if allcourses[course1].name in student.courses:
 
 				# if course has seminar
-				if allcourses[course1].seminars > 0:
+				if allcourses[course1].seminars > 0 and allcourses[course1].practicals == 0:
 
 					# if student is in seminargroup
 					if student.last_name in allcourses[course1].seminargroups[coursegroup1]:
 
-						# change individual schedule with swapped course
-						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
+							# change individual schedule with swapped course
+							student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
 
 				# if course has practical
-				elif allcourses[course1].practicals > 0:
-
+				elif allcourses[course1].practicals > 0 and allcourses[course1].seminars == 0:
 					# if student is in practical-group
 					if student.last_name in allcourses[course1].practicalgroups[coursegroup1]:
-
+						# print(student.last_name)
 						# change individual schedule
+						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
+
+				elif allcourses[course1].seminars > 0 and allcourses[course1].practicals > 0:
+					if student.last_name in allcourses[course1].seminargroups[coursegroup1] or student.last_name in allcourses[course1].practicalgroups[coursegroup1]:
 						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
 
 	# same for the second coursegroup
@@ -121,12 +123,23 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 
 	else:
 		for student in student_list:
-			if allcourses[course2].name in student.courses:
-				if allcourses[course2].seminars > 0:
+				# if course has seminar
+				if allcourses[course2].seminars > 0 and allcourses[course2].practicals == 0:
+
+					# if student is in seminargroup
 					if student.last_name in allcourses[course2].seminargroups[coursegroup2]:
-						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
-				elif allcourses[course2].practicals > 0:
+
+							# change individual schedule with swapped course
+							student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
+
+				# if course has practical
+				elif allcourses[course2].practicals > 0 and allcourses[course2].seminars == 0:
+					# if student is in practical-group
 					if student.last_name in allcourses[course2].practicalgroups[coursegroup2]:
+						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
+
+				elif allcourses[course2].seminars > 0 and allcourses[course2].practicals > 0:
+					if student.last_name in allcourses[course2].seminargroups[coursegroup2] or student.last_name in allcourses[course2].practicalgroups[coursegroup2]:
 						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
 
 	#* update roomschedules *#

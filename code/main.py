@@ -29,16 +29,25 @@ from printschedule import print_schedule
 
 # create schedule
 chambers, allcourses, student_list, schedule = createSchedule()
+chambers1, allcourses1, student_list1, schedule1 = chambers, allcourses, student_list, schedule
 
-
+# print(schedule1)
 # print original score
 originalscore = calcScore(allcourses, student_list, chambers)
 print("Started with: ", originalscore)
 
 
-# # perform hillclimber for roomlocks
+# perform hillclimber for roomlocks
 
-# hillclimbRoomlocks(5000, chambers, allcourses, student_list, schedule)
+# hillclimbStudent(1000, chambers, allcourses, student_list, schedule)
+
+# show intermediate score
+# intermediate_score = calcScore(allcourses, student_list, chambers)
+# print("After roomlock hillclimber:", intermediate_score)
+
+hillclimbRoomlocks(5000, chambers, allcourses, student_list, schedule)
+
+
 
 # show intermediate score
 intermediate_score = calcScore(allcourses, student_list, chambers)
@@ -46,7 +55,9 @@ print("After roomlock hillclimber:", intermediate_score)
 
 
 # # perform hillclimber for students
-# hillclimbStudent(1000, chambers, allcourses, student_list, schedule)
+hillclimbStudent(10000, chambers, allcourses, student_list, schedule)
+
+hillclimbRoomlocks(2000, chambers, allcourses, student_list, schedule)
 
 # calculate and show final score
 endscore = calcScore(allcourses, student_list, chambers)
@@ -54,8 +65,7 @@ endscore = calcScore(allcourses, student_list, chambers)
 print("Final score:", endscore)
 
 # print_schedule(schedule, allcourses, student_list, chambers)
-
-
+# print(schedule1)
 
 input = []
 

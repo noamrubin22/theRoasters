@@ -16,10 +16,12 @@ import scorefunction
 import hillclimber
 import matplotlib.pyplot as plt
 import hillclimberstudents
+import plot
 from scorefunction import calcScore
 from hillclimberstudents import hillclimbStudent
 from hillclimber import hillclimbRoomlocks
 from generateschedule import createSchedule
+from plot import plot_hillclimber, plot_random_schedules
 
 # create empty array to hold the score of the schedule after every roomlock swap
 scores = []
@@ -32,22 +34,28 @@ points = calcScore(allcourses, student_list, chambers)
 scores.append(points)
 
 # swap roomlocks 1000 times (using the hillclimber algorithm)
-for i in range(1000):
-	
-	# save score after every swap
+for i in range(20000):
+
 	score = hillclimbRoomlocks(1, chambers, allcourses, student_list, schedule)
 	
 	# add score to array
 	scores.append(score)
 
+studentscores = []
+
+for i in range(10000):
+	# perform 1 hillclimb swap of students
+	studentscore = hillclimbStudent(1, chambers, allcourses, student_list, schedule)
+
+	studentscores.append(studentscore)
+	# add hillclimber student score to array
+
+
 # plot scores
 plt.plot(range(0, len(scores)), scores)
+plt.plot(range(len(scores), len(scores) + len(studentscores)), studentscores)
 plt.ylabel("Score")
 plt.xlabel("Amount of swaps")
-plt.title("Hillclimber roomlocks")
+plt.title("Hillclimber")
 plt.show()
 
-# # write all scores to csv
-# with open("hillclimberstudent.csv", "w") as resultFile:
-# 	wr = csv.writer(resultFile, dialect = 'excel')
-# 	wr.writerow(scores)
