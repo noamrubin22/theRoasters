@@ -168,8 +168,9 @@ def genetic(initial, survival_rate, offspring, generations, mutation):
     fittest = selection(genesis, survival_rate)
 
     # apply crossover to the fittest schedules
-    children = cross_over(fittest, offspring, 0, mutation)
     print("\t\tSomething about the birds and the bees...\n")
+    children = cross_over(fittest, offspring, 0, mutation)
+    
 
     # for amount of generations
     for i in range(generations):
