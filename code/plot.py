@@ -24,7 +24,7 @@ def plot_simulated_annealing(scores, coolingscheme, best_score):
 	plt.ylabel("Score")
 	plt.xlabel("Runs")
 	plt.title("Simulated annealing")
-	plt.text(5, (max(scores)/ 2), best_score)
+	plt.text(5, (max(scores)), best_score)
 	plt.legend()
 	plt.show()	
 
