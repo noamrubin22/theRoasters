@@ -1,57 +1,70 @@
-import helpers
+##################################################### 
+# Heuristieken: Lectures & Lesroosters              #
+#                                                   #
+# Names: Tessa Ridderikhof, Najib el Moussaoui      #
+#        & Noam Rubin                               #
+#                                                   #
+# This script consists of the algorithms used to 	#
+# optimalize schedules 		     			        #
+#                                                   #
+#####################################################
 
-def hillclimbStudent(times, chambers, allcourses, student_list, schedule):
+import helpers 
+from helpers import *
+
+def hillclimb_student(times, chambers, allcourses, student_list, schedule):
 	""" Performs student swap and changes back if it does not lead to a better score """
 
 	# perform swap a given number of times
 	for i in range(0, times):
 
 		# calculate score before swap
-		points = calcScore(allcourses, student_list, chambers)
+		points = calc_score(allcourses, student_list, chambers)
 
 		# perform swap (and save what has been swapped)
-		swapcourse, sem1, sem2, prac1, prac2, student1, student2 = swapStudents(chambers, allcourses, student_list, schedule)
-
+		swapcourse, sem1, sem2, prac1, prac2, student1, student2 = swap_students(chambers, allcourses, student_list, schedule)
+		
 		# calculate score after swap
-		newpoints = calcScore(allcourses, student_list, chambers)
-
+		newpoints = calc_score(allcourses, student_list, chambers)
+		
 		# swap back if new score is not better
 		if newpoints < points:
-
-			swapStudents(chambers, allcourses, student_list, schedule, swapcourse, sem2, sem1, prac2, prac1, student2, student1)
-
+			
+			swap_students(chambers, allcourses, student_list, schedule, swapcourse, sem2, sem1, prac2, prac1, student2, student1)
+			
 			# calculate score after swap back
-			newpoints = calcScore(allcourses, student_list, chambers)
-
+			newpoints = calc_score(allcourses, student_list, chambers)
+			
 			# stop algorithm if swapping back does not lead to original score
 			if newpoints != points:
 				break
 
 	return newpoints
 
-def hillclimbRoomlocks(times, chambers, allcourses, student_list, schedule):
+
+def hillclimb_roomlocks(times, chambers, allcourses, student_list, schedule):
 	""" Searches for the optimal score by swapping roomlocks """
 
 	# amount of steps hillclimber
 	for i in range(0, times):
 
 		# calculate score before swap
-		points = calcScore(allcourses, student_list, chambers)
+		points = calc_score(allcourses, student_list, chambers)
 
 		# perform swap
-		course1, activity1, course2, activity2, schedule = swapCourse(chambers, allcourses, student_list, schedule)
+		course1, activity1, course2, activity2, schedule = swap_course(chambers, allcourses, student_list, schedule)
 
 		# calculate new scores
-		newpoints = calcScore(allcourses, student_list, chambers)
+		newpoints = calc_score(allcourses, student_list, chambers)
 
 		# if new score lower than old score
 		if newpoints < points:
 
 			# swap back
-			swapCourse(chambers, allcourses, student_list, schedule, course1, activity1, course2, activity2)
+			swap_course(chambers, allcourses, student_list, schedule, course1, activity1, course2, activity2)
 
 			# calculate new score
-			newpoints = calcScore(allcourses, student_list, chambers)
+			newpoints = calc_score(allcourses, student_list, chambers)
 
 			# if back-swap didn't go well
 			if points != newpoints:
@@ -63,7 +76,8 @@ def hillclimbRoomlocks(times, chambers, allcourses, student_list, schedule):
 
 	return newpoints
 
-def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, student_list, schedule):
+
+def simulated_annealing(coolingscheme, min_iterations, chambers, allcourses, student_list, schedule):
 	""" Searches for the optimal score by using a coolingscheme """
 
 	# placeholders
@@ -85,25 +99,26 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 	for i in range(min_iterations):
 
 		# calculate score schedule
-		points = calcScore(allcourses, student_list, chambers)
+		points = calc_score(allcourses, student_list, chambers)
 
 		# append score to list for visualisation
 		scores.append(points)
 
 		# keep track of the best score and its variables
-		if best_score == None or points > best_score:
+		if best_score == None or points > best_score: 
+			best_schedule = schedule
 			best_score = points
 			best_courses = allcourses
 			best_student_list = student_list
 			best_chambers = chambers
 
-		# pick random neighbour by swapping
-		course1, activity1, course2, activity2, schedule = swapCourse(chambers, allcourses, student_list, schedule)
+		# pick random neighbour by swapping 
+		course1, activity1, course2, activity2, schedule = swap_course(chambers, allcourses, student_list, schedule)
 
 		# calculate new score
-		newpoints = calcScore(allcourses, student_list, chambers)
-
-		# if new score is worst
+		newpoints = calc_score(allcourses, student_list, chambers)
+		
+		# if new score is worse
 		if newpoints < points:
 
 			# calculate acceptance chance
@@ -122,10 +137,10 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 			else:
 
 				# swap back
-				swapCourse(chambers, allcourses, student_list, schedule, course1, activity1, course2, activity2)
+				swap_course(chambers, allcourses, student_list, schedule, course1, activity1, course2, activity2)
 
 				# calculate new score and print
-				newpoints = calcScore(allcourses, student_list, chambers)
+				newpoints = calc_score(allcourses, student_list, chambers)
 
 				# if back-swap didn't go well
 				if points != newpoints:
@@ -143,12 +158,8 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 
 			# accept it
 			points = newpoints
-			# print("accepted score:" )
 
-
-	print("bestscore:", best_score)
-
-	return best_score, best_courses, best_student_list, best_chambers, scores
+	return best_schedule, best_score, best_courses, best_student_list, best_chambers, scores
 
 
 def genetic(initial, survival_rate, offspring, generations, mutation):
