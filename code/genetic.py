@@ -26,9 +26,15 @@ def genetic(initial, survival_rate, offspring, generations, mutation):
         children = cross_over(fittest, offspring, i + 1, mutation)
         print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
 
-    fittest = selection(children, survival_rate)
-    print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
-    print("schedule: ", fittest[0][1])
+    fittest = selection(children)
+    allcourses = fittest[0][0][0]
+    chambers = fittest[0][0][1]
+    student_list = fittest[0][0][2]
+    schedule = fittest[0][1]
+    print("fittest: ", calcScore(allcourses, student_list, chambers))
+    print("schedule: ", schedule)
+    print("Start hillclimbing on fittest schedule...")
+    hillclimbRoomlocks2(1000, chambers, allcourses, student_list, schedule)
 
     # print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
 
@@ -64,8 +70,6 @@ def initial_population(amount):
 
         # add the array with individual timetable-info to the population
         population.append(timetable_info)
-
-        # hillclimbRoomlocks(amount, chambers, allcourses, student_list, schedule)
 
 
     return population
@@ -123,7 +127,6 @@ def mutation(schedule, chambers, allcourses, student_list, chance):
 
 
 def cross_over(mating_pool, offspring, generation, chance):
-
     """ Creates offspring by exchanging genes from mating pool """
 
     # create empty list for children
