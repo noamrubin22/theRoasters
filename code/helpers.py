@@ -1099,43 +1099,68 @@ def cross_over(mating_pool, offspring, generation, chance):
     return children
 
 def print_schedule(schedule, allcourses, student_list, chambers):
+	""" Visualizes a schedule """
 
-	# creat
+	# create new csv file
     schedule_location = "visualisation/schedule.csv"
     schedule_file = open(schedule_location, "w")
-
     writer = csv.writer(schedule_file)
 
+    # schedule moments
     times = ["Monday 09:00 - 11:00", "Monday 11:00 - 13:00", "Monday 13:00 - 15:00", "Monday 15:00 - 17:00",
              "Tuesday 09:00 - 11:00", "Tuesday 11:00 - 13:00", "Tuesday 13:00 - 15:00", "Tuesday 15:00 - 17:00",
              "Wednesday 09:00 - 11:00", "Wednesday 11:00 - 13:00", "Wednesday 13:00 - 15:00", "Wednesday 15:00 - 17:00",
              "Thursday 09:00 - 11:00", "Thursday 11:00 - 13:00", "Thursday 13:00 - 15:00", "Thursday 15:00 - 17:00",
              "Friday 09:00 - 11:00", "Friday 11:00 - 13:00", "Friday 13:00 - 15:00", "Friday 15:00 - 17:00"]
 
+    # create empty timetable
     timetable = []
 
-    j = 0
+    # initialize counter for times
+    counter = 0
 
-    for i in range(0, len(schedule), 7):
+    # save amount of rooms per timelock
+    rooms_per_timelock = 7
+
+    # for the length of schedule, with steps of 7
+    for i in range(0, len(schedule), rooms_per_timelock):
+
+    	# create empty timelock
         timelock = []
-        timelock.append(times[j])
-        timelock.append(schedule[i])
-        timelock.append(schedule[i+1])
-        timelock.append(schedule[i+2])
-        timelock.append(schedule[i+3])
-        timelock.append(schedule[i+4])
-        timelock.append(schedule[i+5])
-        timelock.append(schedule[i+6])
-        timetable.append(timelock)
-        j += 1
 
+        # create time array
+        timelock.append(times[counter])
+
+        # add courses from schedule on right place 
+        timelock.append(schedule[i])
+        timelock.append(schedule[i + 1])
+        timelock.append(schedule[i + 2])
+        timelock.append(schedule[i + 3])
+        timelock.append(schedule[i + 4])
+        timelock.append(schedule[i + 5])
+        timelock.append(schedule[i + 6])
+
+        # add 'times' array into timetable
+        timetable.append(timelock)
+
+<<<<<<< HEAD
+    score = calc_score(allcourses, student_list, chambers)
+=======
+        # increase counter
+        counter += 1
+>>>>>>> 4d5fc091ac02aec4898c96f37a1c2e87c7f7ac44
+
+    # calculate score schedule
     score = calc_score(allcourses, student_list, chambers)
 
+    # determine names of rooms and write in file
     fields = ["Score = {}".format(score), "A1.04", "A1.06", "A1.08", "A1.10", "B0.201", "C0.110", "C1.112"]
-
     writer.writerow(fields)
 
+    # for each timelock in timetable
     for timelock in timetable:
+
+    	# write timelock into file
         writer.writerow(timelock)
 
     print("Printed a schedule at {} with a score of {}.".format(schedule_location, score))
@@ -1198,7 +1223,7 @@ def plot_average_hillclimb(repetitions, runs):
 		algorithm_scores = []
 		chambers, allcourses, student_list, schedule = create_schedule()
 		for i in range(runs):
-			score = hillclimbRoomlocks(1, chambers, allcourses, student_list, schedule)
+			score = hillclimb_roomlocks(1, chambers, allcourses, student_list, schedule)
 			algorithm_scores.append(score)
 		totalscores.append(algorithm_scores)
 
@@ -1224,13 +1249,13 @@ def plot_average_SA(repetitions, runs):
 	for i in range(repetitions):
 		algorithm_scores = []
 		chambers, allcourses, student_list, schedule = create_schedule()
-		best_score, best_courses, best_student_list, best_chambers, geman_scores = simulatedAnnealing(geman, runs, chambers, allcourses, student_list, schedule)
+		best_score, best_courses, best_student_list, best_chambers, geman_scores = simulated_annealing(geman, runs, chambers, allcourses, student_list, schedule)
 		chambers, allcourses, student_list, schedule = create_schedule()
-		best_score, best_courses, best_student_list, best_chambers, linear_scores = simulatedAnnealing(linear, runs, chambers, allcourses, student_list, schedule)
+		best_score, best_courses, best_student_list, best_chambers, linear_scores = simulated_annealing(linear, runs, chambers, allcourses, student_list, schedule)
 		chambers, allcourses, student_list, schedule = create_schedule()
-		best_score, best_courses, best_student_list, best_chambers, sigmoidal_scores = simulatedAnnealing(sigmoidal, runs, chambers, allcourses, student_list, schedule)
+		best_score, best_courses, best_student_list, best_chambers, sigmoidal_scores = simulated_annealing(sigmoidal, runs, chambers, allcourses, student_list, schedule)
 		chambers, allcourses, student_list, schedule = create_schedule()
-		best_score, best_courses, best_student_list, best_chambers, exponential_scores = simulatedAnnealing(exponential, runs, chambers, allcourses, student_list, schedule)
+		best_score, best_courses, best_student_list, best_chambers, exponential_scores = simulated_annealing(exponential, runs, chambers, allcourses, student_list, schedule)
 		algorithm_scores.append([geman_scores, linear_scores, sigmoidal_scores, exponential_scores])
 		totalscores.append(algorithm_scores)
 
