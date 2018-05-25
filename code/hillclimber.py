@@ -16,7 +16,7 @@ import scorefunction
 import random
 import csv
 import generateschedule
-from generateschedule import translate_roomlock, update_classes_from_schedule
+from helpers import translate_roomlock, update_classes_from_schedule
 from scorefunction import calc_score
 
 
