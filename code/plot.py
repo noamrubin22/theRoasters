@@ -38,10 +38,12 @@ def plot_random_schedules(scores):
 	plt.show()
 
 
-def plot_hillclimber(scores):
+def plot_hillclimber(scores, hillclimb_students_scores = None):
 	""" Plots schedule score during hillclimber """
 
 	plt.plot(range(0, len(scores)), scores)
+	if hillclimb_students_scores:
+		plt.plot(range(len(scores), len(scores) + len(hillclimb_students_scores)), hillclimb_students_scores)
 	plt.ylabel("Score")
 	plt.xlabel("Amount of swaps")
 	plt.title("Hillclimber")
@@ -58,6 +60,6 @@ def multiple_simulated_annealing(scores):
 	plt.ylabel("Score")
 	plt.xlabel("Runs")
 	plt.title("Simulated annealing")
-	plt.text(5, max(scores[0]))
+	# plt.text(5, max(scores[0]))
 	plt.legend()
 	plt.show()	
