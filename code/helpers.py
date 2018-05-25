@@ -742,10 +742,106 @@ def swapStudents(chambers, allcourses, student_list, schedule, swapcourse = None
 
 		return swapcourse, sem1, sem2, prac1, prac2, student1, student2
 
+# initiliaze temperatures
+start_temp = 10
+final_temp = 0.0001
+
+def linear(min_iterations, i, start = start_temp, final = final_temp):
+    """ Returns temperature calculated using a linear function """
+
+    temperature = start - i * (start - final) / min_iterations
+    
+    return temperature
+
+
+def exponential(min_iterations, i, start = start_temp, final = final_temp):
+    """ Returns temperature calculated using an exponential function """
+
+    temperature = (start * (final / start) ** (i / min_iterations))
+ 
+    return temperature 
+
+
+def sigmoidal(min_iterations, i, start = start_temp, final = final_temp ):
+    """ Returns temperature, calculated using a sigmoidal function """
+
+    # to prevent a math overflow a scale (x^(1/ (i - min_iterations))) is used
+    temperature = final + ((start - final)**( 1/ (i - min_iterations))) / \
+    				(1 **(i - min_iterations)) + math.exp(0.3 * ((i - min_iterations / 2) /(i - min_iterations)))
+
+    return temperature
+
+
+def geman(min_iterations, i, start = start_temp):
+	""" Returns temperature, calculated using a geman function """
+ 
+	temperature = start / (math.log(i + 1) + 1) 
+	
+	return temperature
+
+
+def lin_exp(min_iterations, i): 
+    """ Temperature is calculated using an exponential and linear function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return exponential(min_iterations, i)
+    else: 
+        return linear(min_iterations, i)
+
+
+def exp_sig(min_iterations, i): 
+    """ Temperature is calculated using an exponential and linear function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return sigmoidal(min_iterations, i)
+    else: 
+        return exponential(min_iterations, i)
+
+
+def gem_lin(min_iterations, i): 
+    """ Temperature is calculated using an geman and linear function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return linear(min_iterations, i)
+    else: 
+        return geman(min_iterations, i)
+
+
+
+def gem_exp(min_iterations, i): 
+    """ Temperature is calculated using an exponential and geman function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return geman(min_iterations, i)
+    else: 
+        return exponential(min_iterations, i)
+
+
+def lin_sig(min_iterations, i): 
+    """ Temperature is calculated using an sigmoidal and linear function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return sigmoidal(min_iterations, i)
+    else: 
+       return linear(min_iterations, i)
+
+def gem_exp(min_iterations, i): 
+    """ Temperature is calculated using an geman and sigmoidal function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return geman(min_iterations, i)
+    else: 
+        return sigmoidal(min_iterations, i)
+
 def initial_population(amount):
     """ Creates an intial population and returns the parents """
 
-    # create empty list
     population = []
     scores = []
 
@@ -757,11 +853,10 @@ def initial_population(amount):
         score_info = []
 
         # create a new random schedule
-        chambers, allcourses, student_list, schedule = createSchedule()
+        chambers, allcourses, student_list, schedule = create_schedule()
 
         # print("Hillclimbing on schedule {}...".format(i))
-        # hillclimbRoomlocks2(20, chambers, allcourses, student_list, schedule)
-
+        # hillclimb_roomlocks2(20, chambers, allcourses, student_list, schedule)
 
         # add all information about this specific schedule
         score_info.append(allcourses)
@@ -790,10 +885,9 @@ def selection(population, rate):
 
         # print("Calculating fitness scores...")
 
-        return calcScore(timetable_info[0][0],
+        return calc_score(timetable_info[0][0],
                          timetable_info[0][1],
                          timetable_info[0][2])
-
 
     # choose the fittest individuals
     population = sorted(population, key=fitness, reverse=True)
@@ -803,8 +897,9 @@ def selection(population, rate):
     rate = int(rate * 100)
 
     for i in range(rate):
+
         # fittest schedules have highest probabilities
-        scores.append(calcScore(population[i][0][0], population[i][0][1], population[i][0][2]))
+        scores.append(calc_score(population[i][0][0], population[i][0][1], population[i][0][2]))
         mating_pool.append(population[i])
 
     # iterate over parents
@@ -814,7 +909,7 @@ def selection(population, rate):
     #     for j in range(probability):
     #
     #         # fittest schedules have highest probabilities
-    #         scores.append(calcScore(population[i][0][0], population[i][0][1], population[i][0][2]))
+    #         scores.append(calc_score(population[i][0][0], population[i][0][1], population[i][0][2]))
     #         mating_pool.append(population[i])
     #
     #     # decrease probability
@@ -824,16 +919,16 @@ def selection(population, rate):
 
 
 def mutation(schedule, chambers, allcourses, student_list, chance):
+    """ Creates a mutation by performing a hillclimber for roomlocks """
 
-
+    # determine probability
     probability = random.random()
 
+    # if probability is smaller than given chance
     if probability < chance:
-        print("!!! MUTATION !!!")
-        print("Hillclimbing on schedule {} times...".format(int(probability * 100)))
-        hillclimbRoomlocks2(int(probability * 100), chambers, allcourses, student_list, schedule)
 
-        # swapCourse2(chambers, allcourses, student_list, schedule)
+        # swap between roomlocks using hillclimber
+        hillclimb_roomlocks2(int(probability * 100), chambers, allcourses, student_list, schedule)
 
     return
 
@@ -848,37 +943,40 @@ def cross_over(mating_pool, offspring, generation, chance):
     chance_array = []
     gen_scores = []
 
+    # determine probability
     probability = len(mating_pool)
 
-
+    # iterate over mating pool
     for i in range(len(mating_pool)):
+
+        # iterate over probability
         for j in range(probability):
+
+            # append iteration
             chance_array.append(i)
+
+        # decrease probability
         probability -= 1
 
-
+    # set fittest_score
     fittest_score = 0
 
     # iterate over offspring
     for i in range(offspring):
 
         # create an empty schedule
-        schedule = createEmptySchedule()
+        schedule = create_empty_schedule()
+
+        # amount of activites that have to be scheduled
         activities = 125
 
-
-        # get a mother and father from the mating pool
+        # choose a mother and father from the mating pool
         parents = []
-
         parents = mating_pool
-
-        # for j in range(10):
-        #     parents.append(mating_pool[random.randint(0, len(mating_pool) - 1)])
         random_parent = chance_array[random.randint(0, len(chance_array) - 1)]
         parent_schedule = parents[random_parent][1]
-        # print(parent_schedule)
-
-
+        
+        # until no activities are left
         while activities > 0:
 
             # print("Applying crossover between parents...")
@@ -888,35 +986,60 @@ def cross_over(mating_pool, offspring, generation, chance):
             # else:
             #     parent_schedule = parents[1][1]
 
+            # choose random course from parent schedule
             random_course = random.randint(0, len(parent_schedule) - 1)
 
-
+            # create empty course list
             courses = []
 
+            # iterate over values in schedule
             for key, value in schedule.items():
+
+                # if roomlock is not empty
                 if value is not None:
+
+                    # add to course list
                     courses.append(value)
 
+            # initialize counters
             counter = 0
             newparentcounter = 0
+
+            # if schedule has no place for the random course, a None value is chosen, or the random course is already chosen
             while schedule[random_course] is not None or parent_schedule[random_course] is None or parent_schedule[random_course] in courses:
+                
+                # choose new random course from parent schedule
                 random_course = random.randint(0, len(parent_schedule) - 1)
+
+                # increase counter
                 counter += 1
-                # print(counter)
+        
+                # if random course still not scheduled
                 if counter > 100:
+
+                    # choose new parent
                     parent_schedule = parents[random.randint(0, len(parents) - 1)][1]
+                    
+                    # reset counter
                     counter = 0
+
+                    # increase parent-counter
                     newparentcounter += 1
+
+                    # if 500 new parents weren't enough
                     if newparentcounter > 500:
                         break
-                    # print("nieuwe parent gekozen")
 
+            # schedule random course on same place as parent
             schedule[random_course] = parent_schedule[random_course]
 
+            # decrease activities
             activities -= 1
 
-        allcourses, student_list, chambers = updateClassesFromSchedule(schedule)
+        # update classes from schedule
+        allcourses, student_list, chambers = update_classes_from_schedule(schedule)
 
+        # create new arrays schedule properties
         timetable_info = []
         score_info = []
 
@@ -925,24 +1048,217 @@ def cross_over(mating_pool, offspring, generation, chance):
         score_info.append(student_list)
         score_info.append(chambers)
 
+        # perform mutatation if chance is higher than probability
         mutation(schedule, chambers, allcourses, student_list, chance)
 
         # add individual schedule-info to timetable array
         timetable_info.append(score_info)
         timetable_info.append(schedule)
 
-        score = calcScore(allcourses, student_list, chambers)
+        # calculate score
+        score = calc_score(allcourses, student_list, chambers)
+
+        # add to score file
         gen_scores.append(score)
 
+        # if score is better than the fittest
+        if score > fittest_score:
 
-        # if score > fittest_score:
-        #     fittest_score = score
-        print("Schedule: {}, generation: {}, score: {}".format(i, generation, score))
-
+            # adjust fittest score
+            fittest_score = score
+            
+            print("New best found ---> Schedule: {}, generation: {}, score: {}".format(i, generation, score))
 
         # add the array with individual timetable-info to the population
         children.append(timetable_info)
 
+    # create score dict
     total_gen_scores[generation] = gen_scores
 
     return children
+
+def print_schedule(schedule, allcourses, student_list, chambers):
+
+    schedule_location = "visualisation/schedule.csv"
+    schedule_file = open(schedule_location, 'w')
+
+    writer = csv.writer(schedule_file)
+
+    times = ['Monday 09:00 - 11:00', 'Monday 11:00 - 13:00', 'Monday 13:00 - 15:00', 'Monday 15:00 - 17:00',
+             'Tuesday 09:00 - 11:00', 'Tuesday 11:00 - 13:00', 'Tuesday 13:00 - 15:00', 'Tuesday 15:00 - 17:00',
+             'Wednesday 09:00 - 11:00', 'Wednesday 11:00 - 13:00', 'Wednesday 13:00 - 15:00', 'Wednesday 15:00 - 17:00',
+             'Thursday 09:00 - 11:00', 'Thursday 11:00 - 13:00', 'Thursday 13:00 - 15:00', 'Thursday 15:00 - 17:00',
+             'Friday 09:00 - 11:00', 'Friday 11:00 - 13:00', 'Friday 13:00 - 15:00', 'Friday 15:00 - 17:00']
+
+    timetable = []
+
+    j = 0
+
+    for i in range(0, len(schedule), 7):
+        timelock = []
+        timelock.append(times[j])
+        timelock.append(schedule[i])
+        timelock.append(schedule[i+1])
+        timelock.append(schedule[i+2])
+        timelock.append(schedule[i+3])
+        timelock.append(schedule[i+4])
+        timelock.append(schedule[i+5])
+        timelock.append(schedule[i+6])
+        timetable.append(timelock)
+        j += 1
+
+    score, acp = calcScore(allcourses, student_list, chambers)
+
+    fields = ['Score = {}'.format(score), 'A1.04', 'A1.06', 'A1.08', 'A1.10', 'B0.201', 'C0.110', 'C1.112']
+
+    writer.writerow(fields)
+
+    for timelock in timetable:
+        writer.writerow(timelock)
+
+    print("Printed a schedule at {} with a score of {}.".format(schedule_location, score))
+
+def plot_simulated_annealing(scores, coolingscheme, best_score): 
+	""" Plots schedule score during simulated annealing """ 
+
+	functionname = str(coolingscheme.__name__)
+	plt.plot(range(0, len(scores)), scores, label=functionname)
+	plt.ylabel("Score")
+	plt.xlabel("Runs")
+	plt.title("Simulated annealing")
+	plt.text(5, (max(scores)), best_score)
+	plt.legend()
+	plt.show()	
+
+def plot_random_schedules(scores):
+	""" Creates an histogram of random schedules"""
+
+	plt.hist(scores, bins = len(scores))
+	plt.ylabel("Score")
+	plt.xlabel("Times")
+	plt.title("Histogram random schedules")
+	plt.show()
+
+
+def plot_hillclimber(scores, hillclimb_students_scores = None):
+	""" Plots schedule score during hillclimber """
+
+	plt.plot(range(0, len(scores)), scores)
+	if hillclimb_students_scores:
+		plt.plot(range(len(scores), len(scores) + len(hillclimb_students_scores)), hillclimb_students_scores)
+	plt.ylabel("Score")
+	plt.xlabel("Amount of swaps")
+	plt.title("Hillclimber")
+	plt.show()
+
+
+def multiple_simulated_annealing(scores): 
+	""" Plots schedule score during simulated annealing for different coolingschemes """ 
+
+	plt.plot(range(0, len(scores[0])), scores[0], label = "geman")
+	plt.plot(range(0, len(scores[1])), scores[1], label = "linear")
+	plt.plot(range(0, len(scores[2])), scores[2], label = "sigmoidal")
+	plt.plot(range(0, len(scores[3])), scores[3], label = "exponential")		
+	plt.ylabel("Score")
+	plt.xlabel("Runs")
+	plt.title("Simulated annealing")
+	# plt.text(5, max(scores[0]))
+	plt.legend()
+	plt.show()	
+
+
+def plot_average_hillclimb(repetitions, runs):
+""" Performs the hillclimber a certain number of times (repetitions) with a specified number of runs
+ and plot the average scores """
+	totalscores = []
+	for i in range(repetitions):
+		algorithm_scores = []
+		chambers, allcourses, student_list, schedule = createSchedule()
+		for i in range(runs):
+			score = hillclimbRoomlocks(1, chambers, allcourses, student_list, schedule)
+			algorithm_scores.append(score)
+		totalscores.append(algorithm_scores)
+
+	sorted_scores = []
+	for i in range(runs):
+		selected_score = []
+		for j in range(repetitions):
+			selected_score.append(totalscores[j][i])
+		sorted_scores.append(selected_score)
+
+	average_scores = []
+	for scores in sorted_scores:
+		average_scores.append(sum(scores)/len(scores))
+
+	plot_hillclimber(average_scores)
+
+
+def plot_average_SA(repetitions, runs):
+""" Performs all cooling schemes of simulated annealing a certain number of times (repetitions) and
+plots the average scores """
+	totalscores = []
+	for i in range(repetitions):
+		algorithm_scores = []
+		chambers, allcourses, student_list, schedule = createSchedule()
+		best_score, best_courses, best_student_list, best_chambers, geman_scores = simulatedAnnealing(geman, runs, chambers, allcourses, student_list, schedule)
+		chambers, allcourses, student_list, schedule = createSchedule()
+		best_score, best_courses, best_student_list, best_chambers, linear_scores = simulatedAnnealing(linear, runs, chambers, allcourses, student_list, schedule)
+		chambers, allcourses, student_list, schedule = createSchedule()
+		best_score, best_courses, best_student_list, best_chambers, sigmoidal_scores = simulatedAnnealing(sigmoidal, runs, chambers, allcourses, student_list, schedule)
+		chambers, allcourses, student_list, schedule = createSchedule()
+		best_score, best_courses, best_student_list, best_chambers, exponential_scores = simulatedAnnealing(exponential, runs, chambers, allcourses, student_list, schedule)
+		algorithm_scores.append([geman_scores, linear_scores, sigmoidal_scores, exponential_scores])
+		totalscores.append(algorithm_scores)
+
+	print(totalscores)
+
+	all_geman_scores = []
+	all_linear_scores = []
+	all_sigmoidal_scores = []
+	all_exponential_scores = []
+
+	for i in range(repetitions):
+		all_geman_scores.append(totalscores[i][0][0])
+		all_linear_scores.append(totalscores[i][0][1])
+		all_sigmoidal_scores.append(totalscores[i][0][2])
+		all_exponential_scores.append(totalscores[i][0][3])
+
+	geman_sorted_scores = []
+	linear_sorted_scores = []
+	sigmoidal_sorted_scores = []
+	exponential_sorted_scores = []
+	for i in range(runs):
+		geman_selected_score = []
+		linear_selected_score = []
+		sigmoidal_selected_score = []
+		exponential_selected_score = []
+		for j in range(repetitions):
+			geman_selected_score.append(all_geman_scores[j][i])
+			linear_selected_score.append(all_linear_scores[j][i])
+			sigmoidal_selected_score.append(all_sigmoidal_scores[j][i])
+			exponential_selected_score.append(all_exponential_scores[j][i])
+		geman_sorted_scores.append(geman_selected_score)
+		linear_sorted_scores.append(linear_selected_score)
+		sigmoidal_sorted_scores.append(sigmoidal_selected_score)
+		exponential_sorted_scores.append(exponential_selected_score)
+
+	geman_average_scores = []
+	for scores in geman_sorted_scores:
+		geman_average_scores.append(sum(scores)/len(scores))
+
+	linear_average_scores = []
+	for scores in linear_sorted_scores:
+		linear_average_scores.append(sum(scores)/len(scores))
+
+	sigmoidal_average_scores = []
+	for scores in sigmoidal_sorted_scores:
+		sigmoidal_average_scores.append(sum(scores)/len(scores))
+
+	exponential_average_scores = []
+	for scores in exponential_sorted_scores:
+		exponential_average_scores.append(sum(scores)/len(scores))
+
+	average_scores = [geman_average_scores, linear_average_scores, sigmoidal_average_scores, exponential_average_scores]
+
+	multiple_simulated_annealing(average_scores)
+

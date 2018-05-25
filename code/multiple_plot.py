@@ -42,7 +42,6 @@ def plot_average_hillclimb(repetitions, runs):
 
 	plot_hillclimber(average_scores)
 
-# plot_average_hillclimb(10, 100)
 
 def plot_average_SA(repetitions, runs):
 	totalscores = []
