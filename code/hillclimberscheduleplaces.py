@@ -176,7 +176,7 @@ def hillclimbRoomlocks2(times, chambers, allcourses, student_list, schedule):
 				print("ERROR")
 				break
 
-	return newpoints
+	# return newpoints
 
 chambers, allcourses, student_list, schedule = createSchedule()
 hillclimbRoomlocks2(1000, chambers, allcourses, student_list, schedule)

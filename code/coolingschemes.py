@@ -13,39 +13,97 @@
 import math
 
 # initiliaze temperatures
-start_temp = 1000000
-final_temp = 1
-reheats = 4
+start_temp = 10
+final_temp = 0.0001
 
 
-def linear(current_temp, min_iterations, i):
+def linear(min_iterations, i, start = start_temp, final = final_temp):
     """ Returns temperature calculated using a linear function """
 
-    temperature = current_temp - i * (current_temp - final_temp) / min_iterations
+    temperature = start - i * (start - final) / min_iterations
     
     return temperature
 
 
-def exponential(current_temp, min_iterations, i, start = start_temp):
+def exponential(min_iterations, i, start = start_temp, final = final_temp):
     """ Returns temperature calculated using an exponential function """
 
-    temperature = (current_temp * (final_temp / start) ** (i / min_iterations))
+    temperature = (start * (final / start) ** (i / min_iterations))
  
     return temperature 
 
 
-def sigmoidal(current_temp, min_iterations, i):
+def sigmoidal(min_iterations, i, start = start_temp, final = final_temp ):
     """ Returns temperature, calculated using a sigmoidal function """
 
     # to prevent a math overflow a scale (x^(1/ (i - min_iterations))) is used
-    temperature = final_temp + ((start_temp - final_temp)**( 1/ (i - min_iterations))) / \
+    temperature = final + ((start - final)**( 1/ (i - min_iterations))) / \
     				(1 **(i - min_iterations)) + math.exp(0.3 * ((i - min_iterations / 2) /(i - min_iterations)))
 
     return temperature
 
-# def geman(current_temp, min_iterations, i):
-# 	""" Returns temperature, calculated using a geman function """
+def geman(min_iterations, i, start = start_temp):
+	""" Returns temperature, calculated using a geman function """
  
-# 	temperature = start_temp / (log(i + 1)) + 1) 
+	temperature = start / (math.log(i + 1) + 1) 
 	
-# 	return temperature
+	return temperature
+
+
+def lin_exp(min_iterations, i): 
+    """ Temperature is calculated using an exponential and linear function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return exponential(min_iterations, i)
+    else: 
+        return linear(min_iterations, i)
+
+def exp_sig(min_iterations, i): 
+    """ Temperature is calculated using an exponential and linear function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return sigmoidal(min_iterations, i)
+    else: 
+        return exponential(min_iterations, i)
+
+
+def gem_lin(min_iterations, i): 
+    """ Temperature is calculated using an exponential and linear function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return linear(min_iterations, i)
+    else: 
+        return geman(min_iterations, i)
+
+
+
+def gem_exp(min_iterations, i): 
+    """ Temperature is calculated using an exponential and linear function """
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return geman(min_iterations, i)
+    else: 
+        return exponential(min_iterations, i)
+
+
+def lin_exp_gem(min_iterations, i): 
+    """ Temperature is calculated using an exponential and linear function """
+
+    counter = 0 
+
+    # vary between the functions
+    if i % 2 == 0: 
+        return exponential(min_iterations, i)
+    else: 
+        counter+= 1 
+        
+        if counter % 2 == 0:
+            return linear(min_iterations, i)
+        else: 
+            return geman(min_iterations, i)
+
+

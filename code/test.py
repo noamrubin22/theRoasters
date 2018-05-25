@@ -1,1 +1,24 @@
-{0: None, 1: None, 2: 'Collectieve Intelligentie practical 2', 3: None, 4: None, 5: 'Data Mining lecture 1', 6: 'Netwerken en systeembeveiliging practical 3', 7: None, 8: 'Autonomous Agents 2 seminar 1', 9: None, 10: 'Project Numerical Recipes practical 1', 11: 'Collectieve Intelligentie practical 4', 12: None, 13: 'Zoeken sturen en bewegen practical 2', 14: 'Project Genetic Algorithms practical 1', 15: 'Moderne Databases practical 1', 16: None, 17: None, 18: 'Software engineering practical 1', 19: None, 20: 'Informatie- en organisatieontwerp lecture 2', 21: 'Bioinformatica practical 3', 22: 'Bioinformatica seminar 1', 23: 'Heuristieken 1 seminar 2', 24: None, 25: None, 26: None, 27: 'Project Numerical Recipes practical 2', 28: 'Data Mining practical 3', 29: 'Moderne Databases practical 3', 30: 'Machine Learning lecture 1', 31: None, 32: 'Webprogrammeren en databases seminar 1', 33: 'Analysemethoden en -technieken lecture 1', 34: 'Software engineering practical 2', 35: 'Advanced Heuristics practical 1', 36: None, 37: 'Heuristieken 2 seminar 1', 38: 'Programmeren in Java 2 practical 1', 39: 'Collectieve Intelligentie seminar 2', 40: 'Reflectie op de digitale cultuur seminar 3', 41: None, 42: 'Project Genetic Algorithms practical 2', 43: 'Reflectie op de digitale cultuur seminar 1', 44: 'Algoritmen en complexiteit seminar 2', 45: 'Heuristieken 1 lecture 1', 46: 'Software engineering seminar 2', 47: None, 48: 'Webprogrammeren en databases seminar 2', 49: 'Algoritmen en complexiteit practical 1', 50: 'Webprogrammeren en databases practical 1', 51: 'Collectieve Intelligentie lecture 1', 52: 'Algoritmen en complexiteit seminar 1', 53: None, 54: 'Autonomous Agents 2 seminar 2', 55: 'Collectieve Intelligentie seminar 4', 56: None, 57: 'Calculus 2 seminar 1', 58: None, 59: 'Webprogrammeren en databases lecture 2', 60: 'Advanced Heuristics practical 2', 61: 'Moderne Databases seminar 2', 62: 'Lineaire Algebra lecture 1', 63: 'Data Mining practical 1', 64: None, 65: 'Software engineering seminar 1', 66: 'Algoritmen en complexiteit lecture 1', 67: None, 68: 'Netwerken en systeembeveiliging practical 1', 69: None, 70: 'Collectieve Intelligentie lecture 3', 71: 'Compilerbouw practical 1', 72: 'Project Genetic Algorithms practical 3', 73: None, 74: 'Kansrekenen 2 lecture 1', 75: None, 76: 'Data Mining seminar 2', 77: None, 78: 'Bioinformatica practical 2', 79: 'Autonomous Agents 2 practical 2', 80: None, 81: None, 82: 'Collectieve Intelligentie seminar 1', 83: None, 84: None, 85: None, 86: None, 87: 'Bioinformatica lecture 2', 88: 'Databases 2 lecture 1', 89: None, 90: None, 91: 'Autonomous Agents 2 lecture 2', 92: 'Programmeren in Java 2 practical 3', 93: 'Bioinformatica practical 1', 94: None, 95: None, 96: 'Collectieve Intelligentie practical 3', 97: 'Netwerken en systeembeveiliging practical 4', 98: 'Calculus 2 seminar 2', 99: None, 100: 'Autonomous Agents 2 seminar 3', 101: 'Bioinformatica seminar 2', 102: 'Moderne Databases practical 2', 103: None, 104: None, 105: None, 106: 'Moderne Databases seminar 1', 107: 'Technology for games seminar 1', 108: 'Kansrekenen 2 lecture 2', 109: None, 110: 'Data Mining practical 2', 111: 'Webprogrammeren en databases lecture 1', 112: 'Autonomous Agents 2 practical 3', 113: None, 114: 'Reflectie op de digitale cultuur lecture 2', 115: 'Calculus 2 seminar 3', 116: 'Data Mining seminar 1', 117: 'Autonomous Agents 2 lecture 1', 118: None, 119: 'Moderne Databases lecture 1', 120: 'Interactie-ontwerp lecture 2', 121: 'Moderne Databases seminar 3', 122: None, 123: 'Architectuur en computerorganisatie lecture 1', 124: 'Technology for games lecture 2', 125: 'Databases 2 seminar 2', 126: None, 127: 'Interactie-ontwerp lecture 1', 128: None, 129: 'Bioinformatica seminar 3', 130: None, 131: 'Architectuur en computerorganisatie lecture 2', 132: 'Databases 2 seminar 1', 133: 'Collectieve Intelligentie lecture 2', 134: 'Compilerbouw lecture 1', 135: 'Heuristieken 2 seminar 2', 136: 'Data Mining seminar 3', 137: 'Programmeren in Java 2 practical 2', 138: 'Algoritmen en complexiteit practical 2', 139: 'Software engineering lecture 1'}
+import random
+
+chance = []
+pool = 10
+prob = pool
+
+for i in range(pool):
+    for j in range(prob):
+        chance.append(i)
+    prob -= 1
+
+keys = list(range(0, 10))
+nlist = dict.fromkeys(keys)
+
+for k in range(len(nlist)):
+    nlist[k] = 0
+
+# print(nlist)
+
+for l in range(100000):
+    num = chance[random.randint(0, len(chance) - 1)]
+    nlist[num] += 1
+
+print(nlist)
