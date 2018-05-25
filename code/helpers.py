@@ -1,11 +1,11 @@
 ##################################################### 
-# Heuristieken: Lectures & Lesroosters			  #
-#												   #
-# Names: Tessa Ridderikhof, Najib el Moussaoui	  #
-#		& Noam Rubin							   #
-#												   #
+# Heuristieken: Lectures & Lesroosters			  	#
+#												   	#
+# Names: Tessa Ridderikhof, Najib el Moussaoui	  	#
+#		& Noam Rubin							   	#
+#												   	#
 # This script consists of functions that are needed #
-# for the complemention and optimalisation		  #
+# for the complemention and optimalisation		  	#
 # of a schedule 									#
 #													#
 #####################################################
