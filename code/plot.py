@@ -16,13 +16,16 @@ from generateschedule import createSchedule
 from SA import simulatedAnnealing
 
 
-def plot_simulated_annealing(scores): 
+# input = [(scores, type), (scores,type)]
+def plot_simulated_annealing(scores, coolingscheme, best_score): 
 	""" Plots schedule score during simulated annealing """ 
 
-	plt.plot(range(0, len(scores)), scores)
+	functionname = str(coolingscheme.__name__)
+	plt.plot(range(0, len(scores)), scores, label=functionname)
 	plt.ylabel("Score")
 	plt.title("Simulated annealing")
-	plt.text(1000, 0.025, "Temperature: 1000, Coolingrate = 0.02")
+	plt.text(5, max(scores)/ 2, best_score)
+	plt.legend()
 	plt.show()	
 
 
