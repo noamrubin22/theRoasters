@@ -1168,8 +1168,8 @@ def multiple_simulated_annealing(scores):
 
 
 def plot_average_hillclimb(repetitions, runs):
-""" Performs the hillclimber a certain number of times (repetitions) with a specified number of runs
- and plot the average scores """
+# """ Performs the hillclimber a certain number of times (repetitions) with a specified number of runs
+#  	and plot the average scores """
 	totalscores = []
 	for i in range(repetitions):
 		algorithm_scores = []
@@ -1194,8 +1194,8 @@ def plot_average_hillclimb(repetitions, runs):
 
 
 def plot_average_SA(repetitions, runs):
-""" Performs all cooling schemes of simulated annealing a certain number of times (repetitions) and
-plots the average scores """
+# """ Performs all cooling schemes of simulated annealing a certain number of times (repetitions) and
+# plots the average scores """
 	totalscores = []
 	for i in range(repetitions):
 		algorithm_scores = []

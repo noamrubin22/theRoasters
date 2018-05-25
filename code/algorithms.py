@@ -1,4 +1,5 @@
 import helpers 
+from helpers import *
 
 def hillclimbStudent(times, chambers, allcourses, student_list, schedule):
 	""" Performs student swap and changes back if it does not lead to a better score """
