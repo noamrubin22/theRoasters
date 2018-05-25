@@ -48,8 +48,10 @@ class Students:
 			# ?
 			if activity[0] == oldtimelock and activity[1] == course:
 				activity[0] = newtimelock
+				
 				# lelijke fix: dit is voor dubbel resetten om een of andere reden
 				break
+
 				
 	# returns name and student- ID
 	def __str__(self):

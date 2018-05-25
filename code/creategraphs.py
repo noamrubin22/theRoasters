@@ -34,15 +34,28 @@ points = calcScore(allcourses, student_list, chambers)
 scores.append(points)
 
 # swap roomlocks 1000 times (using the hillclimber algorithm)
-for i in range(10000):
+for i in range(20000):
 
 	score = hillclimbRoomlocks(1, chambers, allcourses, student_list, schedule)
 	
 	# add score to array
 	scores.append(score)
 
-# print(scores)
+studentscores = []
+
+for i in range(10000):
+	# perform 1 hillclimb swap of students
+	studentscore = hillclimbStudent(1, chambers, allcourses, student_list, schedule)
+
+	studentscores.append(studentscore)
+	# add hillclimber student score to array
+
 
 # plot scores
-plot_hillclimber(scores)
+plt.plot(range(0, len(scores)), scores)
+plt.plot(range(len(scores), len(scores) + len(studentscores)), studentscores)
+plt.ylabel("Score")
+plt.xlabel("Amount of swaps")
+plt.title("Hillclimber")
+plt.show()
 

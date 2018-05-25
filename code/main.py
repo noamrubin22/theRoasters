@@ -67,12 +67,6 @@ print("Final score:", endscore)
 # print_schedule(schedule, allcourses, student_list, chambers)
 # print(schedule1)
 
-<<<<<<< HEAD
-# simulatedAnnealing(sigmoidal, 100000, chambers, allcourses, student_list, schedule)
-=======
-
->>>>>>> 809d0ac2214d7f8a324fe9e932a022200d5033f6
-
 input = []
 
 
