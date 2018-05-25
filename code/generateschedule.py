@@ -17,7 +17,7 @@ from classes import Students, Room, Course
 from parse import *
 
 
-def createRooms():
+def create_rooms():
 	""" Creates lists for rooms """
 
 	# create empty list
@@ -51,7 +51,7 @@ def createRooms():
 	return chambers
 
 
-def createCourses():
+def create_courses():
 	""" Substracts course information and put into list """
 
 	# create list for courses
@@ -93,18 +93,18 @@ def createCourses():
 
 	return allcourses
 
-def createStudents():
+def create_students():
 	""" Creates a list with students """
 
 	# create empty list
 	student_list = []
 
 	# import student classes
-	student_list = createStudentClass()
+	student_list = create_student_class()
 
 	return student_list
 
-def createEmptySchedule():
+def create_empty_schedule():
 	""" Prepare dictionary that represents schedule """
 
 	# create empty dictionary with all room-timelock combinations (roomlocks) as keys
@@ -113,7 +113,7 @@ def createEmptySchedule():
 
 	return schedule
 
-def createStudentGroups(allcourses, student_list):
+def create_student_groups(allcourses, student_list):
 	"""" Divides students into practical and seminar groups """
 
 	# for each course
@@ -126,21 +126,21 @@ def createStudentGroups(allcourses, student_list):
 			if course.name in student.courses:
 
 				# add student to course class
-				course.addStudent(student.last_name)
+				course.add_student(student.last_name)
 
 		# if course has seminars
 		if course.seminars > 0:
 
 			# count and add amount to course class
 			numofseminars = math.ceil(course.students/course.maxstudentssem)
-			course.addSeminar(numofseminars)
+			course.add_seminar(numofseminars)
 
 		# if course has practicals
 		if course.practicals > 0:
 
 			# count and add to course class
 			numofpracticals = math.ceil(course.students/course.maxstudentsprac)
-			course.addPractical(numofpracticals)
+			course.add_practical(numofpracticals)
 
 
 		#* divide students over groups *#
@@ -157,7 +157,7 @@ def createStudentGroups(allcourses, student_list):
 				studentlist = course.studentnames[i: i + course.maxstudentssem]
 
 				# add studentlist to course class
-				course.createSeminarGroup(sem, studentlist)
+				course.create_seminar_group(sem, studentlist)
 
 				# go on to the next group
 				sem += 1
@@ -173,7 +173,7 @@ def createStudentGroups(allcourses, student_list):
 
 	return allcourses, student_list
 
-def translateRoomlock(roomlock):
+def translate_roomlock(roomlock):
 	""" Translates roomlock number into roomnumber and timelock """
 
 	# amount of rooms per timelock
@@ -185,11 +185,10 @@ def translateRoomlock(roomlock):
 	# determine timelock
 	timelock = int(roomlock / total_amount_rooms)
 
-
 	return room, timelock
 
 
-def scheduleClass(course, typeClass, schedule, chambers, student_list):
+def schedule_class(course, typeClass, schedule, chambers, student_list):
 	"""" Schedules activities of a course """
 
 	# group activities by type
@@ -231,73 +230,72 @@ def scheduleClass(course, typeClass, schedule, chambers, student_list):
 			group = activity
 
 		# update course class with new activity
-		course.updateSchedule(pickroomlock, (course.name + " " + typeClass), group)
+		course.update_schedule(pickroomlock, (course.name + " " + typeClass), group)
 
 		# update room class with new activity
-		room, timelock = translateRoomlock(pickroomlock)
+		room, timelock = translate_roomlock(pickroomlock)
 		chambers[room].add_booking(timelock)
-
 
 		# update student class with new activity
 		if typeClass == "lecture":
 			for student in student_list:
 				if course.name in student.courses:
-					student.updateStudentSchedule(timelock, course.name)
+					student.update_student_schedule(timelock, course.name)
 
 		if typeClass == "seminar":
 			for student in student_list:
 				if course.name in student.courses:
 					if student.last_name in course.seminargroups[activity]:
-						student.updateStudentSchedule(timelock, course.name)
+						student.update_student_schedule(timelock, course.name)
 
 		if typeClass == "practical":
 			for student in student_list:
 				if course.name in student.courses:
 					if student.last_name in course.practicalgroups[activity]:
-						student.updateStudentSchedule(timelock, course.name)
+						student.update_student_schedule(timelock, course.name)
 
 		# decrease activity counter
 		activity -= 1
 
 	return
 
-def complementCourse(allcourses, schedule, chambers, student_list):
+def complement_course(allcourses, schedule, chambers, student_list):
 	""" Schedules activities for each course into schedule """
 
 	# for each course
 	for course in allcourses:
 
 		# schedule activities
-		scheduleClass(course, "lecture", schedule, chambers, student_list)
-		scheduleClass(course, "seminar", schedule, chambers, student_list)
-		scheduleClass(course, "practical", schedule, chambers, student_list)
+		schedule_class(course, "lecture", schedule, chambers, student_list)
+		schedule_class(course, "seminar", schedule, chambers, student_list)
+		schedule_class(course, "practical", schedule, chambers, student_list)
 
 	return allcourses, schedule, chambers, student_list
 
-def createSchedule():
+def create_schedule():
 	""" Creates a schedule """
 
 	# creates list available rooms
-	chambers = createRooms()
+	chambers = create_rooms()
 
 	# creates list of all courses
-	allcourses = createCourses()
+	allcourses = create_courses()
 
 	# creates student_list
-	student_list = createStudents()
+	student_list = create_students()
 
 	# create empty schedule with roomlocks as keys
-	schedule = createEmptySchedule()
+	schedule = create_empty_schedule()
 
 	# divide students over courses-groups
-	allcourses, student_list = createStudentGroups(allcourses, student_list)
+	allcourses, student_list = create_student_groups(allcourses, student_list)
 
 	# complement schedule with activities from courses
-	complementCourse(allcourses, schedule, chambers, student_list)
+	complement_course(allcourses, schedule, chambers, student_list)
 
 	return chambers, allcourses, student_list, schedule
 
-def updateClassesFromSchedule(schedule):
+def update_classesFromSchedule(schedule):
 	#* update classes to new schedule *#
 
 	allcourses = createCourses()

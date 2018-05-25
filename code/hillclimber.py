@@ -8,7 +8,7 @@
 # using a hillclimber algorithm where the only    	#
 # swaps being accepted are the ones that increase 	#
 # the score. The swaps are being made between	  	#
-# two random courses								#
+# two random courses.								#
 #												  	#
 #####################################################
 
@@ -16,11 +16,11 @@ import scorefunction
 import random
 import csv
 import generateschedule
-from generateschedule import translateRoomlock, updateClassesFromSchedule
-from scorefunction import calcScore
+from generateschedule import translate_roomlock, update_classes_from_schedule
+from scorefunction import calc_score
 
 
-def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, activity1 = None, course2 = None, activity2 = None):
+def swap_course(chambers, allcourses, student_list, schedule, course1 = None, activity1 = None, course2 = None, activity2 = None):
 	""" Swaps roomlocks of 2 (random) courses """
 
 	#* swap roomlock 2 (random) courses *#
@@ -37,7 +37,8 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 
 	# if specific activity is not chosen
 	if activity1 == None:
-		# chose random activity from course
+
+		# choose random activity from course
 		if len(allcourses[course1].activities) == 0:
 			activity1 = 0
 		else:
@@ -59,12 +60,12 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 	roomlock2 = randact2[0]
 
 	# swap the chosen activities from roomlock in schedule
-	allcourses[course1].changeSchedule(roomlock2, activity1)
-	allcourses[course2].changeSchedule(roomlock1, activity2)
+	allcourses[course1].change_schedule(roomlock2, activity1)
+	allcourses[course2].change_schedule(roomlock1, activity2)
 
 	# translate to room and timelock for both roomlocks
-	room1, timelock1 = translateRoomlock(roomlock1)
-	room2, timelock2 = translateRoomlock(roomlock2)
+	room1, timelock1 = translate_roomlock(roomlock1)
+	room2, timelock2 = translate_roomlock(roomlock2)
 
 	# store activity-groups
 	coursegroup1 = allcourses[course1].activities[activity1][2]
@@ -83,7 +84,7 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 			if allcourses[course1].name in student.courses:
 
 				# change individual schedule
-				student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
+				student.change_student_schedule(timelock1, timelock2, allcourses[course1].name)
 
 	# for seminars and practicals (group > 1)
 	else:
@@ -101,51 +102,55 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 					if student.last_name in allcourses[course1].seminargroups[coursegroup1]:
 
 							# change individual schedule with swapped course
-							student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
+							student.change_student_schedule(timelock1, timelock2, allcourses[course1].name)
 
 				# if course has practical
 				elif allcourses[course1].practicals > 0 and allcourses[course1].seminars == 0:
+
 					# if student is in practical-group
 					if student.last_name in allcourses[course1].practicalgroups[coursegroup1]:
-						# print(student.last_name)
-						# change individual schedule
-						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
 
+						# change individual schedule
+						student.change_student_schedule(timelock1, timelock2, allcourses[course1].name)
+
+				# if student has both practicals and seminarsa
 				elif allcourses[course1].seminars > 0 and allcourses[course1].practicals > 0:
+
+					# if student is in practical- or seminargroup
 					if student.last_name in allcourses[course1].seminargroups[coursegroup1] or student.last_name in allcourses[course1].practicalgroups[coursegroup1]:
-						student.changeStudentSchedule(timelock1, timelock2, allcourses[course1].name)
+						
+						# change individual schedule
+						student.change_student_schedule(timelock1, timelock2, allcourses[course1].name)
 
 	# same for the second coursegroup
 	if coursegroup2 == 0:
 		for student in student_list:
 			if allcourses[course2].name in student.courses:
-				student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
+				student.change_student_schedule(timelock2, timelock1, allcourses[course2].name)
 
+	# for seminars and practicals
 	else:
 		for student in student_list:
+
 				# if course has seminar
 				if allcourses[course2].seminars > 0 and allcourses[course2].practicals == 0:
-
-					# if student is in seminargroup
 					if student.last_name in allcourses[course2].seminargroups[coursegroup2]:
-
-							# change individual schedule with swapped course
-							student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
+							student.change_student_schedule(timelock2, timelock1, allcourses[course2].name)
 
 				# if course has practical
 				elif allcourses[course2].practicals > 0 and allcourses[course2].seminars == 0:
-					# if student is in practical-group
 					if student.last_name in allcourses[course2].practicalgroups[coursegroup2]:
-						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
+						student.change_student_schedule(timelock2, timelock1, allcourses[course2].name)
 
+				# if student has both practicals and seminars
 				elif allcourses[course2].seminars > 0 and allcourses[course2].practicals > 0:
 					if student.last_name in allcourses[course2].seminargroups[coursegroup2] or student.last_name in allcourses[course2].practicalgroups[coursegroup2]:
-						student.changeStudentSchedule(timelock2, timelock1, allcourses[course2].name)
+						student.change_student_schedule(timelock2, timelock1, allcourses[course2].name)
 
 	#* update roomschedules *#
 
-	chambers[room1].changeBooking(timelock1, timelock2)
-	chambers[room2].changeBooking(timelock2, timelock1)
+	chambers[room1].change_booking(timelock1, timelock2)
+	chambers[room2].change_booking(timelock2, timelock1)
 
 	# save content of schedule at swapped roomlocks
 	schedulecontent1 = schedule[roomlock1]
@@ -158,29 +163,29 @@ def swapCourse(chambers, allcourses, student_list, schedule, course1 = None, act
 	return course1, activity1, course2, activity2, schedule
 
 
-def hillclimbRoomlocks(times, chambers, allcourses, student_list, schedule):
+def hillclimb_roomlocks(times, chambers, allcourses, student_list, schedule):
 	""" Searches for the optimal score by swapping roomlocks """
 
 	# amount of steps hillclimber
 	for i in range(0, times):
 
 		# calculate score before swap
-		points = calcScore(allcourses, student_list, chambers)
+		points = calc_score(allcourses, student_list, chambers)
 
 		# perform swap
-		course1, activity1, course2, activity2, schedule = swapCourse(chambers, allcourses, student_list, schedule)
+		course1, activity1, course2, activity2, schedule = swap_course(chambers, allcourses, student_list, schedule)
 
 		# calculate new scores
-		newpoints = calcScore(allcourses, student_list, chambers)
+		newpoints = calc_score(allcourses, student_list, chambers)
 
 		# if new score lower than old score
 		if newpoints < points:
 
 			# swap back
-			swapCourse(chambers, allcourses, student_list, schedule, course1, activity1, course2, activity2)
+			swap_course(chambers, allcourses, student_list, schedule, course1, activity1, course2, activity2)
 
 			# calculate new score
-			newpoints = calcScore(allcourses, student_list, chambers)
+			newpoints = calc_score(allcourses, student_list, chambers)
 
 			# if back-swap didn't go well
 			if points != newpoints:

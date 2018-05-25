@@ -34,22 +34,22 @@ class Students:
 		print("The name of the student is {} with student ID of {}, and takes the following courses: {}."
 		.format(self.name, self.student_ID, self.courses))
 
-	def updateStudentSchedule(self, timelock, course):
+	def update_student_schedule(self, timelock, course):
 		""" Updates changes in schedule of student """
 
 		self.schedule.append([timelock, course])
 
-	def changeStudentSchedule(self, oldtimelock, newtimelock, course):
-		""" Changes specific student ? """
+	def change_student_schedule(self, oldtimelock, newtimelock, course):
+		""" Changes timelock in student's schedule """
 
 		# for specific activity in schedule
 		for activity in self.schedule:
 
-			# ?
+			# exchange old roomlock with new
 			if activity[0] == oldtimelock and activity[1] == course:
 				activity[0] = newtimelock
-				
-				# lelijke fix: dit is voor dubbel resetten om een of andere reden
+
+				# exchange only one activity
 				break
 
 				
@@ -71,7 +71,7 @@ class Room:
 
 		self.booking.append(timelock)
 
-	def changeBooking(self, oldtimelock, newtimelock):
+	def change_booking(self, oldtimelock, newtimelock):
 		""" Updates/changes booking schedule """
 
 		for booking in self.booking:
@@ -103,28 +103,28 @@ class Course:
 		self.seminargroups = {1 : []}
 		self.practicalgroups = {1 : []}
 
-	def addStudent(self, name):
+	def add_student(self, name):
 		""" Add student to course """
 
 		self.students += 1
 		self.studentnames.append(name)
 
-	def addSeminar(self, num):
+	def add_seminar(self, num):
 		""" Adds amount of seminars """
 
 		self.seminars = num
 
-	def addPractical(self, num):
+	def add_practical(self, num):
 		""" Adds amount of practicals """
 
 		self.practicals = num
 
-	def createSeminarGroup(self, sem, studentlist):
+	def create_seminar_group(self, sem, studentlist):
 		""" Creates a seminar group """
 
 		self.seminargroups[sem] = studentlist
 
-	def switchSeminarStudent(self, sem1, sem2, student1, student2):
+	def switch_seminar_student(self, sem1, sem2, student1, student2):
 		""" Switches students between seminar-groups """
 
 		student1name = self.seminargroups[sem1][student1]
@@ -133,12 +133,12 @@ class Course:
 		self.seminargroups[sem1][student1] = student2name
 		self.seminargroups[sem2][student2] = student1name
 
-	def createPracticalGroup(self, prac, studentlist):
+	def create_practical_group(self, prac, studentlist):
 		""" Creates practical group """
 
 		self.practicalgroups[prac] = studentlist
 
-	def switchPracticalStudent(self, prac1, prac2, student1, student2):
+	def switch_practical_student(self, prac1, prac2, student1, student2):
 		""" Switches students between practical-groups """
 
 		student1name = self.practicalgroups[prac1][student1]
@@ -147,12 +147,12 @@ class Course:
 		self.practicalgroups[prac1][student1] = student2name
 		self.practicalgroups[prac2][student2] = student1name
 
-	def updateSchedule(self, roomlock, activity, group):
+	def update_schedule(self, roomlock, activity, group):
 		""" Adds activity with features to activity- list schedule  """
 
 		self.activities.append([roomlock, activity, group])
 
-	def changeSchedule(self, newroomlock, schedulespot):
+	def change_schedule(self, newroomlock, schedulespot):
 		""" Changes roomlock of activity """
 
 		self.activities[schedulespot][0] = newroomlock
