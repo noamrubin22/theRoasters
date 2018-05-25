@@ -770,7 +770,7 @@ def linear(min_iterations, i, start = start_temp, final = final_temp):
     """ Returns temperature calculated using a linear function """
 
     temperature = start - i * (start - final) / min_iterations
-    
+
     return temperature
 
 
@@ -778,8 +778,8 @@ def exponential(min_iterations, i, start = start_temp, final = final_temp):
     """ Returns temperature calculated using an exponential function """
 
     temperature = (start * (final / start) ** (i / min_iterations))
- 
-    return temperature 
+
+    return temperature
 
 
 def sigmoidal(min_iterations, i, start = start_temp, final = final_temp ):
@@ -794,69 +794,69 @@ def sigmoidal(min_iterations, i, start = start_temp, final = final_temp ):
 
 def geman(min_iterations, i, start = start_temp):
 	""" Returns temperature, calculated using a geman function """
- 
-	temperature = start / (math.log(i + 1) + 1) 
-	
+
+	temperature = start / (math.log(i + 1) + 1)
+
 	return temperature
 
 
-def lin_exp(min_iterations, i): 
+def lin_exp(min_iterations, i):
     """ Temperature is calculated using an exponential and linear function """
 
     # vary between the functions
-    if i % 2 == 0: 
+    if i % 2 == 0:
         return exponential(min_iterations, i)
-    else: 
+    else:
         return linear(min_iterations, i)
 
 
-def exp_sig(min_iterations, i): 
+def exp_sig(min_iterations, i):
     """ Temperature is calculated using an exponential and linear function """
 
     # vary between the functions
-    if i % 2 == 0: 
+    if i % 2 == 0:
         return sigmoidal(min_iterations, i)
-    else: 
+    else:
         return exponential(min_iterations, i)
 
 
-def gem_lin(min_iterations, i): 
+def gem_lin(min_iterations, i):
     """ Temperature is calculated using an geman and linear function """
 
     # vary between the functions
-    if i % 2 == 0: 
+    if i % 2 == 0:
         return linear(min_iterations, i)
-    else: 
+    else:
         return geman(min_iterations, i)
 
 
-def gem_exp(min_iterations, i): 
+def gem_exp(min_iterations, i):
     """ Temperature is calculated using an exponential and geman function """
 
     # vary between the functions
-    if i % 2 == 0: 
+    if i % 2 == 0:
         return geman(min_iterations, i)
-    else: 
+    else:
         return exponential(min_iterations, i)
 
 
-def lin_sig(min_iterations, i): 
+def lin_sig(min_iterations, i):
     """ Temperature is calculated using an sigmoidal and linear function """
 
     # vary between the functions
-    if i % 2 == 0: 
+    if i % 2 == 0:
         return sigmoidal(min_iterations, i)
-    else: 
+    else:
        return linear(min_iterations, i)
 
 
-def gem_exp(min_iterations, i): 
+def gem_exp(min_iterations, i):
     """ Temperature is calculated using an geman and sigmoidal function """
 
     # vary between the functions
-    if i % 2 == 0: 
+    if i % 2 == 0:
         return geman(min_iterations, i)
-    else: 
+    else:
         return sigmoidal(min_iterations, i)
 
 
@@ -996,7 +996,7 @@ def cross_over(mating_pool, offspring, generation, chance):
         parents = mating_pool
         random_parent = chance_array[random.randint(0, len(chance_array) - 1)]
         parent_schedule = parents[random_parent][1]
-        
+
         # until no activities are left
         while activities > 0:
 
@@ -1028,19 +1028,19 @@ def cross_over(mating_pool, offspring, generation, chance):
 
             # if schedule has no place for the random course, a None value is chosen, or the random course is already chosen
             while schedule[random_course] is not None or parent_schedule[random_course] is None or parent_schedule[random_course] in courses:
-                
+
                 # choose new random course from parent schedule
                 random_course = random.randint(0, len(parent_schedule) - 1)
 
                 # increase counter
                 counter += 1
-        
+
                 # if random course still not scheduled
                 if counter > 100:
 
                     # choose new parent
                     parent_schedule = parents[random.randint(0, len(parents) - 1)][1]
-                    
+
                     # reset counter
                     counter = 0
 
@@ -1087,7 +1087,7 @@ def cross_over(mating_pool, offspring, generation, chance):
 
             # adjust fittest score
             fittest_score = score
-            
+
             print("New best found ---> Schedule: {}, generation: {}, score: {}".format(i, generation, score))
 
         # add the array with individual timetable-info to the population
@@ -1140,8 +1140,8 @@ def print_schedule(schedule, allcourses, student_list, chambers):
 
     print("Printed a schedule at {} with a score of {}.".format(schedule_location, score))
 
-def plot_simulated_annealing(scores, coolingscheme, best_score): 
-	""" Plots schedule score during simulated annealing """ 
+def plot_simulated_annealing(scores, coolingscheme, best_score):
+	""" Plots schedule score during simulated annealing """
 
 	functionname = str(coolingscheme.__name__)
 	plt.plot(range(0, len(scores)), scores, label=functionname)
@@ -1150,7 +1150,7 @@ def plot_simulated_annealing(scores, coolingscheme, best_score):
 	plt.title("Simulated annealing")
 	plt.text(5, (max(scores)), best_score)
 	plt.legend()
-	plt.show()	
+	plt.show()
 
 def plot_random_schedules(scores):
 	""" Creates an histogram of random schedules"""
@@ -1174,24 +1174,24 @@ def plot_hillclimber(scores, hillclimb_students_scores = None):
 	plt.show()
 
 
-def multiple_simulated_annealing(scores): 
-	""" Plots schedule score during simulated annealing for different coolingschemes """ 
+def multiple_simulated_annealing(scores):
+	""" Plots schedule score during simulated annealing for different coolingschemes """
 
 	plt.plot(range(0, len(scores[0])), scores[0], label = "geman")
 	plt.plot(range(0, len(scores[1])), scores[1], label = "linear")
 	plt.plot(range(0, len(scores[2])), scores[2], label = "sigmoidal")
-	plt.plot(range(0, len(scores[3])), scores[3], label = "exponential")		
+	plt.plot(range(0, len(scores[3])), scores[3], label = "exponential")
 	plt.ylabel("Score")
 	plt.xlabel("Runs")
 	plt.title("Simulated annealing")
 	# plt.text(5, max(scores[0]))
 	plt.legend()
-	plt.show()	
+	plt.show()
 
 
 def plot_average_hillclimb(repetitions, runs):
-""" Performs the hillclimber a certain number of times (repetitions) with a specified number of runs
- and plot the average scores """
+	""" Performs the hillclimber a certain number of times (repetitions) with a specified number of runs and plot the average scores """
+
 	totalscores = []
 	for i in range(repetitions):
 		algorithm_scores = []
@@ -1216,8 +1216,8 @@ def plot_average_hillclimb(repetitions, runs):
 
 
 def plot_average_SA(repetitions, runs):
-""" Performs all cooling schemes of simulated annealing a certain number of times (repetitions) and
-plots the average scores """
+	""" Performs all cooling schemes of simulated annealing a certain number of times (repetitions) and
+	plots the average scores """
 	totalscores = []
 	for i in range(repetitions):
 		algorithm_scores = []
@@ -1283,4 +1283,3 @@ plots the average scores """
 	average_scores = [geman_average_scores, linear_average_scores, sigmoidal_average_scores, exponential_average_scores]
 
 	multiple_simulated_annealing(average_scores)
-

@@ -3,6 +3,7 @@ from generateschedule import translate_roomlock
 from generateschedule import updateClassesFromSchedule, createSchedule
 
 
+
 def calc_score(allcourses, student_list, chambers):
 	""" Calculates the score of a schedule"""
 

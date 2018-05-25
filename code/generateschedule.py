@@ -16,7 +16,6 @@ import re
 from classes import Students, Room, Course
 from parse import *
 
-
 def create_rooms():
 	""" Creates lists for rooms """
 
