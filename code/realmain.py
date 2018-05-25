@@ -2,13 +2,14 @@ from __future__ import division
 import csv
 import random
 import math
-from parse import *
+# from parse import 
 from classes import Students, Room, Course
 from helpers import *
 from algorithms import *
 
 
 def main():
+    """ """
 
     print("\n\tWelcome to lectures! :)\n")
     algorithm = int(input("Select your algorithm:\n 1. Hillclimber Algorithm\n 2. Simulated Annealing Algorithm\n 3. Genetic Algorithm\n\n Algorithm (1/2/3): "))
@@ -84,6 +85,10 @@ def main():
         offspring = int(input("Amount of offspring per generation (integer): "))
         generations = int(input("Amount of generations (integer): "))
         mutation = float(input("Mutation rate (0.0 - 1.0): "))
+<<<<<<< HEAD
+=======
+        print(survival)
+>>>>>>> e630ea074ccfa816c0805b450abc10df90a31a4d
 
         schedule, allcourses, student_list, chambers = genetic(initial, survival, offspring, generations, mutation)
 

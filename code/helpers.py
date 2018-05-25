@@ -197,7 +197,9 @@ def translate_roomlock(roomlock):
 
 	return room, timelock
 
+
 #* scheduling/ updating information lists *# 
+
 
 def schedule_class(course, type_class, schedule, chambers, student_list):
 	"""" Schedules activities of a course """
@@ -376,17 +378,19 @@ def update_classes_from_schedule(schedule):
 						for student in student_list:
 							if course.name in student.courses:
 								if student.last_name in course.seminargroups[group]:
-									student.updat_student_schedule(timelock, course.name)
+									student.update_student_schedule(timelock, course.name)
 
 					if type_class == "practical":
 						for student in student_list:
 							if course.name in student.courses:
 								if student.last_name in course.practicalgroups[group]:
-									student.updat_student_schedule(timelock, course.name)
+									student.update_student_schedule(timelock, course.name)
 
 	return allcourses, student_list, chambers
 
+
 #* scorefunction *#
+
 
 def calc_score(allcourses, student_list, chambers):
 	""" Calculates the score of a schedule"""
@@ -896,6 +900,7 @@ def gem_exp(min_iterations, i):
 	else:
 		return sigmoidal(min_iterations, i)
 
+
 #* genetic algorithm *#
 
 
@@ -1368,3 +1373,62 @@ def plot_average_SA(repetitions, runs):
 
 	# create plot with multiple lines of all coolingschemes
 	multiple_simulated_annealing(average_scores)
+
+
+def swap_course2(chambers, allcourses, student_list, schedule, roomlock1 = None, roomlock2 = None):
+	""" Swaps roomlocks of 2 (random) courses """
+
+	#* swap roomlock 2 (random) courses *#
+
+	# if specific activity is not chosen
+	if roomlock1 == None:
+		# chose random activity from schedule
+			roomlock1 = random.randint(0, len(schedule) - 1)
+
+	# same
+	if roomlock2 == None:
+			roomlock2 = random.randint(0, len(schedule) - 1)
+
+	activity1 = schedule[roomlock1]
+	activity2 = schedule[roomlock2]
+
+	# switch courses in schedule
+	schedule[roomlock1] = activity2
+	schedule[roomlock2] = activity1
+
+	allcourses1, student_list, chambers = update_classes_from_schedule(schedule)
+
+	return roomlock1, roomlock2, chambers, allcourses, student_list, schedule
+
+
+def hillclimb_roomlocks2(times, chambers, allcourses, student_list, schedule):
+	""" Searches for the optimal score by swapping roomlocks """
+
+	# amount of steps hillclimber
+	for i in range(0, times):
+
+		# calculate score before swap
+		points = calc_score(allcourses, student_list, chambers)
+
+		# perform swap
+		roomlock1, roomlock2, chambers, allcourses, student_list, schedule = swap_course2(chambers, allcourses, student_list, schedule)
+
+		# calculate new scores
+		newpoints = calc_score(allcourses, student_list, chambers)
+
+		# if new score lower than old score
+		if newpoints < points:
+
+			# swap back
+			roomlock1, roomlock2, chambers, allcourses, student_list, schedule = swap_course2(chambers, allcourses, student_list, schedule, roomlock2, roomlock1)
+
+			# calculate new score
+			newpoints = calc_score(allcourses, student_list, chambers)
+
+			# if back-swap didn't go well
+			if points != newpoints:
+
+				# print courses and break loop
+				print(roomlock2, roomlock1)
+				print("ERROR")
+				break
