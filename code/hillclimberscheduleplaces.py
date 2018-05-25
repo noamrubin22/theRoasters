@@ -34,108 +34,14 @@ def swapCourse2(chambers, allcourses, student_list, schedule, roomlock1 = None, 
 	if roomlock2 == None:
 			roomlock2 = random.randint(0, len(schedule) - 1)
 
-	while True:
-		# store random activities
-		activity1 = schedule[roomlock1]
-		activity2 = schedule[roomlock2]
-
-		# determine coursename of swapped course
-		if activity1 == None:
-			coursename1 = "None"
-
-		else:
-			splittext = activity1.split(" lecture | seminar | practical ")
-			coursename1 = splittext[0]
-
-		if activity2 == None:
-			coursename2 = "None"
-
-		else:
-			splittext = activity2.split(" lecture | seminar | practical ")
-			coursename2 = splittext[0]
-
-		if activity1 != activity2:
-			break
-
-		roomlock1 = random.randint(0, len(schedule) - 1)
-		roomlock2 = random.randint(0, len(schedule) - 1)
-
-
-	# elif "lecture" in activity1:
-	# 	splittext = activity1.split(" lecture ")
-	# 	coursename1 = splittext[0]
-
-	# elif "seminar" in activity1:
-	# 	splittext = activity1.split(" seminar ")
-	# 	coursename1 = splittext[0]
-
-	# elif "practical" in activity1:
-	# 	splittext = activity1.split(" practical ")
-	# 	coursename1 = splittext[0]
-
-	# if activity2 == None:
-	# 	coursename2 = "None"
-
-	# elif "lecture" in activity2:
-	# 	splittext = activity2.split(" lecture ")
-	# 	coursename2 = splittext[0]
-
-	# elif "seminar" in activity2:
-	# 	splittext = activity2.split(" seminar ")
-	# 	coursename2 = splittext[0]
-
-	# elif "practical" in activity2:
-	# 	splittext = activity2.split(" practical ")
-	# 	coursename2 = splittext[0]
-
-
-
+	activity1 = schedule[roomlock1]
+	activity2 = schedule[roomlock2]
 
 	# switch courses in schedule
 	schedule[roomlock1] = activity2
 	schedule[roomlock2] = activity1
 
 	allcourses1, student_list, chambers = updateClassesFromSchedule(schedule)
-
-
-
-	count_course1_numbers = 0
-	count_course2_numbers = 0
-	for course in allcourses:
-		
-		if course.name == coursename1:
-			course1 = count_course1_numbers
-			count_activities_course = 0
-			for activity in course.activities:
-				if roomlock1 == activity[0]:
-					activityswapped1 = count_activities_course
-					allcourses[course1].changeSchedule(roomlock2, activityswapped1)
-				count_activities_course += 1
-		count_course1_numbers += 1
-
-		if course.name == coursename2:
-			course2 = count_course2_numbers
-			count_activities_course = 0
-			for activity in course.activities:
-				if roomlock2 == activity[0]:
-					activityswapped2 = count_activities_course
-					allcourses[course2].changeSchedule(roomlock1, activityswapped2)
-				count_activities_course += 1
-		count_course2_numbers += 1
-
-	print(activity1, activity2)
-
-
-
-
-
-
-
-	# swap the chosen activities from roomlock in schedule
-	# allcourses[course1].changeSchedule(roomlock2, activity1)
-	# allcourses[course2].changeSchedule(roomlock1, activity2)
-
-	# return chambers, allcourses, student_list, schedule
 
 	return roomlock1, roomlock2, chambers, allcourses, student_list, schedule
 
@@ -151,10 +57,6 @@ def hillclimbRoomlocks2(times, chambers, allcourses, student_list, schedule):
 
 		# perform swap
 		roomlock1, roomlock2, chambers, allcourses, student_list, schedule = swapCourse2(chambers, allcourses, student_list, schedule)
-<<<<<<< HEAD
-=======
-		# print("Roomlocks switched: ", roomlock1, roomlock2)
->>>>>>> 43617eef6741eaabc7c9e660abd76464970905ef
 
 		# calculate new scores
 		newpoints = calcScore(allcourses, student_list, chambers)
@@ -176,7 +78,7 @@ def hillclimbRoomlocks2(times, chambers, allcourses, student_list, schedule):
 				print("ERROR")
 				break
 
-	# return newpoints
+	return newpoints
 
 chambers, allcourses, student_list, schedule = createSchedule()
 hillclimbRoomlocks2(1000, chambers, allcourses, student_list, schedule)

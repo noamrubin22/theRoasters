@@ -106,10 +106,11 @@ def main():
     elif algorithm == 3:
         print("\nSo you think you're better than nature? Prove it!\n")
         initial = int(input("\nInitial population (integer): "))
-        survival = int(float(input("Survival rate per generation (0.0 - 1.0): ")))
+        survival = float(input("Survival rate per generation (0.0 - 1.0): "))
         offspring = int(input("Amount of offspring per generation (integer): "))
         generations = int(input("Amount of generations (integer): "))
-        mutation = int(float(input("Mutation rate (0.0 - 1.0): ")))
+        mutation = float(input("Mutation rate (0.0 - 1.0): "))
+        print(survival)
 
         schedule, allcourses, student_list, chambers = genetic(initial, survival, offspring, generations, mutation)
 

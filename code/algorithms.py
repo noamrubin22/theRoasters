@@ -195,3 +195,5 @@ def genetic(initial, survival_rate, offspring, generations, mutation):
     print("schedule: ", schedule)
 
     return schedule, allcourses, student_list, chambers
+
+
