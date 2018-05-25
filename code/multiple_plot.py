@@ -111,4 +111,5 @@ def plot_average_SA(repetitions, runs):
 
 	multiple_simulated_annealing(average_scores)
 
-plot_average_SA(10, 1000)
+plot_average_SA(10, 3000)
+
