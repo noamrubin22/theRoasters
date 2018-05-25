@@ -34,16 +34,20 @@ def genetic(initial, survival_rate, offspring, generations, mutation):
     print("fittest: ", fittest_score)
     print("schedule: ", schedule)
     print("Start hillclimbing on fittest schedule...")
-    # hillclimbRoomlocks2(1000, chambers, allcourses, student_list, schedule)
-    
+
+
     score_file = open('scores.txt', 'w')
 
-    score_file.write(total_gen_scores)
+    score_file.write(str(total_gen_scores))
+
+
+    hillclimbRoomlocks2(1000, chambers, allcourses, student_list, schedule)
 
     # if algorithm == "GA":
     #     return fittest, fittest_score, initial, survival_rate, offspring, generations, mutation
 
     # print("fittest: ", calcScore(fittest[0][0][0], fittest[0][0][1], fittest[0][0][2]))
+
 
 def initial_population(amount):
     """ Creates an intial population and returns the parents """
@@ -237,6 +241,7 @@ def cross_over(mating_pool, offspring, generation, chance):
         score = calcScore(allcourses, student_list, chambers)
         gen_scores.append(score)
 
+
         # if score > fittest_score:
         #     fittest_score = score
         print("Schedule: {}, generation: {}, score: {}".format(i, generation, score))
@@ -250,4 +255,5 @@ def cross_over(mating_pool, offspring, generation, chance):
     return children
 
 
-genetic(100, 0.2, 100, 1, 0.2)
+genetic(1000, 0.2, 100, 200, 0.2)
+
