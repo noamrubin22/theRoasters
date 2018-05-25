@@ -23,8 +23,9 @@ from scorefunction import calcScore
 from hillclimber import hillclimbRoomlocks
 from hillclimberstudents import hillclimbStudent
 from SA import simulatedAnnealing
-from coolingschemes import linear, exponential, sigmoidal
+from coolingschemes import linear, exponential, sigmoidal, geman, lin_exp 
 from printschedule import print_schedule
+from plot import plot_simulated_annealing
 
 # create schedule
 chambers, allcourses, student_list, schedule = createSchedule()
@@ -55,6 +56,33 @@ print("Final score:", endscore)
 # print_schedule(schedule, allcourses, student_list, chambers)
 
 
-simulatedAnnealing(sigmoidal, 100000, chambers, allcourses, student_list, schedule)
+
+input = []
 
 
+# perform geman
+chambers, allcourses, student_list, schedule = createSchedule()
+best_score, best_courses, best_student_list, best_chambers, scores = simulatedAnnealing(geman, 100, chambers, allcourses, student_list, schedule)
+# plot_simulated_annealing(scores, geman, best_score)
+
+input.append(scores)
+print("........................................hoi")
+
+chambers, allcourses, student_list, schedule = createSchedule()
+best_score, best_courses, best_student_list, best_chambers, scores = simulatedAnnealing(linear, 100, chambers, allcourses, student_list, schedule)
+# plot_simulated_annealing(scores, linear, best_score)
+
+input.append(scores)
+print("              .............................................hallo")
+chambers, allcourses, student_list, schedule = createSchedule()
+best_score, best_courses, best_student_list, best_chambers, scores = simulatedAnnealing(sigmoidal, 100, chambers, allcourses, student_list, schedule)
+
+input.append(scores)
+print("...............................................................................hey")
+
+chambers, allcourses, student_list, schedule = createSchedule()
+best_score, best_courses, best_student_list, best_chambers, scores = simulatedAnnealing(exponential, 100, chambers, allcourses, student_list, schedule)
+# plot_simulated_annealing(scores, geman, best_score)
+input.append(scores)
+print(len(scores))
+print(scores)

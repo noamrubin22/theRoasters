@@ -30,8 +30,7 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 	best_chambers = None
 
 	# initialize temperatures
-	temp_start = 100000
-	temp_final = 1
+	temp_start = 10
 
 	# array for scores for visualization
 	scores = []
@@ -69,7 +68,7 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 		if newpoints < points:
 
 			# calculate acceptance chance
-			acceptance_probability = math.exp((newpoints - points) / temperature)
+			acceptance_probability = math.exp((newpoints - points) /temperature)
 
 			# if acceptance chance higher than random number
 			if (acceptance_probability > random.random()):
@@ -79,7 +78,7 @@ def simulatedAnnealing(coolingscheme, min_iterations, chambers, allcourses, stud
 				points = newpoints
 
 				# cool system
-				temperature = coolingscheme(temperature, min_iterations, i)
+				temperature = coolingscheme(min_iterations, i)
 
 			# if acceptance chance lower than random number
 			else:
