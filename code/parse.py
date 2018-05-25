@@ -26,9 +26,6 @@ def parse(raw_file, delimiter):
     # read and clean CSV data
     csv_data = csv.reader((x.replace('\0', '') for x in opened_file), delimiter = delimiter)
 
-    # Read the CSV data
-#    csv_data = csv.reader(opened_file, delimiter=delimiter)
-
     # setup an empty list
     parsed_data = []
 
@@ -44,10 +41,6 @@ def parse(raw_file, delimiter):
 
     return parsed_data
 
-def gimme_students():
-    """ Returns a list with students """
-
-    return student_list;
 
 def create_student_class():
     """ Adds features of student class per student and returns student-list """
@@ -62,24 +55,24 @@ def create_student_class():
     for i in range(len(new_data)):
 
         # extract all information
-        last_name = new_data[i]['lastName']
-        first_name = new_data[i]['firstName']
-        student_id = new_data[i]['studentID']
+        last_name = new_data[i]["lastName"]
+        first_name = new_data[i]["firstName"]
+        student_id = new_data[i]["studentID"]
 
         # create list for courses
         courses = []
 
         # extract courses from students and add to list
-        if new_data[i]['course_1'] is not '':
-            courses.append(new_data[i]['course_1'])
-        if new_data[i]['course_2'] is not '':
-            courses.append(new_data[i]['course_2'])
-        if new_data[i]['course_3'] is not '':
-            courses.append(new_data[i]['course_3'])
-        if new_data[i]['course_4'] is not '':
-            courses.append(new_data[i]['course_4'])
-        if new_data[i]['course_5'] is not '':
-            courses.append(new_data[i]['course_5'])
+        if new_data[i]["course_1"] is not '':
+            courses.append(new_data[i]["course_1"])
+        if new_data[i]["course_2"] is not '':
+            courses.append(new_data[i]["course_2"])
+        if new_data[i]["course_3"] is not '':
+            courses.append(new_data[i]["course_3"])
+        if new_data[i]["course_4"] is not '':
+            courses.append(new_data[i]["course_4"])
+        if new_data[i]["course_5"] is not '':
+            courses.append(new_data[i]["course_5"])
 
         # append students to list with extracted info addressed to class
         student_list.append(Students(last_name, first_name, student_id, courses))

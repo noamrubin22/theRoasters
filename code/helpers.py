@@ -1,8 +1,20 @@
+##################################################### 
+# Heuristieken: Lectures & Lesroosters              #
+#                                                   #
+# Names: Tessa Ridderikhof, Najib el Moussaoui      #
+#        & Noam Rubin                               #
+#                                                   #
+# This script consists of functions that are needed #
+# for the complemention and optimalisation          #
+# of a schedule 									#
+#	                                                #
+#####################################################
+
 import random
 import math
 import re
 from classes import Students, Room, Course
-from parse import *
+from parse import create_student_class
 
 
 #* create information lists *#
