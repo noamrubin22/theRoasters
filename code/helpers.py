@@ -16,6 +16,7 @@ import csv
 import re
 from classes import Students, Room, Course
 from parse import create_student_class
+# from algorithms import *
 
 
 #* create information lists *#
@@ -492,7 +493,7 @@ def calc_score(allcourses, student_list, chambers):
 					points += 20
 					coursepoints += 20
 
-		# for eac activity of a course
+		# for each activity of a course
 		for activity in course.activities:
 
 			# substract room and timelock
@@ -534,6 +535,8 @@ def calc_score(allcourses, student_list, chambers):
 
 		# add points of allcourses
 		allcoursespoints.append([course.name, coursepoints])
+
+	#* substract points when 2 courses on same time *# 
 
 	# for all students
 	for student in student_list:
@@ -1288,19 +1291,19 @@ def plot_average_SA(repetitions, runs):
 		
 		# create random schedule and perform simulated annealing with geman coolingscheme
 		chambers, allcourses, student_list, schedule = create_schedule()
-		best_score, best_courses, best_student_list, best_chambers, geman_scores = simulated_annealing(geman, runs, chambers, allcourses, student_list, schedule)
+		best_schedule, best_score, best_courses, best_student_list, best_chambers, scores = simulated_annealing(geman, runs, chambers, allcourses, student_list, schedule)
 		
 		# create random schedule and perform simulated annealing with linear coolingscheme
 		chambers, allcourses, student_list, schedule = create_schedule()
-		best_score, best_courses, best_student_list, best_chambers, linear_scores = simulated_annealing(linear, runs, chambers, allcourses, student_list, schedule)
+		best_schedule, best_score, best_courses, best_student_list, best_chambers, linear_scores = simulated_annealing(linear, runs, chambers, allcourses, student_list, schedule)
 		
 		# create random schedule and perform simulated annealing with sigmoidal coolingscheme
 		chambers, allcourses, student_list, schedule = create_schedule()
-		best_score, best_courses, best_student_list, best_chambers, sigmoidal_scores = simulated_annealing(sigmoidal, runs, chambers, allcourses, student_list, schedule)
+		best_schedule, best_score, best_courses, best_student_list, best_chambers, sigmoidal_scores = simulated_annealing(sigmoidal, runs, chambers, allcourses, student_list, schedule)
 		
 		# create random schedule and perform simulated annealing with exponential coolingscheme
 		chambers, allcourses, student_list, schedule = create_schedule()
-		best_score, best_courses, best_student_list, best_chambers, exponential_scores = simulated_annealing(exponential, runs, chambers, allcourses, student_list, schedule)
+		best_schedule, best_score, best_courses, best_student_list, best_chambers, exponential_scores = simulated_annealing(exponential, runs, chambers, allcourses, student_list, schedule)
 		
 		# add scores to alogrithm list
 		algorithm_scores.append([geman_scores, linear_scores, sigmoidal_scores, exponential_scores])
