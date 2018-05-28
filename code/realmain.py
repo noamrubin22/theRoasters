@@ -1,4 +1,4 @@
-######################################################
+###################################################### 
 # Heuristieken: Lectures & Lesroosters               #
 #                                                    #
 # Names: Tessa Ridderikhof, Najib el Moussaoui       #
@@ -52,10 +52,6 @@ def main():
         # create random schedule
         chambers, allcourses, student_list, schedule = create_schedule()
 
-        print_schedule(schedule, allcourses, student_list, chambers)
-        points, allcoursespoints = calc_score(allcourses, student_list, chambers)
-        print(allcoursespoints)
-
         print("\n\t\tClimbing...\n")
 
         # perform chosen hillclimber
@@ -69,8 +65,6 @@ def main():
 
         # visualize schedule
         print_schedule(schedule, allcourses, student_list, chambers)
-        points, allcoursespoints = calc_score(allcourses, student_list, chambers)
-        print(allcoursespoints)
 
     # if simulated annealing is chosen
     elif algorithm == 2:
@@ -108,7 +102,7 @@ def main():
         chambers, allcourses, student_list, schedule = create_schedule()
         best_schedule, best_score, best_courses, best_student_list, best_chambers, scores = simulated_annealing(cooling, iterations, chambers, allcourses, student_list, schedule)
 
-        # visualize schedule
+        # visualize schedule 
         print_schedule(best_schedule, best_courses, best_student_list, best_chambers)
 
     # if genetic algorithm is chosen
@@ -121,10 +115,9 @@ def main():
         offspring = int(input("Amount of offspring per generation (integer): "))
         generations = int(input("Amount of generations (integer): "))
         mutation = float(input("Mutation rate (0.0 - 1.0): "))
-        type = int(input("\nChoose your mutation type: \n  1. Designer:\t timeslot hillclimber\n  2. Random:\t single timelock swap\n\n  Your choice: "))
 
         # run genetic algorithm with chosen variables
-        schedule, allcourses, student_list, chambers = genetic(initial, survival, offspring, generations, mutation, type)
+        schedule, allcourses, student_list, chambers = genetic(initial, survival, offspring, generations, mutation)
 
         # visualize schedule
         print("\n...\n")
