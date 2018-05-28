@@ -535,7 +535,7 @@ def calc_score(allcourses, student_list, chambers):
 		# add points of allcourses
 		allcoursespoints.append([course.name, coursepoints])
 
-	#* substract points when 2 courses on same time *# 
+	#* substract points when 2 courses on same time *#
 
 	# for all students
 	for student in student_list:
@@ -964,7 +964,7 @@ def selection(population, rate):
 	return mating_pool
 
 
-def mutation(schedule, chambers, allcourses, student_list, chance, type):
+def mutation(schedule, chambers, allcourses, student_list, chance):
 	""" Creates a mutation by performing a hillclimber for roomlocks """
 
 	# determine probability
@@ -973,17 +973,11 @@ def mutation(schedule, chambers, allcourses, student_list, chance, type):
 	# if probability is smaller than given chance
 	if probability < chance:
 
-		# use mutation based on hillclimbing (design mutation)
-		if type == 1:
+		# swap between roomlocks using hillclimber
+		hillclimb_roomlocks2(int(probability * 100), chambers, allcourses, student_list, schedule)
 
-			# swap between roomlocks using hillclimber
-			hillclimb_roomlocks2(int(chance * 100), chambers, allcourses, student_list, schedule)
-
-		# use mutation based on random swap (random mutation)
-		elif type == 2:
-
-			# swap two random roomlocks
-			swap_course2(chambers, allcourses, student_list, schedule)
+		# # swap two random roomlocks
+		# swap_course2(chambers, allcourses, student_list, schedule)
 
 	return
 
@@ -1188,9 +1182,6 @@ def print_schedule(schedule, allcourses, student_list, chambers):
 #* plots *#
 
 
-
-<<<<<<< HEAD
-=======
 	functionname = str(coolingscheme.__name__)
 	plt.plot(range(0, len(scores)), scores, label=functionname)
 	plt.ylabel("Score")
@@ -1303,19 +1294,19 @@ def plot_average_SA(repetitions, runs):
 		chambers, allcourses, student_list, schedule = create_schedule()
 
 		best_schedule, best_score, best_courses, best_student_list, best_chambers, scores = simulated_annealing(geman, runs, chambers, allcourses, student_list, schedule)
-		
+
 		# create random schedule and perform simulated annealing with linear coolingscheme
 		chambers, allcourses, student_list, schedule = create_schedule()
 		best_schedule, best_score, best_courses, best_student_list, best_chambers, linear_scores = simulated_annealing(linear, runs, chambers, allcourses, student_list, schedule)
-		
+
 		# create random schedule and perform simulated annealing with sigmoidal coolingscheme
 		chambers, allcourses, student_list, schedule = create_schedule()
 		best_schedule, best_score, best_courses, best_student_list, best_chambers, sigmoidal_scores = simulated_annealing(sigmoidal, runs, chambers, allcourses, student_list, schedule)
-		
+
 		# create random schedule and perform simulated annealing with exponential coolingscheme
 		chambers, allcourses, student_list, schedule = create_schedule()
 		best_schedule, best_score, best_courses, best_student_list, best_chambers, exponential_scores = simulated_annealing(exponential, runs, chambers, allcourses, student_list, schedule)
-		
+
 		# add scores to alogrithm list
 		algorithm_scores.append([geman_scores, linear_scores, sigmoidal_scores, exponential_scores])
 
@@ -1387,7 +1378,6 @@ def plot_average_SA(repetitions, runs):
 
 	# create plot with multiple lines of all coolingschemes
 	multiple_simulated_annealing(average_scores)
->>>>>>> dc805688008aa713adab4de561112f32aa7988ce
 
 
 def swap_course2(chambers, allcourses, student_list, schedule, roomlock1 = None, roomlock2 = None):

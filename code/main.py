@@ -121,10 +121,9 @@ def main():
         offspring = int(input("Amount of offspring per generation (integer): "))
         generations = int(input("Amount of generations (integer): "))
         mutation = float(input("Mutation rate (0.0 - 1.0): "))
-        type = int(input("\nChoose your mutation type: \n  1. Designer:\t timeslot hillclimber\n  2. Random:\t single timelock swap\n\n  Your choice: "))
 
         # run genetic algorithm with chosen variables
-        schedule, allcourses, student_list, chambers = genetic(initial, survival, offspring, generations, mutation, type)
+        schedule, allcourses, student_list, chambers = genetic(initial, survival, offspring, generations, mutation)
 
         # visualize schedule
         print("\n...\n")

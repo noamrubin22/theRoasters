@@ -163,7 +163,7 @@ def simulated_annealing(coolingscheme, min_iterations, chambers, allcourses, stu
 	return best_schedule, best_score, best_courses, best_student_list, best_chambers, scores
 
 
-def genetic(initial, survival_rate, offspring, generations, mutation, type):
+def genetic(initial, survival_rate, offspring, generations, mutation):
 	""" Implements a genetic algorithm on scheduling problem """
 
 	# creates initial population
@@ -176,7 +176,7 @@ def genetic(initial, survival_rate, offspring, generations, mutation, type):
 
 	# apply crossover to the fittest schedules
 	print("Something about the birds and the bees...\n")
-	children = cross_over(fittest, offspring, 0, mutation, type)
+	children = cross_over(fittest, offspring, 0, mutation)
 
 
 	# for amount of generations
@@ -186,7 +186,7 @@ def genetic(initial, survival_rate, offspring, generations, mutation, type):
 		fittest = selection(children, survival_rate)
 
 		# perform cross over, add mutation
-		children = cross_over(fittest, offspring, i + 1, mutation, type)
+		children = cross_over(fittest, offspring, i + 1, mutation)
 
 	# select fittest children
 	fittest = selection(children, survival_rate)
