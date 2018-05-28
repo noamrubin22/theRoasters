@@ -52,6 +52,10 @@ def main():
         # create random schedule
         chambers, allcourses, student_list, schedule = create_schedule()
 
+        print_schedule(schedule, allcourses, student_list, chambers)
+        points, allcoursespoints = calc_score(allcourses, student_list, chambers)
+        print(allcoursespoints)
+
         print("\n\t\tClimbing...\n")
 
         # perform chosen hillclimber
@@ -65,6 +69,8 @@ def main():
 
         # visualize schedule
         print_schedule(schedule, allcourses, student_list, chambers)
+        points, allcoursespoints = calc_score(allcourses, student_list, chambers)
+        print(allcoursespoints)
 
     # if simulated annealing is chosen
     elif algorithm == 2:
